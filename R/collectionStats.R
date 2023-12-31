@@ -3,7 +3,7 @@
 ARLDataDownload <- read_csv("~/Desktop/ARL Data Download.csv")
 ARLDataDownload$`Titles held`
 
-visCollectionData <- function(dataARL) {
+visCollectionData <- function(dataARL, institute) {
   selectedData <- dataARL %>% dplyr::select(
                             "Year",
                             "Institution number",
@@ -15,7 +15,54 @@ visCollectionData <- function(dataARL) {
                             "ARL investment index value",
                             "Titles held",
                             "Volumes held",
-                            "Electronic books")
+                            "Electronic books") %>%
+    dplyr::mutate_at(c('Titles held',
+                       'Volumes held',
+                       'Electronic books'), as.numeric)
+    tibble::as_tibble()
+
+# Comparison within institute
+# 1. Over years
+# Compare within institute volumes held, vs electronic books
+# Institute vs rest average
+# Institute vs rest average Canada vs USA
+
+  # set color palette
+  colorPaletteCustom <- c(
+    '#33a02c',
+    '#fee08b',
+    '#5e4fa2',
+    '#66c2a5',
+    '#3288bd',
+    '#e6f598',
+    '#a6cee3',
+    '#c51b7d',
+    '#fde0ef',
+    '#e31a1c',
+    '#cab2d6',
+    '#ff7f00',
+    '#b15928',
+    '#dfc27d',
+    '#8dd3c7',
+    '#ccebc5',
+    '#f1b6da')
+
+  overYearsPlot <-  selectedData %>%
+    dplyr::filter(`Institution type` %in% c("Canadian", ".")) %>%
+    ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
+                        y = `Titles held`,
+                        fill = factor(`Institution Name`))) +
+    geom_bar(position="dodge", stat="identity") +
+    ggplot2::labs(y = "Titles Held",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Titles Held") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 10),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    # ggbreak::scale_y_break(c(110000, 190000)) +
+    ggplot2::scale_fill_manual(values = colorPaletteCustom)
+
 
 
 }
