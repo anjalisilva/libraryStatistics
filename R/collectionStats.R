@@ -4,6 +4,11 @@ ARLDataDownload <- read_csv("~/Desktop/ARL Data Download.csv")
 ARLDataDownload$`Titles held`
 
 visCollectionData <- function(dataARL, institute) {
+
+  # Display only 5 years of data
+  recentYear <- dataARL$Year %>% unique() %>% max()
+  fiveYearEarly <- recentYear - 5
+
   selectedData <- dataARL %>% dplyr::select(
                             "Year",
                             "Institution number",
@@ -49,6 +54,8 @@ visCollectionData <- function(dataARL, institute) {
 
   overYearsPlot <-  selectedData %>%
     dplyr::filter(`Institution type` %in% c("Canadian", ".")) %>%
+    dplyr::filter(`Institution Name` != "MEDIAN") %>% # Remove median value
+    dplyr::filter(`Institution Name` != "MEDIAN") %>% # Limit to five years
     ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
                         y = `Titles held`,
                         fill = factor(`Institution Name`))) +
