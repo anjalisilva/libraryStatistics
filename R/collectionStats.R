@@ -7,7 +7,7 @@ visCollectionData <- function(dataARL, institute) {
 
   # Display only 5 years of data
   recentYear <- dataARL$Year %>% unique() %>% max()
-  fiveYearEarly <- recentYear - 5
+  fiveYearEarly <- recentYear - 4
 
   selectedData <- dataARL %>% dplyr::select(
                             "Year",
@@ -54,12 +54,14 @@ visCollectionData <- function(dataARL, institute) {
 
   overYearsPlot <-  selectedData %>%
     dplyr::filter(`Institution type` %in% c("Canadian", ".")) %>%
-    dplyr::filter(`Institution Name` != "MEDIAN") %>% # Remove median value
-    dplyr::filter(`Institution Name` != "MEDIAN") %>% # Limit to five years
+    dplyr::filter(`Institution Name` != "MEDIAN") %>% # remove median value
+    dplyr::filter(`Year` %in% c(fiveYearEarly:recentYear)) %>% # Limit to five years
+    # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
                         y = `Titles held`,
-                        fill = factor(`Institution Name`))) +
-    geom_bar(position="dodge", stat="identity") +
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
