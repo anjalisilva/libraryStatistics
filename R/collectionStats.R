@@ -3,11 +3,44 @@
 ARLDataDownload <- read_csv("~/Desktop/ARL Data Download.csv")
 ARLDataDownload$`Titles held`
 
-visCollectionData <- function(dataARL, institute) {
+#' A Bar Plot to Compare Collection Statistics
+#'
+#' A function to visualize collection statistics
+#'
+#'@param years A numeric vector specifying up to 5 calendar years
+#'  for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
+#'  If no value is provided (i.e., NA), then most recent five
+#'  years available in the data will be used. If more than 5 values
+#'  provided, last 5 values will be selected. Default is NA.
+#'
+
+visCollectionData <- function(dataARL, institute, years = NA) {
 
   # Display only 5 years of data
-  recentYear <- dataARL$Year %>% unique() %>% max()
-  fiveYearEarly <- recentYear - 4
+  is.na(years == TRUE) {
+    yearsInData <- dataARL$Year %>%
+                     unique() %>%
+                     sort(decreasing = FALSE)
+    # Obtain data for last 5 years
+    fiveYears <-
+      yearsInData[(length(yearsInData) - 4):length(yearsInData)]
+  } else if (is.double(years) != TRUE || is.integer(years) != TRUE) {
+    stop("Argument years should be set as a vector of numeric data
+         containing 5 years or set to NA")
+  } else {
+    # If more than 5 years of data present
+    if(length(years) > 5) {
+      warning("More than five years provided in argument years. Most
+              recent 5 years will be used.")
+      yearsTrucated <- years %>%
+        unique() %>%
+        sort(decreasing = FALSE) %>%
+        tail(x = 5)
+      # Obtain data for last 5 years
+      fiveYears <-
+        yearsInData[(length(yearsInData) - 4):length(yearsInData)]
+    }
+  }
 
   selectedData <- dataARL %>% dplyr::select(
                             "Year",
