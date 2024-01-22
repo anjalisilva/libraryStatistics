@@ -55,6 +55,7 @@ years <- c(2015, 2016, 2017, 2018, 2019)
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
+#'
 visCollectionData <- function(dataARL, institute, years = NA) {
 
   # Display only 5 years of data
