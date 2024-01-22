@@ -1,8 +1,11 @@
 
 
 ARLDataDownload <- readr::read_csv("~/Desktop/ARL Data Download.csv")
-ARLDataDownload <- readr::read_csv(
-  "/Users/user/Library/CloudStorage/GoogleDrive-anjali@alumni.uoguelph.ca/My Drive/UTorontoLibrary/Shiny/ARL Data Download.csv")
+# ARLDataDownload <- readr::read_csv(
+#   "/Users/user/Library/CloudStorage/GoogleDrive-anjali@alumni.uoguelph.ca/My Drive/UTorontoLibrary/Shiny/ARL Data Download.csv")
+# inputCountsPath <- system.file("extdata", "ARL Data Download.csv", package = "libraryStatistics")
+# ARLDataDownload <- readr::read_csv(inputCountsPath)
+
 ARLDataDownload$`Titles held`
 pillar::glimpse(ARLDataDownload)
 dataARL <- ARLDataDownload
