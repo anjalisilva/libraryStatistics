@@ -14,17 +14,47 @@ years <- c(2015, 2016, 2017, 2018, 2019)
 
 #' A Bar Plot to Compare Collection Statistics
 #'
-#' A function to visualize collection statistics. Institution types are assumed to be
-#'  of the categories: "Canadian", "Canadian Nonacademic", "Private", "State", and
-#  "Nonacademic".
+#' A function to visualize collection statistics. Institution types are
+#' assumed to be of the categories: "Canadian", "Canadian Nonacademic",
+#' "Private", "State", and "Nonacademic". For collection statistics
+#' visualization, the following variables (or columns) are required
+#' in the dataset: "Year", "Institution Name", "Institution type",
+#' "Region", "Rank in ARL investment index", "ARL investment index value",
+#' "Titles held", "Volumes held", and "Electronic books".
 #'
+#'@param dataARL A data frame containing data downloaded from
+#'   ARL. The years should be placed along rows. The first column must
+#'   be 'Year', followed by other variables in no particular order,
+#'   e.g., 'Institution Name', 'Institution type', etc.
+#'@param institute A character vector specifying the institute of
+#'   interest, as identified in the dataset. E.g., "TORONTO" for
+#'   University of Toronto Libraries.
 #'@param years A numeric vector specifying up to 5 calendar years
-#'  for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
-#'  If no value is provided (i.e., NA), then most recent five
-#'  years available in the data will be used. If more than 5 values
-#'  provided, last 5 values will be selected. Default is NA.
+#'   for which data should be plotted, e.g., c(2015, 2016, 2017,
+#'   2018, 2019). If no value is provided (i.e., NA), then most
+#'   recent five years available in the data will be used. If more
+#'   than 5 values provided, last 5 values will be selected. Default
+#'   is NA.
 #'
-
+#' @return Returns three bar plots showing collection statistics
+#' \itemize{
+#'   \item InstCanadianPlot - A bar plot comparing Canadian institutes
+#'         based on titles held.
+#'   \item instTypePlot - A bar plot comparing maximum title holders by
+#'         institute type. Types include: "Canadian", "Private", "State",
+#'         and "Nonacademic".
+#'   \item academicPlot - A bar plot comparing maximum title holders by
+#'         academic institute type. Types include: "Canadian" and "State".
+#' }
+#'
+#' @examples
+#' visCollectionData(dataARL = ARLDataDownload,
+#'                   institute = "TORONTO",
+#'                   years = c(2015, 2016, 2017, 2018, 2019))
+#'
+#' @export
+#' @importFrom ggplot2 ggplot
+#' @import magrittr
 visCollectionData <- function(dataARL, institute, years = NA) {
 
   # Display only 5 years of data
@@ -57,11 +87,9 @@ visCollectionData <- function(dataARL, institute, years = NA) {
 
   selectedData <- dataARL %>% dplyr::select(
                             "Year",
-                            "Institution number",
                             "Institution Name",
                             "Institution type",
                             "Region",
-                            "Member year",
                             "Rank in ARL investment index",
                             "ARL investment index value",
                             "Titles held",
@@ -101,7 +129,7 @@ visCollectionData <- function(dataARL, institute, years = NA) {
   # --- --- --- --- --- --- --- ---
   # Titles
   # Plot of titles held Canadian institutes over 5 years
-  overYearsPlot <- selectedData %>%
+  InstCanadianPlot <- selectedData %>%
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", ".")) %>% # for "." median?
     dplyr::filter(`Institution Name` != "MEDIAN") %>% # remove median value
     dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
@@ -209,11 +237,10 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     ggplot2::scale_fill_manual(values = colorPaletteCustom)
 
 
-   return(list(overYearsPlot = overYearsPlot,
+   return(list(InstCanadianPlot = InstCanadianPlot,
           instTypePlot = instTypePlot,
           academicPlot = academicPlot))
   }
-
 
 
 
@@ -300,7 +327,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
   # --- --- --- --- --- --- --- ---
   # Total library expenditures
   # Plot of total library expenditures held Canadian institutes over 5 years
-  overYearsPlotTLE <- selectedData %>%
+  InstCanadianPlotTLE <- selectedData %>%
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", ".")) %>% # for "." median?
     dplyr::filter(`Institution Name` != "MEDIAN") %>% # remove median value
     dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
@@ -416,7 +443,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
   # --- --- --- --- --- --- --- ---
   # Total materials expenditures
   # Plot of total materials expenditures held Canadian institutes over 5 years
-  overYearsPlotTME <- selectedData %>%
+  InstCanadianPlotTME <- selectedData %>%
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", ".")) %>% # for "." median?
     dplyr::filter(`Institution Name` != "MEDIAN") %>% # remove median value
     dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
@@ -534,4 +561,9 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
   # Professional salaries & wages
 
 }
+
+visExpenditureData(dataARL = ARLDataDownload,
+                  institute = "TORONTO",
+                  years = c(2015, 2016, 2017, 2018, 2019))
+
 
