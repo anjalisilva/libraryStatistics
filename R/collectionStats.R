@@ -55,7 +55,6 @@ years <- c(2015, 2016, 2017, 2018, 2019)
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-#'
 visCollectionData <- function(dataARL, institute, years = NA) {
 
   # Display only 5 years of data
@@ -100,15 +99,10 @@ visCollectionData <- function(dataARL, institute, years = NA) {
                        'Volumes held',
                        'Electronic books'), as.numeric)
 
-# Comparison within institute
-# 1. Over years
-# Compare within institute volumes held, vs electronic books
-# Institute vs rest average
-# Institute vs rest average Canada vs USA
-
   # set color palette
   colorPaletteCustom <- c(
     '#33a02c',
+    '#b15928',
     '#fee08b',
     '#5e4fa2',
     '#c51b7d',
@@ -120,19 +114,47 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     '#e31a1c',
     '#cab2d6',
     '#ff7f00',
-    '#b15928',
     '#dfc27d',
     '#8dd3c7',
     '#ccebc5',
-    '#f1b6da')
+    '#f1b6da',
+    'darkgrey')
 
 
   # --- --- --- --- --- --- --- ---
   # Titles
+  # Visualize institute selected with medium
+  titleUserInstitute <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% c(institute, "MEDIAN")) %>%
+    # ensure Median appear first in legend
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
+    dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
+    # width = .75 ensures space between groups
+    ggplot2::ggplot(aes(x = `Year`,
+                        y = `Titles held`,
+                        width = .75)) +
+    ggplot2::geom_line(linetype = "dashed",
+                       linewidth = 0.5,
+                       aes(color = `Institution Name`)) +
+    geom_point(size = 0.5, aes(color = `Institution Name`)) +
+    ggplot2::scale_color_manual(values = colorPaletteCustom) +
+    ggplot2::labs(y = "Titles Held",
+                  x = "Year",
+                  title = "Titles Held By Selected Institute") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 10),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma())
+
+
+  # ---
   # Plot of titles held Canadian institutes over 5 years
   InstCanadianPlot <- selectedData %>%
-    dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", ".")) %>% # for "." median?
-    dplyr::filter(`Institution Name` != "MEDIAN") %>% # remove median value
+    dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", ".", institute)) %>% # for "." median
+    # ensure Median appear first in legend
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = `Year`,
@@ -143,12 +165,13 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Titles Held By Canadian Institutes") +
+                  title = "Comparison With Titles Held By Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     # ggbreak::scale_y_break(c(110000, 190000)) +
-    ggplot2::scale_fill_manual(values = colorPaletteCustom)
+    ggplot2::scale_fill_manual(values = colorPaletteCustom) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma())
 
 
 
@@ -186,9 +209,16 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
-  medianTable <- tibble(Year = fiveYears,
+  medianTable <- tibble::tibble(Year = fiveYears,
          `Institution Name` = rep("MEDIAN", length(fiveYears)))
-  topTitlesInst <- inner_join(rbind(medianTable, CadAcademicMax, StateMax, PrivateMax, NonacademicMax),
+  userSelectTable <- tibble::tibble(Year = fiveYears,
+                        `Institution Name` = rep(institute, length(fiveYears)))
+  topTitlesInst <- dplyr::inner_join(rbind(medianTable,
+                                    userSelectTable,
+                                    CadAcademicMax,
+                                    StateMax,
+                                    PrivateMax,
+                                    NonacademicMax),
              selectedData, by= c("Year", "Institution Name"))
 
   instTypePlot <- topTitlesInst %>%
@@ -196,7 +226,7 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -209,20 +239,25 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     ggplot2::theme(text = element_text(size = 10),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     # ggbreak::scale_y_break(c(110000, 190000)) +
-    ggplot2::scale_fill_manual(values = colorPaletteCustom)
+    ggplot2::scale_fill_manual(values = colorPaletteCustom) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma())
 
 
 
   # ---
   # Join above selections together with other data for academic institutes
-  topTitlesAcademicInst <- inner_join(rbind(medianTable, CadAcademicMax, StateMax, PrivateMax),
+  topTitlesAcademicInst <- dplyr::inner_join(rbind(medianTable,
+                                            userSelectTable,
+                                            CadAcademicMax,
+                                            StateMax,
+                                            PrivateMax),
                               selectedData, by= c("Year", "Institution Name"))
 
   academicPlot <- topTitlesAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -230,17 +265,19 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Titles Held by Academic Institute Type") +
+                  title = "Comparison of Max Titles Held by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     # ggbreak::scale_y_break(c(110000, 190000)) +
-    ggplot2::scale_fill_manual(values = colorPaletteCustom)
+    ggplot2::scale_fill_manual(values = colorPaletteCustom) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma())
 
 
-   return(list(InstCanadianPlot = InstCanadianPlot,
-          instTypePlot = instTypePlot,
-          academicPlot = academicPlot))
+   return(list(titleUserInstitute = titleUserInstitute,
+               InstCanadianPlot = InstCanadianPlot,
+               instTypePlot = instTypePlot,
+               academicPlot = academicPlot))
   }
 
 
@@ -434,7 +471,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     # ggbreak::scale_y_break(c(110000, 190000)) +
     ggplot2::scale_fill_manual(values = colorPaletteCustom) +
-    ggplot2::scale_y_continuous(labels=scales::dollar_format())
+    ggplot2::scale_y_continuous(labels = scales::dollar_format())
 
 
 
