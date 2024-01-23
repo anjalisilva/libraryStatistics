@@ -12,7 +12,8 @@ dataARL <- ARLDataDownload
 institute <- "TORONTO" # ARLDataDownload$`Institution Name`
 years <- c(2015, 2016, 2017, 2018, 2019)
 
-
+# ---
+# Helper functions
 setColorPalette <- function(returnCol = TRUE) {
 
   if(returnCol == TRUE) {
@@ -44,6 +45,46 @@ setColorPalette <- function(returnCol = TRUE) {
     # no return
   }
 }
+
+setYearsToDispaly <- function(years) {
+  # A helper function to return years to display
+  # based on user input
+
+  # If NA, then user wants program to select the years
+  if (all(is.na(years) == TRUE)) {
+    # Obtain years in data
+    yearsInData <- dataARL$Year %>%
+      unique() %>%
+      sort(decreasing = FALSE)
+    # Based on length of years in data, select last 5 or less years
+    if (length(yearsInData) == 5 || length(yearsInData) < 4) {
+      yearsToDisplay <- years
+    } else if(length(yearsInData) > 5) {
+      yearsToDisplay <-
+        yearsInData[(length(yearsInData) - 4):length(yearsInData)]
+    }
+  } else if (is.numeric(years) != TRUE) {
+    stop("Argument years should be set as a vector of numeric data
+         containing 5 years or set to NA")
+  } else {
+    # If more than 5 years provided by user
+    if(length(years) > 5) {
+      warning("More than five years provided in argument years. Most
+              recent 5 years will be used.")
+      yearsTrucated <- years %>%
+        unique() %>%
+        sort(decreasing = FALSE) %>%
+        tail(x = 5)
+      # Obtain data for last 5 years
+      yearsToDisplay <-
+        yearsInData[(length(yearsInData) - 4):length(yearsInData)]
+    } else {
+      yearsToDisplay <- sort(years, decreasing = FALSE)
+    }
+  }
+  return(yearsToDisplay)
+}
+
 
 #' A Bar Plot to Compare Collection Statistics
 #'
@@ -90,34 +131,6 @@ setColorPalette <- function(returnCol = TRUE) {
 #' @import magrittr
 visCollectionData <- function(dataARL, institute, years = NA) {
 
-  # Display only 5 years of data
-  if (all(is.na(years) == TRUE)) {
-    yearsInData <- dataARL$Year %>%
-                     unique() %>%
-                     sort(decreasing = FALSE)
-    # Obtain data for last 5 years
-    fiveYears <-
-      yearsInData[(length(yearsInData) - 4):length(yearsInData)]
-  } else if (is.numeric(years) != TRUE) {
-    stop("Argument years should be set as a vector of numeric data
-         containing 5 years or set to NA")
-  } else {
-    # If more than 5 years of data present
-    if(length(years) > 5) {
-      warning("More than five years provided in argument years. Most
-              recent 5 years will be used.")
-      yearsTrucated <- years %>%
-        unique() %>%
-        sort(decreasing = FALSE) %>%
-        tail(x = 5)
-      # Obtain data for last 5 years
-      fiveYears <-
-        yearsInData[(length(yearsInData) - 4):length(yearsInData)]
-    } else {
-      fiveYears <- sort(years, decreasing = FALSE)
-    }
-  }
-
   selectedData <- dataARL %>% dplyr::select(
                             "Year",
                             "Institution Name",
@@ -132,7 +145,7 @@ visCollectionData <- function(dataARL, institute, years = NA) {
                        'Volumes held',
                        'Electronic books'), as.numeric)
 
-
+  yearsToDisplay <- setYearsToDispaly(years = years)
 
   # --- --- --- --- --- --- --- ---
   # Titles
@@ -142,7 +155,7 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = `Year`,
                         y = `Titles held`,
@@ -169,7 +182,7 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = `Year`,
                         y = `Titles held`,
@@ -223,10 +236,10 @@ visCollectionData <- function(dataARL, institute, years = NA) {
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
-  medianTable <- tibble::tibble(Year = fiveYears,
-         `Institution Name` = rep("MEDIAN", length(fiveYears)))
-  userSelectTable <- tibble::tibble(Year = fiveYears,
-                        `Institution Name` = rep(institute, length(fiveYears)))
+  medianTable <- tibble::tibble(Year = yearsToDisplay,
+         `Institution Name` = rep("MEDIAN", length(yearsToDisplay)))
+  userSelectTable <- tibble::tibble(Year = yearsToDisplay,
+                        `Institution Name` = rep(institute, length(yearsToDisplay)))
   topTitlesInst <- dplyr::inner_join(rbind(medianTable,
                                     userSelectTable,
                                     CadAcademicMax,
@@ -307,7 +320,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
       unique() %>%
       sort(decreasing = FALSE)
     # Obtain data for last 5 years
-    fiveYears <-
+    yearsToDisplay <-
       yearsInData[(length(yearsInData) - 4):length(yearsInData)]
   } else if (is.numeric(years) != TRUE) {
     stop("Argument years should be set as a vector of numeric data
@@ -322,10 +335,10 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
         sort(decreasing = FALSE) %>%
         tail(x = 5)
       # Obtain data for last 5 years
-      fiveYears <-
+      yearsToDisplay <-
         yearsInData[(length(yearsInData) - 4):length(yearsInData)]
     } else {
-      fiveYears <- sort(years, decreasing = FALSE)
+      yearsToDisplay <- sort(years, decreasing = FALSE)
     }
   }
 
@@ -367,7 +380,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = `Year`,
                         y = `Total library expenditures`,
@@ -420,12 +433,12 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
-  medianTable <- tibble(Year = fiveYears,
-                        `Institution Name` = rep("MEDIAN", length(fiveYears)))
-  topTitlesInst <- inner_join(rbind(medianTable, CadAcademicMaxTLE, StateMaxTLE, PrivateMaxTLE, NonacademicMaxTLE),
+  medianTable <- tibble(Year = yearsToDisplay,
+                        `Institution Name` = rep("MEDIAN", length(yearsToDisplay)))
+  topTLEInst <- inner_join(rbind(medianTable, CadAcademicMaxTLE, StateMaxTLE, PrivateMaxTLE, NonacademicMaxTLE),
                               selectedData, by= c("Year", "Institution Name"))
 
-  instTypePlotTLE <- topTitlesInst %>%
+  instTypePlotTLE <- topTLEInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -450,10 +463,10 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
 
   # ---
   # Join above selections together with other data for academic institutes
-  topTitlesAcademicInst <- inner_join(rbind(medianTable, CadAcademicMaxTLE, StateMaxTLE, PrivateMaxTLE),
+  topTLEAcademicInst <- inner_join(rbind(medianTable, CadAcademicMaxTLE, StateMaxTLE, PrivateMaxTLE),
                                       selectedData, by= c("Year", "Institution Name"))
 
-  academicPlotTLE <- topTitlesAcademicInst %>%
+  academicPlotTLE <- topTLEAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -488,7 +501,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(fiveYears)) %>% # Limit to five years
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = `Year`,
                         y = `Total materials expenditures`,
@@ -541,8 +554,8 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
-  medianTable <- tibble::tibble(Year = fiveYears,
-                        `Institution Name` = rep("MEDIAN", length(fiveYears)))
+  medianTable <- tibble::tibble(Year = yearsToDisplay,
+                        `Institution Name` = rep("MEDIAN", length(yearsToDisplay)))
   topTMEInst <- dplyr::inner_join(rbind(medianTable, CadAcademicMaxTME, StateMaxTME, PrivateMaxTME, NonacademicMaxTME),
                               selectedData, by= c("Year", "Institution Name"))
 
@@ -570,10 +583,10 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
 
   # ---
   # Join above selections together with other data for academic institutes
-  topTitlesAcademicInst <- inner_join(rbind(medianTable, CadAcademicMaxTME, StateMaxTME, PrivateMaxTME),
+  topTMEAcademicInst <- dplyr::inner_join(rbind(medianTable, CadAcademicMaxTME, StateMaxTME, PrivateMaxTME),
                                       selectedData, by= c("Year", "Institution Name"))
 
-  academicPlotTME <- topTitlesAcademicInst %>%
+  academicPlotTME <- topTMEAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%

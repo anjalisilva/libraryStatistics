@@ -56,14 +56,16 @@ ui <- fluidPage(
                 be 'Year', followed by other variables in no particular order,
                 e.g., 'Institution Name', 'Institution type', etc.",
                 accept = c(".csv")),
-      textInput(inputId = "ngmin",
-                label = "ngmin: Enter the minimum value of components or clusters
-                for clustering. This should be a positive integer.", "1"),
-      textInput(inputId = "ngmax",
-                label = "ngmax: Enter the maximum value of components or clusters.
-                for clustering. This should be a positive integer, bigger
-                than ngmin and less than or equal to number of total observations
-                in the dataset.", "2"),
+      textInput(inputId = "institute",
+                label = "institute: A character vector specifying the institute
+                of interest, as identified in the dataset. E.g., 'TORONTO' for
+                University of Toronto Libraries.", "TORONTO"),
+      textInput(inputId = "years",
+                label = "years: A numeric vector specifying up to 5 calendar years
+                for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
+                If no value is provided (i.e., NA), then most recent five years
+                available in the data will be used. If more than 5 values provided,
+                last 5 values will be selected. Default is NA.", "2015, 2016, 2017, 2018, 2019"),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -168,19 +170,11 @@ server <- function(input, output) {
 
 
   startclustering <- eventReactive(eventExpr = input$button2, {
-    withProgress(message = 'Clustering', value = 0, {
-      # Number of times we'll go through the loop
 
-      MPLNClust::mplnVariational(
-        dataset = matrixInput(),
-        membership = "none",
-        gmin = as.numeric(input$ngmin),
-        gmax = as.numeric(input$ngmax),
-        initMethod = as.character(input$typeinitMethod),
-        nInitIterations = as.numeric(input$nInitIterations),
-        normalize = "Yes")
+      libraryStatistics::visCollectionData(dataARL = matrixInput(),
+                        institute = as.character(input$institute),
+                        years = as.numeric(input$years))
 
-    })
   })
 
   # Textoutput
