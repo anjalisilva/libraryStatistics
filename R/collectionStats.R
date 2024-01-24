@@ -17,6 +17,7 @@ setColorPalette <- function(returnCol = TRUE) {
     colorPaletteCustom <- c(
       '#33a02c',
       'red',
+      'blue',
       '#b15928',
       '#f1b6da',
       'darkgrey',

@@ -39,18 +39,18 @@ ui <- fluidPage(
       actionButton(inputId = "data1",
                    label = "Dataset 1 Details"),
       fileInput(inputId = "file1",
-                label = "Dataset: Select a dataset to analyze. File should be
+                label = "Dataset: Upload a dataset below to analyze. File should be
                 in comma-separated value (.csv) format with rows corresponding
                 to years and columns to variables. The first column must
                 be 'Year', followed by other variables in no particular order,
                 e.g., 'Institution Name', 'Institution type', etc.",
                 accept = c(".csv")),
       textInput(inputId = "institute",
-                label = "institute: A character vector specifying the institute
+                label = "Institute: A character vector specifying the institute
                 of interest, as identified in the dataset. E.g., 'TORONTO' for
                 University of Toronto Libraries.", "TORONTO"),
       textInput(inputId = "years",
-                label = "years: A numeric vector specifying up to 5 calendar years
+                label = "Years: A numeric vector specifying up to 5 calendar years
                 for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
                 If no value is provided (i.e., NA), then most recent five years
                 available in the dataset will be automatically selected. If more than
@@ -135,7 +135,7 @@ server <- function(input, output) {
 
 
   startvisualizing <- eventReactive(eventExpr = input$button2, {
-    libraryStatistics::visCollectionData(dataARL = csvInput(),
+    visTitlesData(dataARL = csvInput(),
                         institute = as.character(input$institute),
                         years = as.numeric(input$years))
   })
