@@ -17,21 +17,21 @@ setColorPalette <- function(returnCol = TRUE) {
     colorPaletteCustom <- c(
       '#33a02c',
       'red',
-      'blue',
+      '#a6cee3',
       '#b15928',
-      '#f1b6da',
+      '#c51b7d',
       'darkgrey',
       '#fee08b',
       '#5e4fa2',
       '#ccebc5',
-      '#c51b7d',
+      '#ff7f00',
       '#66c2a5',
       '#e6f598',
       'black',
-      '#a6cee3',
-      '#ff7f00',
+      'blue',
       '#fde0ef',
       '#3288bd',
+      '#f1b6da',
       'darkgreen',
       '#dfc27d',
       '#8dd3c7',
@@ -49,6 +49,8 @@ setYearsToDispaly <- function(years) {
 
   # If NA, then user wants program to select the years
   if (all(is.na(years) == TRUE)) {
+    # Testing phrases
+    cat("\n Run condition 1")
     # Obtain years in data
     yearsInData <- dataARL$Year %>%
       unique() %>%
@@ -61,9 +63,13 @@ setYearsToDispaly <- function(years) {
         yearsInData[(length(yearsInData) - 4):length(yearsInData)]
     }
   } else if (is.numeric(years) != TRUE) {
+    # Testing phrases
+    cat("\n Run condition 2")
     stop("Argument years should be set as a vector of numeric data
          containing 5 years or set to NA")
   } else {
+    # Testing phrases
+    cat("\n Run condition 3")
     # If more than 5 years provided by user
     if(length(years) > 5) {
       warning("More than five years provided in argument years. Most
@@ -71,7 +77,7 @@ setYearsToDispaly <- function(years) {
       yearsTrucated <- years %>%
         unique() %>%
         sort(decreasing = FALSE) %>%
-        tail(x = 5)
+        tail(5)
       # Obtain data for last 5 years
       yearsToDisplay <-
         yearsInData[(length(yearsInData) - 4):length(yearsInData)]
@@ -121,7 +127,7 @@ setYearsToDispaly <- function(years) {
 #' @examples
 #' visTitlesData(dataARL = ARLDataDownload,
 #'                   institute = "TEXAS STATE",
-#'                   years = c(2015, 2022, 2017, 2021))
+#'                   years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -184,7 +190,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
   InstCadData <- selectedData %>% # Canadian institutes
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
 
-    InstCanadianPlot <- rbind(InstSelectedData, InstCadData) %>%
+  InstCanadianPlot <- rbind(InstSelectedData, InstCadData) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -278,11 +284,11 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma()) +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Institution type`),
+    ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
-                       vjust = 0.5,
                        angle = 90,
-                       size = 2.5)
+                       size = 4,
+                       hjust = 'left')
 
 
 
@@ -317,11 +323,11 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma()) +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Institution type`),
+    ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
-                       vjust = 0.5,
                        angle = 90,
-                       size = 2.5)
+                       size = 4,
+                       hjust = 'left')
 
 
 

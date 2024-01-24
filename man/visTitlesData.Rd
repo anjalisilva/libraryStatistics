@@ -46,7 +46,7 @@ in the dataset: "Year", "Institution Name", "Institution type",
 }
 \examples{
 visTitlesData(dataARL = ARLDataDownload,
-                  institute = "TORONTO",
-                  years = c(2015, 2016, 2017, 2018, 2021))
+                  institute = "TEXAS STATE",
+                  years = c(2015, 2016, 2017, 2022, 2018, 2019))
 
 }
