@@ -121,7 +121,7 @@ setYearsToDispaly <- function(years) {
 #' @examples
 #' visTitlesData(dataARL = ARLDataDownload,
 #'                   institute = "TORONTO",
-#'                   years = c(2015, 2016, 2017, 2018, 2019))
+#'                   years = c(2015, 2016, 2017, 2018, 2021))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -162,7 +162,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     ggplot2::geom_line(linetype = "dashed",
                        linewidth = 0.5,
                        aes(color = `Institution Name`)) +
-    geom_point(size = 0.5, aes(color = `Institution Name`)) +
+    ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
@@ -183,11 +183,11 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
@@ -252,12 +252,13 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
@@ -291,6 +292,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
@@ -332,11 +334,12 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`, levels = c("1", "2", "3", "4", "5"))) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
@@ -447,7 +450,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -508,7 +511,8 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    ggplot2::ggplot(aes(x = `Year`,
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -536,7 +540,8 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    ggplot2::ggplot(aes(x = `Year`,
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -568,7 +573,7 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total materials expenditures`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -628,7 +633,8 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    ggplot2::ggplot(aes(x = `Year`,
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total materials expenditures`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -655,7 +661,8 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
-    ggplot2::ggplot(aes(x = `Year`,
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total materials expenditures`,
                         fill = factor(`Institution Name`),
                         width = .75)) +

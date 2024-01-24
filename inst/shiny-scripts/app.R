@@ -24,7 +24,7 @@ ui <- fluidPage(
       br(),
 
       # input
-      tags$b("Instructions: Below, upload a dataset, and enter values
+      tags$p("Instructions: Below, upload a dataset, and enter values
               to perform analysis. Default values are shown.
               Then press 'Analyze'. Navigate through the different tabs
               to the right to explore the results."),
@@ -37,7 +37,7 @@ ui <- fluidPage(
       shinyalert::useShinyalert(),  # Set up shinyalert
       uiOutput("tab2"),
       actionButton(inputId = "data1",
-                   label = "Dataset 1 Details"),
+                   label = "Demo Dataset Details"),
       fileInput(inputId = "file1",
                 label = "Dataset: Upload a dataset below to analyze. File should be
                 in comma-separated value (.csv) format with rows corresponding
@@ -75,18 +75,15 @@ ui <- fluidPage(
 
       # Output: Tabet
       tabsetPanel(type = "tabs",
-                  tabPanel("Heatmap",
-                           h3("Instructions: Enter values and click 'Run' at the bottom left side."),
-                           h3("Heatmap of Input Dataset with Cluster Membership:"),
-                           h5("Note, the plots are in the order of models selected by: BIC (top, left), ICL (top, right) and AIC (bottom, left), AIC3 (bottom, right).
-                              The cluster membership is indicated by the color legend to the left."),
+                  tabPanel("Titles",
+                           h3("Comparison of Titles with Median and Institute of Selction"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("titleUserInstitute"), plotOutput('InstCanadianPlot')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("instTypePlot"), plotOutput('academicPlot')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("plotARLRankTop"), plotOutput('')),
                            )),
-                  tabPanel("Alluvial Plot",
+                  tabPanel("Expenditure",
                            h3("Instructions: Enter values and click 'Run' at the bottom left side."),
                            h3("Alluvial Plot Showing Observation Memberships by Information Criteria for Input Dataset:"),
                            h5("Note, below the x-axis values are in the order of BIC, ICL, AIC, AIC3.
