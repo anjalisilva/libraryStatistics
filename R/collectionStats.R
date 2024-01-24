@@ -1,16 +1,12 @@
 
 
-ARLDataDownload <- readr::read_csv("~/Desktop/ARL Data Download.csv")
+# ARLDataDownload <- readr::read_csv("~/Desktop/ARL Data Download.csv")
 # ARLDataDownload <- readr::read_csv(
 #   "/Users/user/Library/CloudStorage/GoogleDrive-anjali@alumni.uoguelph.ca/My Drive/UTorontoLibrary/Shiny/ARL Data Download.csv")
 # inputCountsPath <- system.file("extdata", "ARL Data Download.csv", package = "libraryStatistics")
 # ARLDataDownload <- readr::read_csv(inputCountsPath)
 
-ARLDataDownload$`Titles held`
-pillar::glimpse(ARLDataDownload)
-dataARL <- ARLDataDownload
-institute <- "TORONTO" # ARLDataDownload$`Institution Name`
-years <- c(2015, 2016, 2017, 2018, 2019)
+
 
 # ---
 # Helper functions
@@ -85,7 +81,7 @@ setYearsToDispaly <- function(years) {
   return(yearsToDisplay)
 }
 
-
+# visCollection
 #' A Bar Plot to Compare Collection Statistics
 #'
 #' A function to visualize collection statistics. Institution types are
@@ -122,16 +118,17 @@ setYearsToDispaly <- function(years) {
 #' }
 #'
 #' @examples
-#' visCollectionData(dataARL = ARLDataDownload,
+#' visTitlesData(dataARL = ARLDataDownload,
 #'                   institute = "TORONTO",
 #'                   years = c(2015, 2016, 2017, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-visCollectionData <- function(dataARL, institute, years = NA) {
+visTitlesData <- function(dataARL, institute, years = NA) {
 
-  selectedData <- dataARL %>% dplyr::select(
+  selectedData <- dataARL %>%
+                  dplyr::select(
                             "Year",
                             "Institution Name",
                             "Institution type",
@@ -141,7 +138,8 @@ visCollectionData <- function(dataARL, institute, years = NA) {
                             "Titles held",
                             "Volumes held",
                             "Electronic books") %>%
-    dplyr::mutate_at(c('Titles held',
+                  dplyr::mutate_at(
+                     c('Titles held',
                        'Volumes held',
                        'Electronic books'), as.numeric)
 
@@ -203,7 +201,7 @@ visCollectionData <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Plot of selected institute over 5 years, with median, highest in USA and Canada
+  # Plot of institute types over 5 years, with median, highest in USA and Canada
   # selectedData$`Institution type` %>% unique()
   # [1] "."                    "State"                "Canadian"             "Private"
   # [5] "Nonacademic"          "Canadian Nonacademic"
@@ -268,7 +266,13 @@ visCollectionData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     # ggbreak::scale_y_break(c(110000, 190000)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma())
+    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Institution type`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0.5,
+                       angle = 90,
+                       size = 2.5)
 
 
 
@@ -290,7 +294,7 @@ visCollectionData <- function(dataARL, institute, years = NA) {
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
@@ -300,47 +304,107 @@ visCollectionData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
     # ggbreak::scale_y_break(c(110000, 190000)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma())
+    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Institution type`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0.5,
+                       angle = 90,
+                       size = 2.5)
+
+
+
+
+  # ---
+  # Plot comparing top 5 ARL ranks and their titles
+
+  topARLRankData <- selectedData %>%
+    dplyr::filter(`Rank in ARL investment index` %in% c("1", "2", "3", "4", "5"))
+
+  selectARLRankData <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% c("MEDIAN", institute))
+
+  combinedRankData <- rbind(topARLRankData, selectARLRankData)
+
+  plotARLRankTop <- combinedRankData %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`, levels = c("1", "2", "3", "4", "5"))) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Titles held`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    geom_bar(position = "dodge", stat="identity") +
+    ggplot2::labs(y = "Titles Held",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Titles Held by Institutes with Highest Investment ARL Rank") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 10),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    # ggbreak::scale_y_break(c(110000, 190000)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9), vjust = 0)
 
 
    return(list(titleUserInstitute = titleUserInstitute,
                InstCanadianPlot = InstCanadianPlot,
                instTypePlot = instTypePlot,
-               academicPlot = academicPlot))
+               academicPlot = academicPlot,
+               plotARLRankTop = plotARLRankTop))
   }
 
 
 
+#' A Bar Plot to Compare Collection Statistics
+#'
+#' A function to visualize collection statistics. Institution types are
+#' assumed to be of the categories: "Canadian", "Canadian Nonacademic",
+#' "Private", "State", and "Nonacademic". For collection statistics
+#' visualization, the following variables (or columns) are required
+#' in the dataset: "Year", "Institution Name", "Institution type",
+#' "Region", "Rank in ARL investment index", "ARL investment index value",
+#' "Titles held", "Volumes held", and "Electronic books".
+#'
+#'@param dataARL A data frame containing data downloaded from
+#'   ARL. The years should be placed along rows. The first column must
+#'   be 'Year', followed by other variables in no particular order,
+#'   e.g., 'Institution Name', 'Institution type', etc.
+#'@param institute A character vector specifying the institute of
+#'   interest, as identified in the dataset. E.g., "TORONTO" for
+#'   University of Toronto Libraries.
+#'@param years A numeric vector specifying up to 5 calendar years
+#'   for which data should be plotted, e.g., c(2015, 2016, 2017,
+#'   2018, 2019). If no value is provided (i.e., NA), then most
+#'   recent five years available in the data will be used. If more
+#'   than 5 values provided, last 5 values will be selected. Default
+#'   is NA.
+#'
+#' @return Returns three bar plots showing collection statistics
+#' \itemize{
+#'   \item InstCanadianPlot - A bar plot comparing Canadian institutes
+#'         based on titles held.
+#'   \item instTypePlot - A bar plot comparing maximum title holders by
+#'         institute type. Types include: "Canadian", "Private", "State",
+#'         and "Nonacademic".
+#'   \item academicPlot - A bar plot comparing maximum title holders by
+#'         academic institute type. Types include: "Canadian" and "State".
+#' }
+#'
+#' @examples
+#' visCollectionData(dataARL = ARLDataDownload,
+#'                   institute = "TORONTO",
+#'                   years = c(2015, 2016, 2017, 2018, 2019))
+#'
+#' @export
 # Total library expenditures
 visExpenditureData <- function(dataARL, institute, years = NA) {
 
-  # Display only 5 years of data
-  if (all(is.na(years) == TRUE)) {
-    yearsInData <- dataARL$Year %>%
-      unique() %>%
-      sort(decreasing = FALSE)
-    # Obtain data for last 5 years
-    yearsToDisplay <-
-      yearsInData[(length(yearsInData) - 4):length(yearsInData)]
-  } else if (is.numeric(years) != TRUE) {
-    stop("Argument years should be set as a vector of numeric data
-         containing 5 years or set to NA")
-  } else {
-    # If more than 5 years of data present
-    if(length(years) > 5) {
-      warning("More than five years provided in argument years. Most
-              recent 5 years will be used.")
-      yearsTrucated <- years %>%
-        unique() %>%
-        sort(decreasing = FALSE) %>%
-        tail(x = 5)
-      # Obtain data for last 5 years
-      yearsToDisplay <-
-        yearsInData[(length(yearsInData) - 4):length(yearsInData)]
-    } else {
-      yearsToDisplay <- sort(years, decreasing = FALSE)
-    }
-  }
+  yearsToDisplay <- setYearsToDispaly(years = years)
 
 
   # Select data
@@ -433,9 +497,9 @@ visExpenditureData <- function(dataARL, institute, years = NA) {
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
-  medianTable <- tibble(Year = yearsToDisplay,
+  medianTable <- tibble::tibble(Year = yearsToDisplay,
                         `Institution Name` = rep("MEDIAN", length(yearsToDisplay)))
-  topTLEInst <- inner_join(rbind(medianTable, CadAcademicMaxTLE, StateMaxTLE, PrivateMaxTLE, NonacademicMaxTLE),
+  topTLEInst <- dplyr::inner_join(rbind(medianTable, CadAcademicMaxTLE, StateMaxTLE, PrivateMaxTLE, NonacademicMaxTLE),
                               selectedData, by= c("Year", "Institution Name"))
 
   instTypePlotTLE <- topTLEInst %>%

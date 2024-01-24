@@ -13,28 +13,20 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
 
-      tags$p("Description: This is a Shiny App that is part of the MPLNClust R package
-             (Silva et al., 2019). Most of the functions available via the package are made
-             available with Shiny App. The MPLNClust is an R package for performing
-             clustering using mixtures of multivariate Poisson-log normal
-             (MPLN) distribution provided a count dataset. The observations of the
-             dataset will be clustered into subgroups. The app permits to calculate
-             Bayesian information criterion (BIC), Integrated Complete Likelihood (ICL)
-             criterion, and Akaike Information Criterion (AIC) values. If more than
-             10 models are considered, slope heuristics (Djump and DDSE) will
-             can be used for model selection. Results will be available as dotted
-             line plots of information criteria value versus cluster size, heatmaps
-             of input datset with cluster membership information, alluvial plot of
-             observations by cluster, and barplot of posterior probabilities."),
+      tags$p("Description: This is a Shiny App that is part of the libraryStatistics
+             R package. Most of the functions available via the package are made
+             available with Shiny App. The libraryStatistics is an R package for
+             analyzing and visualizing library statistics published from the annual
+             survey of Association of Research Libraries."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
       br(),
 
       # input
-      tags$b("Instructions: Below, upload a count dataset, and enter or select
-              values to perform cluster analysis. Default values are
-              shown. Then press 'Run'. Navigate through the different tabs
+      tags$b("Instructions: Below, upload a dataset, and enter values
+              to perform analysis. Default values are shown.
+              Then press 'Analyze'. Navigate through the different tabs
               to the right to explore the results."),
 
       # br() element to introduce extra vertical spacing ----
@@ -46,9 +38,6 @@ ui <- fluidPage(
       uiOutput("tab2"),
       actionButton(inputId = "data1",
                    label = "Dataset 1 Details"),
-      uiOutput("tab1"),
-      actionButton(inputId = "data2",
-                   label = "Dataset 2 Details"),
       fileInput(inputId = "file1",
                 label = "Dataset: Select a dataset to analyze. File should be
                 in comma-separated value (.csv) format with rows corresponding
@@ -64,15 +53,16 @@ ui <- fluidPage(
                 label = "years: A numeric vector specifying up to 5 calendar years
                 for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
                 If no value is provided (i.e., NA), then most recent five years
-                available in the data will be used. If more than 5 values provided,
-                last 5 values will be selected. Default is NA.", "2015, 2016, 2017, 2018, 2019"),
+                available in the dataset will be automatically selected. If more than
+                5 values provided, last 5 values will be selected. Default is NA.",
+                "2015, 2016, 2017, 2018, 2019"),
 
       # br() element to introduce extra vertical spacing ----
       br(),
 
       # actionButton
       actionButton(inputId = "button2",
-                   label = "Run"),
+                   label = "Analyze"),
 
       # br() element to introduce extra vertical spacing -
       br(),
@@ -85,29 +75,6 @@ ui <- fluidPage(
 
       # Output: Tabet
       tabsetPanel(type = "tabs",
-                  tabPanel("Pairs Plot of Dataset",
-                           h3("Instructions: Enter values and click 'Run' at the bottom left side."),
-                           h3("Pairs Plot of Log-transformed Count Dataset:"),
-                           br(),
-                           plotOutput("pairsplot")),
-                  tabPanel("Input Summary",
-                           h3("Instructions: Enter values and click 'Run' at the bottom left side."),
-                           h3("Summary of Count Dataset:"),
-                           br(),
-                           verbatimTextOutput("textOut")),
-                  tabPanel("Cluster Results",
-                           h3("Instructions: Enter values and click 'Run' at the bottom left side."),
-                           h3("Summary of Clustering Results:"),
-                           br(),
-                           verbatimTextOutput('clustering')),
-                  tabPanel("Information Criteria Plot",
-                           h3("Instructions: Enter values and click 'Run' at the bottom left side."),
-                           h3("Model Selection Results:"),
-                           br(),
-                           fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput('BICvalues'), plotOutput('ICLvalues')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput('AIC3values'), plotOutput('AICvalues')),
-                           )),
                   tabPanel("Heatmap",
                            h3("Instructions: Enter values and click 'Run' at the bottom left side."),
                            h3("Heatmap of Input Dataset with Cluster Membership:"),
@@ -115,8 +82,9 @@ ui <- fluidPage(
                               The cluster membership is indicated by the color legend to the left."),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("heatmapBIC"), plotOutput('heatmapICL')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("heatmapAIC3"), plotOutput('heatmapAIC')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("titleUserInstitute"), plotOutput('InstCanadianPlot')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("instTypePlot"), plotOutput('academicPlot')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("plotARLRankTop"), plotOutput('')),
                            )),
                   tabPanel("Alluvial Plot",
                            h3("Instructions: Enter values and click 'Run' at the bottom left side."),
@@ -160,441 +128,44 @@ server <- function(input, output) {
 
 
   # Step I: save input csv as a reactive
-  matrixInput <- reactive({
+  csvInput <- reactive({
     if (! is.null(input$file1))
-      as.matrix(read.csv(input$file1$datapath,
-                         sep = ",",
-                         header = TRUE,
-                         row.names = 1))
+      readr::read_csv(file = input$file1$datapath)
   })
 
 
-  startclustering <- eventReactive(eventExpr = input$button2, {
-
-      libraryStatistics::visCollectionData(dataARL = matrixInput(),
+  startvisualizing <- eventReactive(eventExpr = input$button2, {
+    libraryStatistics::visCollectionData(dataARL = csvInput(),
                         institute = as.character(input$institute),
                         years = as.numeric(input$years))
-
-  })
-
-  # Textoutput
-  output$textOut <- renderPrint({
-    if (! is.null(startclustering))
-      summary(startclustering()$dataset)
-  })
-
-  # Pairsplot
-  output$pairsplot <- renderPlot({
-    if (! is.null(startclustering))
-      pairs(startclustering()$dataset)
   })
 
 
-  # Step II: clustering
-  output$clustering <- renderText({
-    if (! is.null(startclustering))
-
-    aa <- paste("BIC model selected is:", startclustering()$BICresults$BICmodelselected, "\n")
-
-    bb <- paste("ICL model selected is:", startclustering()$ICLresults$ICLmodelselected, "\n")
-
-    cc <- paste("AIC model selected is:", startclustering()$AICresults$AICmodelselected, "\n")
-
-    dd <- paste("AIC3 model selected is:", startclustering()$AIC3results$AIC3modelselected, "\n")
-    paste(aa, bb, cc, dd, sep = "\n")
+  # plot - titleUserInstitute
+  output$titleUserInstitute <- renderPlot({
+    startvisualizing()[[1]]
   })
 
-  # Step III: visualize
-
-  # plot logL
-  output$logL <- renderPlot({
-    if (! is.null(startclustering))
-
-      if (length(startclustering()$logLikelihood) == 1) { # check if only one value
-        if(as.numeric(input$ngmax) == 1) { # check if only one value is because gmax = 1
-          plot(c(startclustering()$logLikelihood), type = "p",
-               xlab = "G", ylab = "logL",
-               main = paste("G vs log-likelihood"), xaxt="n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        } else { # check if only one value is because only one model is tested e.g., gmin = 4, gmax = 4
-          plot(c(rep(NA, as.numeric(input$ngmax) - 1), startclustering()$logLikelihood),
-               type = "p", xlab = "G", ylab = "logL",
-               main = paste("G vs log-likelihood"), xaxt="n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        }
-      } else { # ff more than one value
-        plot(x = c(as.numeric(input$ngmin):as.numeric(input$ngmax)),
-             y = startclustering()$logLikelihood, type = "l",
-             lty = 2, xlab = "G", ylab = "logL",
-             main = paste("G vs log-likelihood"), xaxt="n")
-        axis(1, at = seq(as.numeric(input$ngmin), as.numeric(input$ngmax), by = 1))
-      }
+  # plot - InstCanadianPlot
+  output$InstCanadianPlot <- renderPlot({
+    startvisualizing()[[2]]
   })
 
-  # plot ICL value
-  output$ICLvalues <- renderPlot({
-    if (! is.null(startclustering))
-      if (length(startclustering()$logLikelihood) == 1) { # check if only one value
-        if(as.numeric(input$ngmax) == 1) { # check if only one value is because gmax = 1
-          plot(c(startclustering()$ICLresults$allICLvalues), type = "p",
-               xlab = "G", ylab = "ICL value",
-               main = paste("G vs ICL value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        } else { # check if only one value is because only one model is tested e.g., gmin = 4, gmax = 4
-          plot(c(rep(NA, as.numeric(input$ngmax) - 1), startclustering()$ICLresults$allICLvalues),
-               type = "p", xlab = "G", ylab = "ICL value",
-               main = paste("G vs ICL value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        }
-      } else { # ff more than one value
-        plot(x = c(as.numeric(input$ngmin):as.numeric(input$ngmax)),
-             y = startclustering()$ICLresults$allICLvalues, type = "l",
-             lty = 2, xlab = "G", ylab = "ICL value",
-             main = paste("G vs ICL value"), xaxt="n")
-        axis(1, at = seq(as.numeric(input$ngmin), as.numeric(input$ngmax), by = 1))
-      }
+  # plot - instTypePlot
+  output$instTypePlot <- renderPlot({
+    startvisualizing()[[3]]
+  })
+
+  # plot - academicPlot
+  output$academicPlot <- renderPlot({
+    startvisualizing()[[4]]
   })
 
 
-  # plot BIC value
-  output$BICvalues <- renderPlot({
-    if (! is.null(startclustering))
-      if (length(startclustering()$logLikelihood) == 1) { # check if only one value
-        if(as.numeric(input$ngmax) == 1) { # check if only one value is because gmax = 1
-          plot(c(startclustering()$BICresults$allBICvalues), type = "p",
-               xlab = "G", ylab = "BIC value",
-               main = paste("G vs BIC value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        } else { # check if only one value is because only one model is tested e.g., gmin = 4, gmax = 4
-          plot(c(rep(NA, as.numeric(input$ngmax) - 1), startclustering()$BICresults$allBICvalues),
-               type = "p", xlab = "G", ylab = "BIC value",
-               main = paste("G vs BIC value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        }
-      } else { # ff more than one value
-        plot(x = c(as.numeric(input$ngmin):as.numeric(input$ngmax)),
-             y = startclustering()$BICresults$allBICvalues, type = "l",
-             lty = 2, xlab = "G", ylab = "BIC value",
-             main = paste("G vs BIC value"), xaxt = "n")
-        axis(1, at = seq(as.numeric(input$ngmin), as.numeric(input$ngmax), by = 1))
-      }
+  # plot - plotARLRankTop
+  output$plotARLRankTop <- renderPlot({
+    startvisualizing()[[5]]
   })
-
-  # plot AIC value
-  output$AICvalues <- renderPlot({
-    if (! is.null(startclustering))
-      if (length(startclustering()$logLikelihood) == 1) { # check if only one value
-        if(as.numeric(input$ngmax) == 1) { # check if only one value is because gmax = 1
-          plot(c(startclustering()$AICresults$allAICvalues), type = "p",
-               xlab = "G", ylab = "AIC value",
-               main = paste("G vs AIC value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        } else { # check if only one value is because only one model is tested e.g., gmin = 4, gmax = 4
-          plot(c(rep(NA, as.numeric(input$ngmax) - 1), startclustering()$AICresults$allAICvalues),
-               type = "p", xlab = "G", ylab = "AIC value",
-               main = paste("G vs AIC value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        }
-      } else { # ff more than one value
-        plot(x = c(as.numeric(input$ngmin):as.numeric(input$ngmax)),
-             y = startclustering()$AICresults$allAICvalues, type = "l",
-             lty = 2, xlab = "G", ylab = "AIC value",
-             main = paste("G vs AIC value"), xaxt="n")
-        axis(1, at = seq(as.numeric(input$ngmin), as.numeric(input$ngmax), by = 1))
-      }
-  })
-
-  # plot AIC3 value
-  output$AIC3values <- renderPlot({
-    if (! is.null(startclustering))
-      if (length(startclustering()$logLikelihood) == 1) { # check if only one value
-        if(as.numeric(input$ngmax) == 1) { # check if only one value is because gmax = 1
-          plot(c(startclustering()$AIC3results$allAIC3values), type = "p",
-               xlab = "G", ylab = "AIC3 value",
-               main = paste("G vs AIC3 value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        } else { # check if only one value is because only one model is tested e.g., gmin = 4, gmax = 4
-          plot(c(rep(NA, as.numeric(input$ngmax) - 1), startclustering()$AIC3results$allAIC3values),
-               type = "p", xlab = "G", ylab = "AIC3 value",
-               main = paste("G vs AIC3 value"), xaxt = "n")
-          axis(1, at = seq(as.numeric(0), as.numeric(input$ngmax), by = 1))
-        }
-      } else { # ff more than one value
-        plot(x = c(as.numeric(input$ngmin):as.numeric(input$ngmax)),
-             y = startclustering()$AIC3results$allAIC3values, type = "l",
-             lty = 2, xlab = "G", ylab = "AIC3 value",
-             main = paste("G vs AIC3 value"), xaxt = "n")
-        axis(1, at = seq(as.numeric(input$ngmin), as.numeric(input$ngmax), by = 1))
-      }
-  })
-
-
-
-  # plot heatmap - BIC
-  heatmapPlottingBIC <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      mplnVisualizeHeatmap(dataset = matrixInput(),
-                           clusterMembershipVector =
-                           as.numeric(startclustering()$BICresults$BICmodelSelectedLabels),
-                           printPlot = FALSE)
-  })
-
-  # plot heatmap - BIC
-  output$heatmapBIC <- renderPlot({
-    heatmapPlottingBIC()
-  })
-
-
-
-  # plot bar - BIC
-  barPlottingBIC <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      if ((as.numeric(input$ngmax) - as.numeric(input$ngmin) + 1) == 1) {
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[1]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$BICresults$BICmodelSelectedLabels),
-          printPlot = FALSE)
-      } else {
-        modelSelect <- which(seq(as.numeric(input$ngmin), as.numeric(input$ngmax), 1) == startclustering()$BICresults$BICmodelselected)
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[as.numeric(modelSelect)]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$BICresults$BICmodelSelectedLabels),
-          printPlot = FALSE)
-      }
-  })
-
-  # plot bar - BIC
-  output$barPlotBIC <- renderPlot({
-    barPlottingBIC()
-  })
-
-
-
-
-
-
-  # plot heatmap - ICL
-  heatmapPlottingICL <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-     mplnVisualizeHeatmap(dataset = matrixInput(),
-                         clusterMembershipVector =
-                         as.numeric(startclustering()$ICLresults$ICLmodelSelectedLabels),
-                         printPlot = FALSE)
-  })
-
-  # plot heatmap - ICL
-  output$heatmapICL <- renderPlot({
-    heatmapPlottingICL()
-  })
-
-
-
-  # plot bar - ICL
-  barPlottingICL <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      if ((as.numeric(input$ngmax) - as.numeric(input$ngmin) + 1) == 1) {
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[1]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$ICLresults$ICLmodelSelectedLabels),
-          printPlot = FALSE)
-      } else {
-        modelSelect <- which(seq(as.numeric(input$ngmin), as.numeric(input$ngmax), 1) == startclustering()$ICLresults$ICLmodelselected)
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[as.numeric(modelSelect)]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$ICLresults$ICLmodelSelectedLabels),
-          printPlot = FALSE)
-      }
-  })
-
-  # plot bar - ICL
-  output$barPlotICL <- renderPlot({
-    barPlottingICL()
-  })
-
-
-
-
-
-
-
-
-
-
-  # plot heatmap - AIC
-  heatmapPlottingAIC <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      mplnVisualizeHeatmap(dataset = matrixInput(),
-                           clusterMembershipVector =
-                             as.numeric(startclustering()$AICresults$AICmodelSelectedLabels),
-                           printPlot = FALSE)
-  })
-
-  # plot heatmap - AIC
-  output$heatmapAIC <- renderPlot({
-    heatmapPlottingAIC()
-  })
-
-
-
-  # plot bar - AIC
-  barPlottingAIC <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      if ((as.numeric(input$ngmax) - as.numeric(input$ngmin) + 1) == 1) {
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[1]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$AICresults$AICmodelSelectedLabels),
-          printPlot = FALSE)
-      } else {
-        modelSelect <- which(seq(as.numeric(input$ngmin), as.numeric(input$ngmax), 1) == startclustering()$AICresults$AICmodelselected)
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[as.numeric(modelSelect)]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$AICresults$AICmodelSelectedLabels),
-          printPlot = FALSE)
-      }
-  })
-
-  # plot bar - AIC
-  output$barPlotAIC <- renderPlot({
-    barPlottingAIC()
-  })
-
-
-
-
-
-
-
-
-
-  # plot heatmap - AIC3
-  heatmapPlottingAIC3 <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-    mplnVisualizeHeatmap(dataset = matrixInput(),
-                         clusterMembershipVector =
-                         as.numeric(startclustering()$AIC3results$AIC3modelSelectedLabels),
-                         printPlot = FALSE)
-  })
-
-  # plot heatmap - AIC3
-  output$heatmapAIC3 <- renderPlot({
-    heatmapPlottingAIC3()
-  })
-
-
-
-  # plot bar - AIC3
-  barPlottingAIC3 <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      if ((as.numeric(input$ngmax) - as.numeric(input$ngmin) + 1) == 1) {
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[1]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$AIC3results$AIC3modelSelectedLabels),
-          printPlot = FALSE)
-      } else {
-        modelSelect <- which(seq(as.numeric(input$ngmin), as.numeric(input$ngmax), 1) == startclustering()$AIC3results$AIC3modelselected)
-        mplnVisualizeBar(
-          vectorObservations = 1:nrow(matrixInput()),
-          probabilities = as.matrix(startclustering()$allResults[[as.numeric(modelSelect)]]$probaPost),
-          clusterMembershipVector = as.numeric(startclustering()$AIC3results$AIC3modelSelectedLabels),
-          printPlot = FALSE)
-      }
-  })
-
-  # plot bar - AIC3
-  output$barPlotAIC3 <- renderPlot({
-    barPlottingAIC3()
-  })
-
-
-
-  # Alluvial plot
-  alluvialPlotting <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      mplnVisualizeAlluvial(nObservations = nrow(matrixInput()),
-                            firstGrouping =
-                            as.numeric(startclustering()$BICresults$BICmodelSelectedLabels),
-                            secondGrouping =
-                            as.numeric(startclustering()$ICLresults$ICLmodelSelectedLabels),
-                            thirdGrouping =
-                            as.numeric(startclustering()$AICresults$AICmodelSelectedLabels),
-                            fourthGrouping =
-                            as.numeric(startclustering()$AIC3results$AIC3modelSelectedLabels),
-                            fileName = 'alluvial',
-                            printPlot = FALSE)
-  })
-
-  alluvialPlotting2 <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      mplnVisualizeAlluvial(nObservations = nrow(matrixInput()),
-                            firstGrouping =
-                              as.numeric(startclustering()$ICLresults$ICLmodelSelectedLabels),
-                            secondGrouping =
-                              as.numeric(startclustering()$BICresults$BICmodelSelectedLabels),
-                            thirdGrouping =
-                              as.numeric(startclustering()$AICresults$AICmodelSelectedLabels),
-                            fourthGrouping =
-                              as.numeric(startclustering()$AIC3results$AIC3modelSelectedLabels),
-                            fileName = 'alluvial',
-                            printPlot = FALSE)
-  })
-
-  alluvialPlotting3 <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      mplnVisualizeAlluvial(nObservations = nrow(matrixInput()),
-                            firstGrouping =
-                              as.numeric(startclustering()$AIC3results$AIC3modelSelectedLabels),
-                            secondGrouping =
-                              as.numeric(startclustering()$ICLresults$ICLmodelSelectedLabels),
-                            thirdGrouping =
-                              as.numeric(startclustering()$BICresults$BICmodelSelectedLabels),
-                            fourthGrouping =
-                              as.numeric(startclustering()$AICresults$AICmodelSelectedLabels),
-                            fileName = 'alluvial',
-                            printPlot = FALSE)
-  })
-
-
-  alluvialPlotting4 <- eventReactive(eventExpr = input$button2, {
-    if (!is.null(startclustering))
-      mplnVisualizeAlluvial(nObservations = nrow(matrixInput()),
-                            firstGrouping =
-                              as.numeric(startclustering()$AICresults$AICmodelSelectedLabels),
-                            secondGrouping =
-                              as.numeric(startclustering()$AIC3results$AIC3modelSelectedLabels),
-                            thirdGrouping =
-                              as.numeric(startclustering()$ICLresults$ICLmodelSelectedLabels),
-                            fourthGrouping =
-                              as.numeric(startclustering()$BICresults$BICmodelSelectedLabels),
-                            fileName = 'alluvial',
-                            printPlot = FALSE)
-  })
-
-
-  # Alluvial Plot
-  output$alluvialPlot <- renderPlot({
-    alluvialPlotting()
-  })
-
-  output$alluvialPlot2 <- renderPlot({
-    alluvialPlotting2()
-  })
-
-  output$alluvialPlot3 <- renderPlot({
-    alluvialPlotting3()
-  })
-
-  output$alluvialPlot4 <- renderPlot({
-    alluvialPlotting4()
-  })
-
-
 
 
   # URLs for downloading data
@@ -603,18 +174,7 @@ server <- function(input, output) {
     tagList("Download:", url1)
   })
 
-  observeEvent(input$data2, {
-    # Show a modal when the button is pressed
-    shinyalert(title = "Example Dataset 2",
-               text = "An RNAseq experiment conductd using bean plants from 2016 in Canada. This dataset has n = 30 genes along rows and d = 3 conditions or samples along columns. Data was generated at the University of Guelph, Canada in 2016. To save the file (from Chrome), click on link, then right click, select 'Save As...' and then save as a .csv file.
-               Citation: Silva, A. (2020) TestingPackage: An Example R Package For BCB410H. Unpublished. URL https://github.com/anjalisilva/TestingPackage",
-               type = "info")
-  })
 
-  url2 <- a("Example Dataset 1", href="https://drive.google.com/file/d/1jMBTPpsBwaigjR3mO49AMYDxzjVnNiAv/view?usp=sharing")
-  output$tab2 <- renderUI({
-    tagList("Download:", url2)
-  })
 
   observeEvent(input$data1, {
     # Show a modal when the button is pressed
