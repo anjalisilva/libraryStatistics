@@ -5,7 +5,7 @@ library(shinyalert)
 ui <- fluidPage(
 
   # App title ----
-  titlePanel(tags$h1(tags$b("libraryStatistics:"),"Visualize Association of Research Libraries (ARL) Survey Stats")),
+  titlePanel(tags$h1(tags$b("libraryStatistics:"),"Visualize Statistics by Association of Research Libraries (ARL) Survey")),
 
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -13,21 +13,14 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
 
-      tags$p("Description: This is a Shiny App that is part of the libraryStatistics
+      tags$p("Instructions: This is a Shiny App that is part of the libraryStatistics
              R package. Most of the functions available via the package are made
              available with Shiny App. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
-             survey of Association of Research Libraries."),
-
-      # br() element to introduce extra vertical spacing ----
-      br(),
-      br(),
-
-      # input
-      tags$p("Instructions: Below, upload a dataset, and enter values
-              to perform analysis. Default values are shown.
-              Then press 'Analyze'. Navigate through the different tabs
-              to the right to explore the results."),
+             survey of Association of Research Libraries. First upload the dataset.
+             The list of choices for 'Institute' and 'Years' will appear. Select
+             one institute and upto 5 years, and press 'Analyze'. Explore
+             the results by navigating the tabs to the right."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -45,17 +38,12 @@ ui <- fluidPage(
                 be 'Year', followed by other variables in no particular order,
                 e.g., 'Institution Name', 'Institution type', etc.",
                 accept = c(".csv")),
-      textInput(inputId = "institute",
-                label = "Institute: A character vector specifying the institute
-                of interest, as identified in the dataset. E.g., 'TORONTO' for
-                University of Toronto Libraries.",
-                value = "TORONTO"),
+      selectInput(inputId = "instituteInput",
+                label = "Institute: select one library",
+                choices = ""),
       checkboxGroupInput(inputId = "yearsInput",
-                label = "Years: A numeric vector specifying up to 5 calendar years
-                for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
-                If no value is provided (i.e., NA), then most recent five years
-                available in the dataset will be automatically selected. If more than
-                5 values provided, last 5 values will be selected. Default is NA."),
+                label = "Years: Select upto 5 choices and press 'Analyze'. If
+                more than 5 values provided, last 5 values will be selected."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -79,9 +67,9 @@ ui <- fluidPage(
                            h3("Comparison of Titles with Median and Institute of Selction"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("titleUserInstitute"), plotOutput('InstCanadianPlot')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("titleUserInstitute")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("plotARLRankTop"), plotOutput('InstCanadianPlot')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("instTypePlot"), plotOutput('academicPlot')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("plotARLRankTop"), plotOutput('')),
                            )),
                   tabPanel("Expenditure",
                            h3("Instructions: Enter values and click 'Run' at the bottom left side."),
@@ -135,18 +123,33 @@ server <- function(input, output, session) {
 
   observe({
     columns <- unique(csvInput()$Year)
-    updateCheckboxGroupInput(session, "yearsInput",
+    updateCheckboxGroupInput(session,
+                             "yearsInput",
                              label = NULL,
                              choices = columns,
                              selected = NULL)
   })
 
-  startvisualizing <- eventReactive(eventExpr = input$button2, {
-    visTitlesData(dataARL = csvInput(),
-                        institute = as.character(input$institute),
-                        years = input$yearsInput)
+
+  observe({
+    columns2 <- unique(csvInput()$`Institution Name`)
+    updateSelectInput(session,
+                      "instituteInput",
+                       label = NULL,
+                       choices = columns2,
+                       selected = NULL)
   })
 
+  startvisualizing <- eventReactive(eventExpr = input$button2, {
+    visTitlesData(dataARL = csvInput(),
+                  institute = as.character(input$instituteInput),
+                  years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # Only used for test purposes
+  # output$textoutput <- renderText({
+  #   as.vector(input$yearsInput, mode = "numeric")[1]
+  # })
 
   # plot - titleUserInstitute
   output$titleUserInstitute <- renderPlot({
