@@ -48,14 +48,15 @@ ui <- fluidPage(
       textInput(inputId = "institute",
                 label = "Institute: A character vector specifying the institute
                 of interest, as identified in the dataset. E.g., 'TORONTO' for
-                University of Toronto Libraries.", "TORONTO"),
-      textInput(inputId = "years",
+                University of Toronto Libraries.",
+                value = "TORONTO"),
+      selectInput(inputId = "yearsInput",
                 label = "Years: A numeric vector specifying up to 5 calendar years
                 for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
                 If no value is provided (i.e., NA), then most recent five years
                 available in the dataset will be automatically selected. If more than
                 5 values provided, last 5 values will be selected. Default is NA.",
-                "2015, 2016, 2017, 2018, 2019"),
+                ""),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -117,7 +118,7 @@ ui <- fluidPage(
 )
 
 # Define server logic for random distribution app ----
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   # Reactive expression to generate the requested distribution ----
   # This is called whenever the inputs change. The output functions
@@ -126,15 +127,26 @@ server <- function(input, output) {
 
   # Step I: save input csv as a reactive
   csvInput <- reactive({
-    if (! is.null(input$file1))
+    if (is.null(input$file1)) {
+      return(NULL)
+    } else {
       readr::read_csv(file = input$file1$datapath)
+    }
   })
 
+  # https://stackoverflow.com/questions/28119964/dynamic-input-selector-based-on-uploaded-data
+  observe({
+    updateSelectInput(
+      session,
+      "yearsInput",
+      choices= unique(csvInput()$Year))
+
+  })
 
   startvisualizing <- eventReactive(eventExpr = input$button2, {
     visTitlesData(dataARL = csvInput(),
                         institute = as.character(input$institute),
-                        years = as.numeric(input$years))
+                        years = as.numeric(as.vector(input$yearsInput)))
   })
 
 
