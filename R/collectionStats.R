@@ -120,7 +120,7 @@ setYearsToDispaly <- function(years) {
 #'
 #' @examples
 #' visTitlesData(dataARL = ARLDataDownload,
-#'                   institute = "TORONTO",
+#'                   institute = "TEXAS STATE",
 #'                   years = c(2015, 2022, 2017, 2021))
 #'
 #' @export
@@ -145,8 +145,9 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                        'Electronic books'), as.numeric)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
-  cat("\n Years provided by user are:", years, "\n")
-  cat("\n Years to analyze are:", yearsToDisplay, "\n")
+  # Phrases for testing purposes
+  # cat("\n Years provided by user are:", years, "\n")
+  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
 
   # --- --- --- --- --- --- --- ---
   # Titles
@@ -178,8 +179,12 @@ visTitlesData <- function(dataARL, institute, years = NA) {
 
   # ---
   # Plot of titles held Canadian institutes over 5 years
-  InstCanadianPlot <- selectedData %>%
-    dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", ".", institute)) %>% # for "." median
+  InstSelectedData <- selectedData %>% # user selected institute
+    dplyr::filter(`Institution Name` %in% institute)
+  InstCadData <- selectedData %>% # Canadian institutes
+    dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
+
+    InstCanadianPlot <- rbind(InstSelectedData, InstCadData) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
