@@ -50,13 +50,12 @@ ui <- fluidPage(
                 of interest, as identified in the dataset. E.g., 'TORONTO' for
                 University of Toronto Libraries.",
                 value = "TORONTO"),
-      selectInput(inputId = "yearsInput",
+      checkboxGroupInput(inputId = "yearsInput",
                 label = "Years: A numeric vector specifying up to 5 calendar years
                 for which data should be plotted, e.g., c(2015, 2016, 2017, 2018, 2019).
                 If no value is provided (i.e., NA), then most recent five years
                 available in the dataset will be automatically selected. If more than
-                5 values provided, last 5 values will be selected. Default is NA.",
-                ""),
+                5 values provided, last 5 values will be selected. Default is NA."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -134,19 +133,18 @@ server <- function(input, output, session) {
     }
   })
 
-  # https://stackoverflow.com/questions/28119964/dynamic-input-selector-based-on-uploaded-data
   observe({
-    updateSelectInput(
-      session,
-      "yearsInput",
-      choices= unique(csvInput()$Year))
-
+    columns <- unique(csvInput()$Year)
+    updateCheckboxGroupInput(session, "yearsInput",
+                             label = NULL,
+                             choices = columns,
+                             selected = NULL)
   })
 
   startvisualizing <- eventReactive(eventExpr = input$button2, {
     visTitlesData(dataARL = csvInput(),
                         institute = as.character(input$institute),
-                        years = as.numeric(as.vector(input$yearsInput)))
+                        years = input$yearsInput)
   })
 
 

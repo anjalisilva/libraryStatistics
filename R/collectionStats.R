@@ -121,7 +121,7 @@ setYearsToDispaly <- function(years) {
 #' @examples
 #' visTitlesData(dataARL = ARLDataDownload,
 #'                   institute = "TORONTO",
-#'                   years = c(2015, 2016, 2017, 2018, 2021))
+#'                   years = c(2015, 2022, 2017, 2021))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -145,6 +145,8 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                        'Electronic books'), as.numeric)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
+  cat("\n Years provided by user are:", years, "\n")
+  cat("\n Years to analyze are:", yearsToDisplay, "\n")
 
   # --- --- --- --- --- --- --- ---
   # Titles
@@ -168,8 +170,9 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                   x = "Year",
                   title = "Titles Held By Selected Institute") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
+                   axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma())
 
 
@@ -193,9 +196,9 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                   fill = "Institute",
                   title = "Comparison With Titles Held By Canadian Institutes") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-    # ggbreak::scale_y_break(c(110000, 190000)) +
+    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
+                   axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma())
 
@@ -264,9 +267,9 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                   fill = "Institute",
                   title = "Max Titles Held by Institute Type") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-    # ggbreak::scale_y_break(c(110000, 190000)) +
+    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
+                   axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma()) +
     # Add ranking labels on bars
@@ -303,9 +306,9 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                   fill = "Institute",
                   title = "Comparison of Max Titles Held by Academic Institute Type") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-    # ggbreak::scale_y_break(c(110000, 190000)) +
+    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
+                   axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma()) +
     # Add ranking labels on bars
@@ -345,9 +348,9 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                   fill = "Institute",
                   title = "Titles Held by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-    # ggbreak::scale_y_break(c(110000, 190000)) +
+    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
+                   axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma()) +
     # Add ranking labels on bars
