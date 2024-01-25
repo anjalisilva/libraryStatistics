@@ -2,7 +2,7 @@
 % Please edit documentation in R/collectionStats.R
 \name{visTitlesData}
 \alias{visTitlesData}
-\title{A Bar Plot to Compare Collection Statistics}
+\title{Plots to Compare Titles in Collection Over Years}
 \usage{
 visTitlesData(dataARL, institute, years = NA)
 }
@@ -26,23 +26,34 @@ is NA.}
 \value{
 Returns three bar plots showing collection statistics
 \itemize{
-  \item InstCanadianPlot - A bar plot comparing Canadian institutes
-        based on titles held.
-  \item instTypePlot - A bar plot comparing maximum title holders by
-        institute type. Types include: "Canadian", "Private", "State",
-        and "Nonacademic".
-  \item academicPlot - A bar plot comparing maximum title holders by
-        academic institute type. Types include: "Canadian" and "State".
+  \item titleUserInstitute - A lineplot comparing user selected
+        institute over user selected number of years for titles
+        held. The median line is provided for comparison.
+  \item InstCanadianPlot - A barplot comparing Canadian institutes
+        based on titles held, along with user selected institute over
+        user selected number of years.
+  \item instTypePlot - A barplot comparing maximum title holders by
+        institute type over user selected number of years. The user
+        selected institute is provided for comparison. Institute
+        types include: "Canadian", "Private", "State", and "Nonacademic".
+  \item academicPlot - A barplot comparing maximum title holders by
+        academic institute type over user selected number of years.
+        The user selected institute is provided for comparison.
+        Institute types include: "Canadian" and "State".
+  \item plotARLRankTop - A barplot comparing title holders by
+        top 5 ARL investment ranks over user selected number of years.
+        The user selected institute is provided for comparison.
 }
 }
 \description{
-A function to visualize collection statistics. Institution types are
+A function to visualize title statistics using multiple plot types
+as described below. Institution types in the input data are
 assumed to be of the categories: "Canadian", "Canadian Nonacademic",
-"Private", "State", and "Nonacademic". For collection statistics
+"Private", "State", and "Nonacademic". For title statistics
 visualization, the following variables (or columns) are required
 in the dataset: "Year", "Institution Name", "Institution type",
 "Region", "Rank in ARL investment index", "ARL investment index value",
-"Titles held", "Volumes held", and "Electronic books".
+and "Titles held".
 }
 \examples{
 visTitlesData(dataARL = ARLDataDownload,

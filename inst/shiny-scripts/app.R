@@ -30,7 +30,7 @@ ui <- fluidPage(
       shinyalert::useShinyalert(),  # Set up shinyalert
       uiOutput("tab2"),
       actionButton(inputId = "data1",
-                   label = "Demo Dataset Details"),
+                   label = "Demo Dataset for Testing"),
       fileInput(inputId = "file1",
                 label = "Dataset: Upload a dataset below to analyze. File should be
                 in comma-separated value (.csv) format with rows corresponding
@@ -64,14 +64,14 @@ ui <- fluidPage(
       # Output: Tabet
       tabsetPanel(type = "tabs",
                   tabPanel("Titles",
-                           h3("Comparison of Titles with Median and Institute of Selction"),
+                           h3("Comparison of Titles Held"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("100%"), plotOutput("titleUserInstitute")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("plotARLRankTop"), plotOutput('InstCanadianPlot')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("instTypePlot"), plotOutput('academicPlot')),
                            )),
-                  tabPanel("Expenditure",
+                  tabPanel("Volumes",
                            h3("Instructions: Enter values and click 'Run' at the bottom left side."),
                            h3("Alluvial Plot Showing Observation Memberships by Information Criteria for Input Dataset:"),
                            h5("Note, below the x-axis values are in the order of BIC, ICL, AIC, AIC3.
@@ -89,7 +89,7 @@ ui <- fluidPage(
                               Colors are assigned based on cluster membership of model selected via AIC."),
                              splitLayout(cellWidths = c("100%"), plotOutput("alluvialPlot4")),
                            )),
-                  tabPanel("Barplot",
+                  tabPanel("Ebooks",
                            h3("Instructions: Enter values and click 'Run' at the bottom left side."),
                            h3("Barplot of Posterior Probabilities with Cluster Memberships:"),
                            h5("Note, the plots are in the order of models selected by: BIC (top, left), ICL (top, right) and AIC (bottom, left), AIC3 (bottom, right)."),
@@ -98,6 +98,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("barPlotBIC"), plotOutput('barPlotICL')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("barPlotAIC3"), plotOutput('barPlotAIC'))
                            ))
+
 
       )
     )
