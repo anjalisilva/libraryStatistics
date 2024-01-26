@@ -64,7 +64,7 @@ ui <- fluidPage(
       # Output: Tabet
       tabsetPanel(type = "tabs",
                   tabPanel("Titles",
-                           h3("Comparison of Titles Held"),
+                           h3("A Comparison of Titles Held"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("100%"), plotOutput("titleUserInstitute")),
@@ -72,31 +72,20 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("instTypePlot"), plotOutput('academicPlot')),
                            )),
                   tabPanel("Volumes",
-                           h3("Instructions: Enter values and click 'Run' at the bottom left side."),
-                           h3("Alluvial Plot Showing Observation Memberships by Information Criteria for Input Dataset:"),
-                           h5("Note, below the x-axis values are in the order of BIC, ICL, AIC, AIC3.
-                              Colors are assigned based on cluster membership of model selected via BIC."),
+                           h3("A Comparison of Volumes Held"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("100%"), plotOutput("alluvialPlot")),
-                             h5("Note, below the x-axis values are in the order of ICL, BIC, AIC, AIC3.
-                              Colors are assigned based on cluster membership of model selected via ICL."),
-                             splitLayout(cellWidths = c("100%"), plotOutput("alluvialPlot2")),
-                             h5("Note, below the x-axis values are in the order of AIC3, ICL, BIC, AIC
-                              Colors are assigned based on cluster membership of model selected via AIC3."),
-                             splitLayout(cellWidths = c("100%"), plotOutput("alluvialPlot3")),
-                             h5("Note, below the x-axis values are in the order of AIC, AIC3, ICL, BIC
-                              Colors are assigned based on cluster membership of model selected via AIC."),
-                             splitLayout(cellWidths = c("100%"), plotOutput("alluvialPlot4")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("volumeUserInstitute")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("volumeInstCanadian"), plotOutput('volumeInstType')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("volumeAcademic"), plotOutput('volumeARLRankTop')),
                            )),
                   tabPanel("Ebooks",
-                           h3("Instructions: Enter values and click 'Run' at the bottom left side."),
-                           h3("Barplot of Posterior Probabilities with Cluster Memberships:"),
-                           h5("Note, the plots are in the order of models selected by: BIC (top, left), ICL (top, right) and AIC (bottom, left), AIC3 (bottom, right)."),
+                           h3("A Comparison of eBooks Held"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("barPlotBIC"), plotOutput('barPlotICL')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("barPlotAIC3"), plotOutput('barPlotAIC'))
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookUserInstitute"), plotOutput('eBookVolumeComp')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookInstCanadian"), plotOutput('eBookInstType')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookAcademicPlot"), plotOutput('eBookARLRankTop')),
                            ))
 
 
@@ -141,6 +130,7 @@ server <- function(input, output, session) {
                        selected = NULL)
   })
 
+  # -- Titles
   startvisualizing <- eventReactive(eventExpr = input$button2, {
     visTitlesData(dataARL = csvInput(),
                   institute = as.character(input$instituteInput),
@@ -176,6 +166,76 @@ server <- function(input, output, session) {
   # plot - plotARLRankTop
   output$plotARLRankTop <- renderPlot({
     startvisualizing()[[5]]
+  })
+
+  # -- Volumes
+  startvisualizing2 <- eventReactive(eventExpr = input$button2, {
+    visVolumeData(dataARL = csvInput(),
+                  institute = as.character(input$instituteInput),
+                  years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - titleUserInstitute
+  output$volumeUserInstitute <- renderPlot({
+    startvisualizing2()[[1]]
+  })
+
+  # plot - InstCanadianPlot
+  output$volumeInstCanadian <- renderPlot({
+    startvisualizing2()[[2]]
+  })
+
+  # plot - instTypePlot
+  output$volumeInstType <- renderPlot({
+    startvisualizing2()[[3]]
+  })
+
+  # plot - academicPlot
+  output$volumeAcademic <- renderPlot({
+    startvisualizing2()[[4]]
+  })
+
+
+  # plot - plotARLRankTop
+  output$volumeARLRankTop <- renderPlot({
+    startvisualizing2()[[5]]
+  })
+
+  # -- eBooks
+  startvisualizing3 <- eventReactive(eventExpr = input$button2, {
+    viseBookData(dataARL = csvInput(),
+                   institute = as.character(input$instituteInput),
+                   years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - eBookUserInstitute
+  output$eBookUserInstitute <- renderPlot({
+    startvisualizing3()[[1]]
+  })
+
+  # plot - eBookVolumeComp
+  output$eBookVolumeComp <- renderPlot({
+    startvisualizing3()[[2]]
+  })
+
+  # plot - eBookInstCanadian
+  output$eBookInstCanadian <- renderPlot({
+    startvisualizing3()[[3]]
+  })
+
+  # plot - eBookInstType
+  output$eBookInstType <- renderPlot({
+    startvisualizing3()[[4]]
+  })
+
+  # plot - eBookAcademicPlot
+  output$eBookAcademicPlot <- renderPlot({
+    startvisualizing3()[[5]]
+  })
+
+  # plot - eBookARLRankTop
+  output$eBookARLRankTop <- renderPlot({
+    startvisualizing3()[[6]]
   })
 
 

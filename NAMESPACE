@@ -2,5 +2,7 @@
 
 export(visExpenditureData)
 export(visTitlesData)
+export(visVolumeData)
+export(viseBookData)
 import(magrittr)
 importFrom(ggplot2,ggplot)
