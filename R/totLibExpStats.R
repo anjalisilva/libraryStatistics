@@ -106,7 +106,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
@@ -145,7 +145,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total library expenditures",
                   x = "Year",
                   fill = "Type",
-                  title = "Total Library Expenditures Proportion") +
+                  title = "Total Library Expenditures Proportion By Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),

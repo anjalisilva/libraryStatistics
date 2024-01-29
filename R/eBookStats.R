@@ -53,8 +53,8 @@
 #'
 #' @examples
 #' viseBookData(dataARL = ARLDataDownload,
-#'               institute = "TEXAS STATE",
-#'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#'              institute = "TEXAS STATE",
+#'              years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -92,7 +92,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Electronic books`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",

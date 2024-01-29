@@ -90,7 +90,7 @@ visVolumeData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Volumes held`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",

@@ -62,8 +62,8 @@
 #'
 #' @examples
 #' visTitlesData(dataARL = ARLDataDownload,
-#'                   institute = "TEXAS STATE",
-#'                   years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#'               institute = "TEXAS STATE",
+#'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -101,12 +101,13 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = `Year`,
+    ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
                        linewidth = 0.5,
-                       aes(color = `Institution Name`)) +
+                       aes(group = `Institution Name`,
+                           color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Titles Held",
@@ -118,6 +119,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 10))
+
 
 
   # ---
