@@ -86,6 +86,22 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookUserInstitute"), plotOutput('eBookVolumeComp')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookInstCanadian"), plotOutput('eBookInstType')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookAcademicPlot"), plotOutput('eBookARLRankTop')),
+                           )),
+                  tabPanel("Total Library Expenditures",
+                           h3("A Comparison of Total Library Expenditures"),
+                           br(),
+                           fluidRow(
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleInstCanadian"), plotOutput('tleInstType')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleAcademicPlot"), plotOutput('tleARLRankTop')),
+                           )),
+                  tabPanel("Salaries",
+                           h3("A Comparison of Salaries"),
+                           br(),
+                           fluidRow(
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleInstCanadian"), plotOutput('tleInstType')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleAcademicPlot"), plotOutput('tleARLRankTop')),
                            ))
 
 
@@ -236,6 +252,46 @@ server <- function(input, output, session) {
   # plot - eBookARLRankTop
   output$eBookARLRankTop <- renderPlot({
     startvisualizing3()[[6]]
+  })
+
+
+
+  # -- Total Library Expenditures
+  startvisualizing4 <- eventReactive(eventExpr = input$button2, {
+    visTotalLibraryExp(
+                 dataARL = csvInput(),
+                 institute = as.character(input$instituteInput),
+                 years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - tleUserInstitute
+  output$tleUserInstitute <- renderPlot({
+    startvisualizing4()[[1]]
+  })
+
+  # plot - tleExpComp
+  output$tleExpComp <- renderPlot({
+    startvisualizing4()[[2]]
+  })
+
+  # plot - tleInstCanadian
+  output$tleInstCanadian <- renderPlot({
+    startvisualizing4()[[3]]
+  })
+
+  # plot - tleInstType
+  output$tleInstType <- renderPlot({
+    startvisualizing4()[[4]]
+  })
+
+  # plot - tleAcademicPlot
+  output$tleAcademicPlot <- renderPlot({
+    startvisualizing4()[[5]]
+  })
+
+  # plot - tleARLRankTop
+  output$tleARLRankTop <- renderPlot({
+    startvisualizing4()[[6]]
   })
 
 
