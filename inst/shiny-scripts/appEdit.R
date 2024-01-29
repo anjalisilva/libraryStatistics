@@ -5,7 +5,7 @@ library(shinyalert)
 ui <- fluidPage(
 
   # App title ----
-  titlePanel(tags$h1(tags$b("libraryStatistics:"),"Visualize Statistics by Association of Research Libraries (ARL) Survey")),
+  titlePanel(tags$h1(tags$b("libraryStatistics:"),"Visualize Statistics by Association of Research Libraries Survey")),
 
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -17,7 +17,7 @@ ui <- fluidPage(
              R package. Most of the functions available via the package are made
              available with Shiny App. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
-             survey of Association of Research Libraries. First upload the dataset.
+             survey of Association of Research Libraries (ARL). First upload the dataset.
              The list of choices for 'Institute' and 'Years' will appear. Select
              one institute and upto 5 years, and press 'Analyze'. Explore
              the results by navigating the tabs to the right."),
@@ -43,7 +43,8 @@ ui <- fluidPage(
                   choices = ""),
       checkboxGroupInput(inputId = "yearsInput",
                          label = "Years: Select upto 5 choices and press 'Analyze'. If
-                more than 5 values provided, most recent 5 years will be autoselected."),
+                         more than 5 values provided, most recent 5 years will be
+                         autoselected."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -94,6 +95,14 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTop"), plotOutput('tleInstCanadian')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleAcademicPlot"), plotOutput('tleInstType')),
+                           )),
+                  tabPanel("Total Library Expenditures",
+                           h3("A Comparison of Total Library Expenditures"),
+                           br(),
+                           fluidRow(
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTop"), plotOutput('tleInstCanadian')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleAcademicPlot"), plotOutput('tleInstType')),
                            ))
 
 
@@ -125,7 +134,7 @@ server <- function(input, output, session) {
                              "yearsInput",
                              label = NULL,
                              choices = columns,
-                             selected = NULL)
+                             selected = columns[1])
   })
 
 
@@ -135,7 +144,7 @@ server <- function(input, output, session) {
                       "instituteInput",
                       label = NULL,
                       choices = columns2,
-                      selected = NULL)
+                      selected = columns2[2])
   })
 
   # -- Titles
@@ -144,6 +153,16 @@ server <- function(input, output, session) {
                   institute = as.character(input$instituteInput),
                   years = as.vector(input$yearsInput, mode = "numeric"))
   })
+
+  # startvisualizing <- reactive({
+  #  if (is.null(input$file1)) {
+  #    cat("\n Upload the data file\n")
+  #  } else {
+  #  visTitlesData(dataARL = csvInput(),
+  #                institute = as.character(input$instituteInput),
+  #                years = as.vector(input$yearsInput, mode = "numeric"))
+  #  }
+  # })
 
   # Only used for test purposes
   # output$textoutput <- renderText({
@@ -177,11 +196,23 @@ server <- function(input, output, session) {
   })
 
   # -- Volumes
+  # Using button
   startvisualizing2 <- eventReactive(eventExpr = input$button2, {
     visVolumeData(dataARL = csvInput(),
                   institute = as.character(input$instituteInput),
                   years = as.vector(input$yearsInput, mode = "numeric"))
   })
+
+  # Without using the button
+  #startvisualizing2 <- reactive({
+  #  if (is.null(input$file1)) {
+  #    cat("\n Upload the data file\n")
+  #  } else {
+  #    visVolumeData(dataARL = csvInput(),
+  #                  institute = as.character(input$instituteInput),
+  #                  years = as.vector(input$yearsInput, mode = "numeric"))
+  #  }
+  # })
 
   # plot - titleUserInstitute
   output$volumeUserInstitute <- renderPlot({

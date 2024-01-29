@@ -61,7 +61,7 @@ and "Titles held".
 }
 \examples{
 visTitlesData(dataARL = ARLDataDownload,
-                  institute = "TEXAS STATE",
-                  years = c(2015, 2016, 2017, 2022, 2018, 2019))
+              institute = "TEXAS STATE",
+              years = c(2015, 2016, 2017, 2022, 2018, 2019))
 
 }

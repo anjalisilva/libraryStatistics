@@ -25,41 +25,41 @@
 #'   than 5 values provided, last 5 values will be selected. Default
 #'   is NA.
 #'
-#' @return Returns three bar plots showing title statistics
+#' @return Returns three bar plots showing salary statistics
 #' \itemize{
-#'   \item tleUserInstitute - A lineplot comparing user selected
+#'   \item salariesUserInstitute - A lineplot comparing user selected
 #'         institute over user selected number of years for total
-#'         library expenditures. The median line is provided for
+#'         salaries and wages (in USD). The median line is provided for
 #'         comparison.
-#'   \item tleInstCanadian - A barplot comparing Canadian institutes
-#'         based on total library expenditure, along with user selected
+#'   \item salariesInstCanadian - A barplot comparing Canadian institutes
+#'         based on total salaries and wages (in USD), along with user selected
 #'         institute over user selected number of years. The median is
 #'         provided for comparison.
-#'   \item tleInstType - A barplot comparing maximum total library expenditure
-#'         by institute type over user selected number of years. The user
+#'   \item salariesInstType - A barplot comparing maximum total salaries and
+#'         wages (in USD) by institute type over user selected number of years. The user
 #'         selected institute is provided for comparison. Institute
 #'         types include: "Canadian", "Private", "State", and "Nonacademic".
 #'          The median is provided for comparison.
-#'   \item tleAcademicPlot - A barplot comparing maximum total library
-#'         expenditure by academic institute type over user selected number
+#'   \item salariesAcademicPlot - A barplot comparing maximum salaries and
+#'         wages (in USD) by academic institute type over user selected number
 #'         of years. The user selected institute is provided for comparison.
 #'         Institute types include: "Canadian" and "State". The median
 #'         is provided for comparison.
-#'   \item tleARLRankTop - A barplot comparing total library expenditures by
-#'         top 5 ARL investment ranks over user selected number of years.
+#'   \item salariesARLRankTop - A barplot comparing salaries and wages (in
+#'         USD) by top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
 #' }
 #'
 #' @examples
-#' visTotalLibraryExp(dataARL = ARLDataDownload,
-#'               institute = "BOSTON",
-#'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#' visLibrarySalaries(dataARL = ARLDataDownload,
+#'                    institute = "BOSTON",
+#'                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-visTotalLibraryExp <- function(dataARL, institute, years = NA) {
+visLibrarySalaries <- function(dataARL, institute, years = NA) {
 
   selectedData <- dataARL %>%
     dplyr::select(
@@ -72,24 +72,18 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
       "Titles held",
       "Volumes held",
       "Electronic books",
-      "Total library expenditures",
-      "Total materials expenditures",
       "Total salaries & wages",
-      "Other operating expenditures",
+      "Professional salaries & wages",
+      "Support staff salaries & wages",
       "Canadian dollar exchange rate") %>%
     dplyr::mutate_at(
       c('Titles held',
         'Volumes held',
         'Electronic books',
-        'Total library expenditures',
-        'Total materials expenditures',
-        'Total salaries & wages',
-        'Other operating expenditures',
-        'Canadian dollar exchange rate'), as.numeric) %>%
-    dplyr::mutate('Total library expenditures (CAD)' = `Total salaries & wages` * `Canadian dollar exchange rate`)  %>%
-    dplyr::mutate('Total materials expenditures (CAD)' = `Total materials expenditures` * `Canadian dollar exchange rate`)  %>%
-    dplyr::mutate('Total salaries & wages (CAD)' = `Total salaries & wages` * `Canadian dollar exchange rate`)  %>%
-    dplyr::mutate('Other operating expenditures (CAD)' = `Other operating expenditures` * `Canadian dollar exchange rate`)
+        "Total salaries & wages",
+        "Professional salaries & wages",
+        "Support staff salaries & wages",
+        'Canadian dollar exchange rate'), as.numeric)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
   # Phrases for testing purposes
@@ -99,7 +93,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
   # --- --- --- --- --- --- --- ---
   # Total Library Expenditures
   # Visualize institute selected with medium
-  tleUserInstitute <- selectedData %>%
+  salariesUserInstitute <- selectedData %>%
     dplyr::filter(`Institution Name` %in% c(institute, "MEDIAN")) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
@@ -115,9 +109,9 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Total salaries & wages",
+    ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
-                  title = "Total Library Expenditures By Selected Institute") +
+                  title = "Total Salaries & Wages By Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -128,25 +122,25 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
   # ---
   # Comparison of expenditures
-  tleExpComp <- selectedData %>%
+  salariesExpComp <- selectedData %>%
     dplyr::filter(`Institution Name` %in% c(institute)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, institute)) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years %>%
     dplyr::select(`Institution Name`, `Year`,
-                  `Total materials expenditures`,
                   `Total salaries & wages`,
-                  `Other operating expenditures`) %>%
+                  `Professional salaries & wages`,
+                  `Support staff salaries & wages`) %>%
     reshape2::melt(id = c("Year", "Institution Name")) %>%
-    dplyr::rename("Expenditure Type" = "variable") %>%
+    dplyr::rename("Salaries Type" = "variable") %>%
     ggplot(aes(x = factor(`Year`),
                y = `value`,
-               fill = factor(`Expenditure Type`))) +
+               fill = factor(`Salaries Type`))) +
     ggplot2::geom_bar(position = "stack", stat = "identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
                   fill = "Type",
-                  title = "Total Library Expenditures Proportion") +
+                  title = "Total Salaries & Wages Proportion") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -164,7 +158,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
   InstCadData <- selectedData %>% # Canadian institutes
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
 
-  tleInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
+  salariesInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -176,10 +170,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total salaries & wages",
+    ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
                   fill = "Institute",
-                  title = "Comparison With Total Library Expenditures Held By Canadian Institutes") +
+                  title = "Comparison With Total Salaries & Wages Held By Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -233,9 +227,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                                            StateMax,
                                            PrivateMax,
                                            NonacademicMax),
-                                     selectedData, by= c("Year", "Institution Name"))
+                                     selectedData,
+                                     by = c("Year", "Institution Name"))
 
-  tleInstType <- topTitlesInst %>%
+  salariesInstType <- topTitlesInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -247,10 +242,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total salaries & wages",
+    ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Total Library Expenditures by Institute Type") +
+                  title = "Max Total Salaries & Wages by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -268,28 +263,29 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
   # ---
   # Join above selections together with other data for academic institutes
-  topTLEAcademicInst <- dplyr::inner_join(rbind(medianTable,
+  topSalariesAcademicInst <- dplyr::inner_join(rbind(medianTable,
                                                 userSelectTable,
                                                 CadAcademicMax,
                                                 StateMax,
                                                 PrivateMax),
-                                          selectedData, by= c("Year", "Institution Name"))
+                                          selectedData,
+                                          by = c("Year", "Institution Name"))
 
-  tleAcademicPlot <- topTLEAcademicInst %>%
+  salariesAcademicPlot <- topSalariesAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Total library expenditures`,
+                        y = `Total salaries & wages`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
                   fill = "Institute",
-                  title = "Comparison of Max Total Library Expenditures by Academic Institute Type") +
+                  title = "Comparison of Max Total Salaries & Wages by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -317,7 +313,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
   combinedRankData <- rbind(topARLRankData, selectARLRankData)
 
-  tleARLRankTop <- combinedRankData %>%
+  salariesARLRankTop <- combinedRankData %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`,
                                                           levels = c("1", "2", "3", "4", "5"))) %>%
@@ -325,14 +321,14 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Total library expenditures`,
+                        y = `Total salaries & wages`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures by Institutes with Highest Investment ARL Rank") +
+                  title = "Total Salaries & Wages by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -347,12 +343,12 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        position = position_dodge(width = 0.9), vjust = 0)
 
 
-  return(list(tleUserInstitute = tleUserInstitute,
-              tleExpComp = tleExpComp,
-              tleInstCanadian = tleInstCanadian,
-              tleInstType = tleInstType,
-              tleAcademicPlot = tleAcademicPlot,
-              tleARLRankTop = tleARLRankTop))
+  return(list(salariesUserInstitute = salariesUserInstitute,
+              salariesExpComp = salariesExpComp,
+              salariesInstCanadian = salariesInstCanadian,
+              salariesInstType = salariesInstType,
+              salariesAcademicPlot = salariesAcademicPlot,
+              salariesARLRankTop = salariesARLRankTop))
 }
 
 # [END]
