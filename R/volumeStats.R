@@ -95,7 +95,8 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
                        linewidth = 0.5,
-                       aes(color = `Institution Name`)) +
+                       aes(group = `Institution Name`,
+                           color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Volumes Held",
