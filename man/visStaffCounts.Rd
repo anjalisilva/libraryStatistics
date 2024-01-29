@@ -47,6 +47,10 @@ Returns three bar plots showing staff count statistics
         top 5 ARL investment ranks over user selected number of years.
         The user selected institute is provided for comparison.
         The median is provided for comparison.
+   \ite staffFTEComp - A barplot showing proportion of professional,
+        support and student assitant staff, making up the total
+        staff (FTE) counts in the selected institute over the
+        user provided period.
 }
 }
 \description{
@@ -62,7 +66,7 @@ required in the dataset: "Year", "Institution Name", "Institution type",
 }
 \examples{
 visStaffCounts(dataARL = ARLDataDownload,
-              institute = "TEXAS STATE",
-              years = c(2015, 2016, 2017, 2022, 2018, 2019))
+               institute = "TEXAS STATE",
+               years = c(2015, 2016, 2017, 2022, 2018, 2019))
 
 }

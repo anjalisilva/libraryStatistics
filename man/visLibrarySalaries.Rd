@@ -48,6 +48,9 @@ Returns three bar plots showing salary statistics
         USD) by top 5 ARL investment ranks over user selected number of years.
         The user selected institute is provided for comparison.
         The median is provided for comparison.
+  \item salariesExpComp - A barplot showing proportion of professional,
+        support and student assistant staff making up the total salaries,
+        over the period selected by user.
 }
 }
 \description{

@@ -108,9 +108,9 @@ ui <- fluidPage(
                            h3("A Comparison of Library Staff Counts"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesUserInstitute"), plotOutput('salariesExpComp')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesARLRankTop"), plotOutput('salariesInstCanadian')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesAcademicPlot"), plotOutput('salariesInstType')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput('staffFTEComp')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEARLRankTop"), plotOutput('staffFTEInstCanadian')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEAcademicPlot"), plotOutput('staffFTEInstType')),
                            ))
 
 
@@ -371,6 +371,45 @@ server <- function(input, output, session) {
     tagList("Download:", url1)
   })
 
+
+
+  # -- Staff Counts (FTE)
+  startvisualizing6 <- eventReactive(eventExpr = input$button2, {
+    visStaffCounts(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - staffFTEUserInstitute
+  output$staffFTEUserInstitute <- renderPlot({
+    startvisualizing6()[[1]]
+  })
+
+  # plot - staffFTEInstCanadian
+  output$staffFTEInstCanadian <- renderPlot({
+    startvisualizing6()[[2]]
+  })
+
+  # plot - staffFTEInstType
+  output$staffFTEInstType <- renderPlot({
+    startvisualizing6()[[3]]
+  })
+
+  # plot - staffFTEAcademicPlot
+  output$staffFTEAcademicPlot <- renderPlot({
+    startvisualizing6()[[4]]
+  })
+
+  # plot - staffFTEARLRankTop
+  output$staffFTEARLRankTop <- renderPlot({
+    startvisualizing6()[[5]]
+  })
+
+  # plot - staffFTEComp
+  output$staffFTEComp <- renderPlot({
+    startvisualizing6()[[6]]
+  })
 
 
   observeEvent(input$data1, {

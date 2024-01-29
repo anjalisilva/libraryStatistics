@@ -48,12 +48,16 @@
 #'         top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
+#'    \ite staffFTEComp - A barplot showing proportion of professional,
+#'         support and student assitant staff, making up the total
+#'         staff (FTE) counts in the selected institute over the
+#'         user provided period.
 #' }
 #'
 #' @examples
 #' visStaffCounts(dataARL = ARLDataDownload,
-#'               institute = "TEXAS STATE",
-#'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#'                institute = "TEXAS STATE",
+#'                years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -86,9 +90,9 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
   # cat("\n Years to analyze are:", yearsToDisplay, "\n")
 
   # --- --- --- --- --- --- --- ---
-  # volumes
+  # staff counts
   # Visualize institute selected with medium
-  volumeUserInstitute <- selectedData %>%
+  staffFTEUserInstitute <- selectedData %>%
     dplyr::filter(`Institution Name` %in% c(institute, "MEDIAN")) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
@@ -116,13 +120,13 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Plot of Volumes held Canadian institutes over 5 years
+  # Plot of staffFTEs held Canadian institutes over 5 years
   InstSelectedData <- selectedData %>% # user selected institute
     dplyr::filter(`Institution Name` %in% institute)
   InstCadData <- selectedData %>% # Canadian institutes
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
 
-  volumeInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
+  staffFTEInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -154,31 +158,31 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
   # [1] "."                    "State"                "Canadian"             "Private"
   # [5] "Nonacademic"          "Canadian Nonacademic"
 
-  # Select Canadian institute with max volumes
+  # Select Canadian institute with max staffFTEs
   CadAcademicMax <- selectedData %>%
-    dplyr::filter(`Institution type` %in% c("Canadian", "Canadian Nonacademic")) %>%
+    dplyr::filter(`Professional staff` %in% c("Canadian", "Canadian Nonacademic")) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Volumes held` == max(`Volumes held`, na.rm = TRUE)) %>%
+    dplyr::filter(`Professional staff` == max(`Professional staff`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
-  # Select non Canadian institute with max volumes
+  # Select non Canadian institute with max staffFTEs
   StateMax <- selectedData %>%
     #dplyr::filter(!(`Institution type` %in% c("Canadian", "."))) %>% # for "." median?
     dplyr::filter(`Institution type` %in% "State") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Volumes held` == max(`Volumes held`, na.rm = TRUE)) %>%
+    dplyr::filter(`Professional staff` == max(`Professional staff`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   PrivateMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% "Private") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Volumes held` == max(`Volumes held`, na.rm = TRUE)) %>%
+    dplyr::filter(`Professional staff` == max(`Professional staff`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   NonacademicMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% "Nonacademic") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Volumes held` == max(`Volumes held`, na.rm = TRUE)) %>%
+    dplyr::filter(`Professional staff` == max(`Professional staff`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
@@ -186,7 +190,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                                 `Institution Name` = rep("MEDIAN", length(yearsToDisplay)))
   userSelectTable <- tibble::tibble(Year = yearsToDisplay,
                                     `Institution Name` = rep(institute, length(yearsToDisplay)))
-  topVolumesInst <- dplyr::inner_join(rbind(medianTable,
+  topStaffFTEInst <- dplyr::inner_join(rbind(medianTable,
                                             userSelectTable,
                                             CadAcademicMax,
                                             StateMax,
@@ -194,15 +198,15 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                                             NonacademicMax),
                                       selectedData, by= c("Year", "Institution Name"))
 
-  volumeInstType <- topVolumesInst %>%
+  staffFTEInstType <- topStaffFTEInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Volumes held`)),
+    # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`staffFTEs held`)),
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Volumes held`,
+                        y = `Professional staff`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
@@ -228,21 +232,21 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
   # ---
   # Join above selections together with other data for academic institutes
-  topVolumesAcademicInst <- dplyr::inner_join(rbind(medianTable,
+  topStaffFTEsAcademicInst <- dplyr::inner_join(rbind(medianTable,
                                                     userSelectTable,
                                                     CadAcademicMax,
                                                     StateMax,
                                                     PrivateMax),
                                               selectedData, by= c("Year", "Institution Name"))
 
-  volumeAcademicPlot <- topVolumesAcademicInst %>%
+  staffFTEAcademicPlot <- topStaffFTEsAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Volumes held`,
+                        y = `Professional staff`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
@@ -268,7 +272,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Plot comparing top 5 ARL ranks and their volumes
+  # Plot comparing top 5 ARL ranks and their staffFTEs
 
   topARLRankData <- selectedData %>%
     dplyr::filter(`Rank in ARL investment index` %in% c("1", "2", "3", "4", "5"))
@@ -278,14 +282,14 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
   combinedRankData <- rbind(topARLRankData, selectARLRankData)
 
-  volumeARLRankTop <- combinedRankData %>%
+  staffFTEARLRankTop <- combinedRankData %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`, levels = c("1", "2", "3", "4", "5"))) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Volumes held`,
+                        y = `Professional staff`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
@@ -305,10 +309,45 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                        position = position_dodge(width = 0.9), vjust = 0)
 
 
-  return(list(volumeUserInstitute = staffFTEUserInstitute,
+
+  # ---
+  # Comparison of Professional to All Staff
+  staffFTEComp <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% c(institute)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, institute)) %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years %>%
+    dplyr::select(`Institution Name`, `Year`,
+                  `Professional staff`,
+                  `Support staff`,
+                  `Student assistants`) %>%
+    reshape2::melt(id = c("Year", "Institution Name")) %>%
+    dplyr::rename(`Staff Type` = "variable") %>%
+    dplyr::mutate(`Staff Type` = factor(`Staff Type`)) %>%
+    dplyr::mutate(`Staff Type` = relevel(`Staff Type`, "Professional staff")) %>%
+    ggplot(aes(x = factor(`Year`),
+               y = `value`,
+               fill = factor(`Staff Type`))) +
+    ggplot2::geom_bar(position = "stack", stat = "identity") +
+    ggplot2::labs(y = "Staff Counts (FTE)",
+                  x = "Year",
+                  fill = "Type",
+                  title = "Comparison of Staff Counts (FTE) Proportion By Selected Institute") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
+                   axis.text.y = element_text(color = 'black', size = 10)) +
+    ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))[4:6]) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
+
+
+
+  return(list(staffFTEUserInstitute = staffFTEUserInstitute,
               staffFTEInstCanadian = staffFTEInstCanadian,
               staffFTEInstType = staffFTEInstType,
               staffFTEAcademicPlot = staffFTEAcademicPlot,
-              staffFTEARLRankTop = staffFTEARLRankTop))
+              staffFTEARLRankTop = staffFTEARLRankTop,
+              staffFTEComp = staffFTEComp))
 }
 # [END]
