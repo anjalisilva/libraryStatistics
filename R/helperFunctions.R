@@ -62,12 +62,12 @@ setColorPalette <- function(returnCol = TRUE) {
       '#ccebc5',
       '#e6f598',
       'black',
+      '#f1b6da',
       '#66c2a5',
       'blue',
-      '#fde0ef',
-      '#3288bd',
-      '#f1b6da',
+      'magenta',
       '#8dd3c7',
+      '#3288bd',
       '#dfc27d',
       '#cab2d6')
     return(colorPaletteCustom)

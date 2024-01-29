@@ -115,7 +115,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   title = "Total Library Expenditures By Selected Institute") +
     ggplot2::theme_bw() +
@@ -123,7 +123,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 10))
+                                breaks = scales::pretty_breaks(n = 5))
 
 
   # ---
@@ -143,7 +143,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                y = `value`,
                fill = factor(`Expenditure Type`))) +
     ggplot2::geom_bar(position = "stack", stat = "identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Type",
                   title = "Total Library Expenditures Proportion By Selected Institute") +
@@ -153,7 +153,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 10))
+                                breaks = scales::pretty_breaks(n = 5))
 
 
 
@@ -176,7 +176,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
                   title = "Comparison With Total Library Expenditures Held By Canadian Institutes") +
@@ -185,7 +185,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format())
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5))
 
 
 
@@ -247,7 +248,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
                   title = "Max Total Library Expenditures by Institute Type") +
@@ -256,7 +257,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format()) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
@@ -286,7 +288,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
                   title = "Comparison of Max Total Library Expenditures by Academic Institute Type") +
@@ -295,7 +297,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format()) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
@@ -329,7 +332,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total library expenditures",
+    ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
                   title = "Total Library Expenditures by Institutes with Highest Investment ARL Rank") +
@@ -341,7 +344,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                                               color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format()) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
                        position = position_dodge(width = 0.9), vjust = 0)

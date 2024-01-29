@@ -101,7 +101,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Volumes Held",
+    ggplot2::labs(y = "Electornic Books",
                   x = "Year",
                   title = "Electronic Books Held By Selected Institute") +
     ggplot2::theme_bw() +
@@ -109,7 +109,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 10))
+                                breaks = scales::pretty_breaks(n = 5))
 
 
   # ---
@@ -131,13 +131,14 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Volumes",
                   x = "Year",
                   fill = "Type",
-                  title = "Comparison of Volumes Held With eBook Proportion") +
+                  title = "Comparison of Volumes Held With eBook Proportion By Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = c("black", "grey")) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma())
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
 
 
   # ---
@@ -159,7 +160,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic books",
+    ggplot2::labs(y = "Electronic Books",
                   x = "Year",
                   fill = "Institute",
                   title = "Comparison With Electronic Books Held By Canadian Institutes") +
@@ -168,7 +169,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma())
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
 
 
 
@@ -230,7 +232,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic books",
+    ggplot2::labs(y = "Electronic Books",
                   x = "Year",
                   fill = "Institute",
                   title = "Max Electronic Books Held by Institute Type") +
@@ -239,7 +241,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
@@ -269,7 +272,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic books",
+    ggplot2::labs(y = "Electronic Books",
                   x = "Year",
                   fill = "Institute",
                   title = "Comparison of Max Electronic Books Held by Academic Institute Type") +
@@ -278,7 +281,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
@@ -311,7 +315,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic books",
+    ggplot2::labs(y = "Electronic Books",
                   x = "Year",
                   fill = "Institute",
                   title = "Electronic Books Held by Institutes with Highest Investment ARL Rank") +
@@ -320,7 +324,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
                        position = position_dodge(width = 0.9), vjust = 0)

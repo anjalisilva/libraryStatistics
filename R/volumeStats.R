@@ -107,7 +107,7 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 10))
+                                breaks = scales::pretty_breaks(n = 5))
 
 
   # ---
@@ -138,7 +138,8 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma())
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
 
 
 
@@ -209,7 +210,8 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
@@ -248,7 +250,8 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
@@ -290,7 +293,8 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma()) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
                        position = position_dodge(width = 0.9), vjust = 0)
