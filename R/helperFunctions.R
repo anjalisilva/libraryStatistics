@@ -3,14 +3,14 @@ setYearsToDispaly <- function(years) {
   # based on user input
 
   # Obtain years in data
-  yearsInData <- dataARL$Year %>%
+  yearsInData <- years %>%
     unique() %>%
     sort(decreasing = FALSE)
 
   # If NA, then user wants program to select the years
   if (all(is.na(years) == TRUE)) {
     # Testing phrases
-    cat("\n Run condition 1")
+    # cat("\n Run condition 1")
     # Based on length of years in data, select last 5 or less years
     if (length(yearsInData) == 5 || length(yearsInData) < 4) {
       yearsToDisplay <- years
@@ -20,12 +20,12 @@ setYearsToDispaly <- function(years) {
     }
   } else if (is.numeric(years) != TRUE) {
     # Testing phrases
-    cat("\n Run condition 2")
+    # cat("\n Run condition 2")
     stop("Argument years should be set as a vector of numeric data
          containing 5 years or set to NA")
   } else {
     # Testing phrases
-    cat("\n Run condition 3")
+    # cat("\n Run condition 3")
     # If more than 5 years provided by user
     if(length(years) > 5) {
       warning("More than five years provided in argument years. Most
@@ -61,8 +61,8 @@ setColorPalette <- function(returnCol = TRUE) {
       '#5e4fa2',
       '#ccebc5',
       '#e6f598',
-      '#66c2a5',
       'black',
+      '#66c2a5',
       'blue',
       '#fde0ef',
       '#3288bd',
