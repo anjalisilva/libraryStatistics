@@ -1,6 +1,7 @@
 
 
-# ARLDataDownload <- readr::read_csv("~/Desktop/ARL Data Download.csv")
+# ARLDataDownload <- readr::read_csv("Desktop/ARL Data Download.csv")
+# ARLDataDownload <- readr::read_csv("\\\\utl.utoronto.ca/Staff/Data/silvah/Desktop/ARL Data Download.csv")
 # ARLDataDownload <- readr::read_csv(
 #   "/Users/user/Library/CloudStorage/GoogleDrive-anjali@alumni.uoguelph.ca/My Drive/UTorontoLibrary/Shiny/ARL Data Download.csv")
 # inputCountsPath <- system.file("extdata", "ARL Data Download.csv", package = "libraryStatistics")
@@ -115,7 +116,8 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma())
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 10))
 
 
   # ---
