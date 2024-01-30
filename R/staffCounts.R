@@ -64,30 +64,12 @@
 #' @import magrittr
 visStaffCounts <- function(dataARL, institute, years = NA) {
 
-  selectedData <- dataARL %>%
-    dplyr::select(
-      "Year",
-      "Institution Name",
-      "Institution type",
-      "Region",
-      "Rank in ARL investment index",
-      "ARL investment index value",
-      "Professional staff",
-      "Support staff",
-      "Student assistants",
-      "Total prof. + support + student staff"
-      ) %>%
-    dplyr::mutate_at(
-      c("Professional staff",
-        "Support staff",
-        "Student assistants",
-        "Total prof. + support + student staff"),
-      as.numeric)
+  selectedData <-
+    dataAdjustment(dataARL = dataARL,
+                   institute = institute,
+                   years = years)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
-  # Phrases for testing purposes
-  # cat("\n Years provided by user are:", years, "\n")
-  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
 
   # --- --- --- --- --- --- --- ---
   # staff counts

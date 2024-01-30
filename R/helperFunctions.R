@@ -76,3 +76,61 @@ setColorPalette <- function(returnCol = TRUE) {
     # no return
   }
 }
+
+dataAdjustment <- function(dataARL, institute, years = NA) {
+
+  yearsToDisplay <- setYearsToDispaly(years = years)
+  # Phrases for testing purposes
+  # cat("\n Years provided by user are:", years, "\n")
+  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
+
+  selectedData <- dataARL %>%
+    dplyr::select(
+      "Year",
+      "Institution Name",
+      "Institution type",
+      "Region",
+      "Rank in ARL investment index",
+      "ARL investment index value",
+      "Titles held",
+      "Volumes held",
+      "Electronic books",
+      "Total library expenditures",
+      "Total materials expenditures",
+      "Total salaries & wages",
+      "Other operating expenditures",
+      "Canadian dollar exchange rate",
+      "Professional staff",
+      "Support staff",
+      "Student assistants",
+      "Total prof. + support + student staff",
+      "Total salaries & wages",
+      "Professional salaries & wages",
+      "Support staff salaries & wages",
+      "Student assistant wages") %>%
+    dplyr::mutate_at(
+      c('Titles held',
+        'Volumes held',
+        'Electronic books',
+        'Total library expenditures',
+        'Total materials expenditures',
+        'Total salaries & wages',
+        'Other operating expenditures',
+        'Canadian dollar exchange rate',
+        "Professional staff",
+        "Support staff",
+        "Student assistants",
+        "Total prof. + support + student staff",
+        "Total salaries & wages",
+        "Professional salaries & wages",
+        "Support staff salaries & wages",
+        "Student assistant wages"), as.numeric) %>%
+    dplyr::mutate('Total library expenditures (CAD)' = `Total library expenditures` * `Canadian dollar exchange rate`)  %>%
+    dplyr::mutate('Total materials expenditures (CAD)' = `Total materials expenditures` * `Canadian dollar exchange rate`)  %>%
+    dplyr::mutate('Total salaries & wages (CAD)' = `Total salaries & wages` * `Canadian dollar exchange rate`)  %>%
+    dplyr::mutate('Other operating expenditures (CAD)' = `Other operating expenditures` * `Canadian dollar exchange rate`) %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay))
+
+  return(selectedData)
+
+}

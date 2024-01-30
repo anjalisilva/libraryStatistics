@@ -70,29 +70,13 @@
 #' @import magrittr
 visTitlesData <- function(dataARL, institute, years = NA) {
 
-  yearsToDisplay <- setYearsToDispaly(years = years)
-  # Phrases for testing purposes
-  # cat("\n Years provided by user are:", years, "\n")
-  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
+  selectedData <-
+    dataAdjustment(dataARL = dataARL,
+                   institute = institute,
+                   years = years)
 
-  selectedData <- dataARL %>%
-    dplyr::select(
-      "Year",
-      "Institution Name",
-      "Institution type",
-      "Region",
-      "Rank in ARL investment index",
-      "ARL investment index value",
-      "Titles held",
-      "Volumes held",
-      "Electronic books") %>%
-    dplyr::mutate_at(
-      c('Titles held',
-        'Volumes held',
-        'Electronic books'), as.numeric) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay))
-
-
+  yearsToDisplay <-
+    setYearsToDispaly(years = years)
 
   # --- --- --- --- --- --- --- ---
   # Titles

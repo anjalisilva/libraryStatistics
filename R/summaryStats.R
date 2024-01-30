@@ -1,14 +1,14 @@
-# visCollection
-#' Plots to Compare eBooks in Collection Over Years
+# summary statistics
+#' Plots to Compare Summary of Regions
 #'
-#' A function to visualize eBook statistics using multiple plot types
+#' A function to visualize title statistics using multiple plot types
 #' as described below. Institution types in the input data are
 #' assumed to be of the categories: "Canadian", "Canadian Nonacademic",
-#' "Private", "State", and "Nonacademic". For volume statistics
+#' "Private", "State", and "Nonacademic". For title statistics
 #' visualization, the following variables (or columns) are required
 #' in the dataset: "Year", "Institution Name", "Institution type",
 #' "Region", "Rank in ARL investment index", "ARL investment index value",
-#' and "Electronic books".
+#' and "Titles held".
 #'
 #'@param dataARL A data frame containing data downloaded from
 #'   ARL. The years should be placed along rows. The first column must
@@ -24,118 +24,108 @@
 #'   than 5 values provided, last 5 values will be selected. Default
 #'   is NA.
 #'
-#' @return Returns three bar plots showing volume statistics
+#' @return Returns three bar plots showing title statistics
 #' \itemize{
-#'   \item eBookUserInstitute - A lineplot comparing user selected
-#'         institute over user selected number of years for eBooks
+#'   \item titleUserInstitute - A lineplot comparing user selected
+#'         institute over user selected number of years for titles
 #'         held. The median line is provided for comparison.
-#'   \item eBookVolumeComp - A stacked barplot showing total volumes
-#'         held and eBook proportion over the period selected.
-#'   \item eBookInstCanadian - A barplot comparing Canadian institutes
-#'         based on eBooks, along with user selected institute over
+#'   \item titleInstCanadian - A barplot comparing Canadian institutes
+#'         based on titles held, along with user selected institute over
 #'         user selected number of years. The median is provided for
 #'         comparison.
-#'   \item eBookInstType - A barplot comparing maximum eBooks by
+#'   \item titleInstType - A barplot comparing maximum title by
 #'         institute type over user selected number of years. The user
 #'         selected institute is provided for comparison. Institute
 #'         types include: "Canadian", "Private", "State", and "Nonacademic".
-#'         The median is provided for comparison.
-#'   \item eBookAcademicPlot - A barplot comparing maximum eBooks by
+#'          The median is provided for comparison.
+#'   \item titleAcademicPlot - A barplot comparing maximum title by
 #'         academic institute type over user selected number of years.
 #'         The user selected institute is provided for comparison.
-#'         Institute types include: "Canadian" and "State".
-#'         The median is provided for comparison.
-#'   \item eBookARLRankTop - A barplot comparing eBooks by
+#'         Institute types include: "Canadian" and "State". The median
+#'         is provided for comparison.
+#'   \item titleARLRankTop - A barplot comparing titles by
 #'         top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
 #' }
 #'
 #' @examples
-#' viseBookData(dataARL = ARLDataDownload,
-#'              institute = "TEXAS STATE",
-#'              years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#' visTitlesData(dataARL = ARLDataDownload,
+#'               institute = "TEXAS STATE",
+#'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-viseBookData <- function(dataARL, institute, years = NA) {
+#' @importFrom EnvStats stat_n_text
+visTitlesData <- function(dataARL, institute, years = NA) {
 
-  selectedData <-
-    dataAdjustment(dataARL = dataARL,
-                   institute = institute,
-                   years = years)
+  selectedData <- dataARL %>%
+    dplyr::select(
+      "Year",
+      "Institution Name",
+      "Institution type",
+      "Region",
+      "Rank in ARL investment index",
+      "ARL investment index value",
+      "Titles held",
+      "Volumes held",
+      "Electronic books") %>%
+    dplyr::mutate_at(
+      c('Titles held',
+        'Volumes held',
+        'Electronic books'), as.numeric)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
-
+  # Phrases for testing purposes
+  # cat("\n Years provided by user are:", years, "\n")
+  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
 
   # --- --- --- --- --- --- --- ---
-  # eBooks
+  # Region
   # Visualize institute selected with medium
-  eBookUserInstitute <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% c(institute, "MEDIAN")) %>%
-    # ensure Median appear first in legend
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    # width = .75 ensures space between groups
+  regionData <- dataARL %>%
+    dplyr::filter(! `Region` %in% ".") %>%
+    dplyr::select(`Region`, `Year`) %>%
+    # ensure Median removed
+    dplyr::mutate(
+      Country = dplyr::case_when(
+        Region == "Canada" ~ "Canada",
+        Region != "Canada" ~ "USA")) %>%
+    dplyr::group_by(Country, `Year`) %>%
+    dplyr::summarise(n = n()) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Electronic books`,
+                        y = `n`,
+                        fill = factor(`Country`),
                         width = .75)) +
-    ggplot2::geom_line(linetype = "dashed",
-                       linewidth = 0.5,
-                       aes(group = `Institution Name`,
-                           color = `Institution Name`)) +
-    ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
-    ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Electornic Books",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Number of institutes",
                   x = "Year",
-                  title = "Electronic Books Held By Selected Institute") +
+                  fill = "Country",
+                  title = "Participation by Country") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5))
+                                breaks = scales::pretty_breaks(n = 5)) +
+  # Add ranking labels on bars
+  ggplot2::geom_text(aes(y = 0.5, label = paste0("n=",`n`)),
+                     position = position_dodge(width = 0.9),
+                     angle = 90,
+                     size = 4,
+                     hjust = 'left')
 
 
   # ---
-  # Comparison of eBooks to Volumes
-  eBookVolumeComp <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% c(institute)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, institute)) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years %>%
-    dplyr::select(`Institution Name`, `Year`, `Electronic books`, `Volumes held`) %>%
-    reshape2::melt(id = c("Year", "Institution Name")) %>%
-    dplyr::rename(`Volume Type` = "variable") %>%
-    dplyr::mutate(`Volume Type` = factor(`Volume Type`)) %>%
-    dplyr::mutate(`Volume Type` = relevel(`Volume Type`, "Volumes held")) %>%
-    ggplot(aes(x = factor(`Year`),
-               y = `value`,
-               fill = factor(`Volume Type`))) +
-    ggplot2::geom_bar(position = "stack", stat = "identity") +
-    ggplot2::labs(y = "Volumes",
-                  x = "Year",
-                  fill = "Type",
-                  title = "Comparison of Volumes Held With eBook Proportion By Selected Institute") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
-    ggplot2::scale_fill_manual(values = c("black", "grey")) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5))
-
-
-  # ---
-  # Plot of volumes held Canadian institutes over 5 years
+  # Plot of titles held Canadian institutes over 5 years
   InstSelectedData <- selectedData %>% # user selected institute
     dplyr::filter(`Institution Name` %in% institute)
   InstCadData <- selectedData %>% # Canadian institutes
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
 
-  eBookInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
+  titleInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -143,14 +133,14 @@ viseBookData <- function(dataARL, institute, years = NA) {
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Electronic books`,
+                        y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic Books",
+    ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Comparison With Electronic Books Held By Canadian Institutes") +
+                  title = "Comparison With Titles Held By Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -167,31 +157,31 @@ viseBookData <- function(dataARL, institute, years = NA) {
   # [1] "."                    "State"                "Canadian"             "Private"
   # [5] "Nonacademic"          "Canadian Nonacademic"
 
-  # Select Canadian institute with max ebooks
+  # Select Canadian institute with max titles
   CadAcademicMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% c("Canadian", "Canadian Nonacademic")) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Electronic books` == max(`Electronic books`, na.rm = TRUE)) %>%
+    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
-  # Select non Canadian institute with max ebooks
+  # Select non Canadian institute with max titles
   StateMax <- selectedData %>%
     #dplyr::filter(!(`Institution type` %in% c("Canadian", "."))) %>% # for "." median?
     dplyr::filter(`Institution type` %in% "State") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Electronic books` == max(`Electronic books`, na.rm = TRUE)) %>%
+    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   PrivateMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% "Private") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Electronic books` == max(`Electronic books`, na.rm = TRUE)) %>%
+    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   NonacademicMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% "Nonacademic") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Electronic books` == max(`Electronic books`, na.rm = TRUE)) %>%
+    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
@@ -199,7 +189,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                                 `Institution Name` = rep("MEDIAN", length(yearsToDisplay)))
   userSelectTable <- tibble::tibble(Year = yearsToDisplay,
                                     `Institution Name` = rep(institute, length(yearsToDisplay)))
-  topEbooksInst <- dplyr::inner_join(rbind(medianTable,
+  topTitlesInst <- dplyr::inner_join(rbind(medianTable,
                                            userSelectTable,
                                            CadAcademicMax,
                                            StateMax,
@@ -207,22 +197,22 @@ viseBookData <- function(dataARL, institute, years = NA) {
                                            NonacademicMax),
                                      selectedData, by= c("Year", "Institution Name"))
 
-  eBookInstType <- topEbooksInst %>%
+  titleInstType <- topTitlesInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Electronic books`)),
+    # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Electronic books`,
+                        y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic Books",
+    ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Electronic Books Held by Institute Type") +
+                  title = "Max Titles Held by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -241,28 +231,28 @@ viseBookData <- function(dataARL, institute, years = NA) {
 
   # ---
   # Join above selections together with other data for academic institutes
-  topeBooksAcademicInst <- dplyr::inner_join(rbind(medianTable,
+  topTitlesAcademicInst <- dplyr::inner_join(rbind(medianTable,
                                                    userSelectTable,
                                                    CadAcademicMax,
                                                    StateMax,
                                                    PrivateMax),
                                              selectedData, by= c("Year", "Institution Name"))
 
-  eBookAcademicPlot <- topeBooksAcademicInst %>%
+  titleAcademicPlot <- topTitlesAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Electronic books`,
+                        y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic Books",
+    ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Comparison of Max Electronic Books Held by Academic Institute Type") +
+                  title = "Comparison of Max Titles Held by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -281,7 +271,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Plot comparing top 5 ARL ranks and their volumes
+  # Plot comparing top 5 ARL ranks and their titles
 
   topARLRankData <- selectedData %>%
     dplyr::filter(`Rank in ARL investment index` %in% c("1", "2", "3", "4", "5"))
@@ -291,21 +281,21 @@ viseBookData <- function(dataARL, institute, years = NA) {
 
   combinedRankData <- rbind(topARLRankData, selectARLRankData)
 
-  eBookARLRankTop <- combinedRankData %>%
+  titleARLRankTop <- combinedRankData %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`, levels = c("1", "2", "3", "4", "5"))) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Electronic books`,
+                        y = `Titles held`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Electronic Books",
+    ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Electronic Books Held by Institutes with Highest Investment ARL Rank") +
+                  title = "Titles Held by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 10, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
@@ -318,12 +308,11 @@ viseBookData <- function(dataARL, institute, years = NA) {
                        position = position_dodge(width = 0.9), vjust = 0)
 
 
-  return(list(eBookUserInstitute = eBookUserInstitute,
-              eBookVolumeComp = eBookVolumeComp,
-              eBookInstCanadian = eBookInstCanadian,
-              eBookInstType = eBookInstType,
-              eBookAcademicPlot = eBookAcademicPlot,
-              eBookARLRankTop = eBookARLRankTop))
+  return(list(titleUserInstitute = titleUserInstitute,
+              titleInstCanadian = titleInstCanadian,
+              titleInstType = titleInstType,
+              titleAcademicPlot = titleAcademicPlot,
+              titleARLRankTop = titleARLRankTop))
 }
 
 # [END]
