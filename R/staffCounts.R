@@ -93,7 +93,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                   x = "Year",
                   title = "Professional Staff (FTE) By Selected Institute") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
@@ -122,9 +122,9 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Professional Staff (FTE)",
                   x = "Year",
                   fill = "Institute",
-                  title = "Comparison With Professional Staff (FTE) By Canadian Institutes") +
+                  title = "Professional Staff (FTE) By Canadian Institutes") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
@@ -196,7 +196,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                   fill = "Institute",
                   title = "Max Professional Staff (FTE) Counts by Institute Type") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
@@ -234,9 +234,9 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Professional Staff (FTE)",
                   x = "Year",
                   fill = "Institute",
-                  title = "Comparison of Max Professional Staff (FTE) Counts by Academic Institute Type") +
+                  title = "Max Professional Staff (FTE) Counts by Academic Institute Type") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
@@ -265,7 +265,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
   staffFTEARLRankTop <- combinedRankData %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`, levels = c("1", "2", "3", "4", "5"))) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
@@ -279,7 +279,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                   fill = "Institute",
                   title = "Professional Staff (FTE) by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
@@ -313,9 +313,9 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Staff Counts (FTE)",
                   x = "Year",
                   fill = "Type",
-                  title = "Comparison of Staff Counts (FTE) Proportion By Selected Institute") +
+                  title = " Staff Counts (FTE) Proportion By Selected Institute") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))[4:6]) +
