@@ -70,26 +70,29 @@
 #' @import magrittr
 visTitlesData <- function(dataARL, institute, years = NA) {
 
-  selectedData <- dataARL %>%
-                  dplyr::select(
-                            "Year",
-                            "Institution Name",
-                            "Institution type",
-                            "Region",
-                            "Rank in ARL investment index",
-                            "ARL investment index value",
-                            "Titles held",
-                            "Volumes held",
-                            "Electronic books") %>%
-                  dplyr::mutate_at(
-                     c('Titles held',
-                       'Volumes held',
-                       'Electronic books'), as.numeric)
-
   yearsToDisplay <- setYearsToDispaly(years = years)
   # Phrases for testing purposes
   # cat("\n Years provided by user are:", years, "\n")
   # cat("\n Years to analyze are:", yearsToDisplay, "\n")
+
+  selectedData <- dataARL %>%
+    dplyr::select(
+      "Year",
+      "Institution Name",
+      "Institution type",
+      "Region",
+      "Rank in ARL investment index",
+      "ARL investment index value",
+      "Titles held",
+      "Volumes held",
+      "Electronic books") %>%
+    dplyr::mutate_at(
+      c('Titles held',
+        'Volumes held',
+        'Electronic books'), as.numeric) %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay))
+
+
 
   # --- --- --- --- --- --- --- ---
   # Titles
@@ -99,7 +102,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+     # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
@@ -134,7 +137,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
@@ -199,14 +202,14 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                                     StateMax,
                                     PrivateMax,
                                     NonacademicMax),
-             selectedData, by= c("Year", "Institution Name"))
+             selectedData, by = c("Year", "Institution Name"))
 
   titleInstType <- topTitlesInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
@@ -240,14 +243,14 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                                             CadAcademicMax,
                                             StateMax,
                                             PrivateMax),
-                              selectedData, by= c("Year", "Institution Name"))
+                              selectedData, by = c("Year", "Institution Name"))
 
   titleAcademicPlot <- topTitlesAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
@@ -290,7 +293,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`, levels = c("1", "2", "3", "4", "5"))) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         fill = factor(`Institution Name`),
