@@ -66,7 +66,6 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
   selectedData <-
     dataAdjustment(dataARL = dataARL,
-                   institute = institute,
                    years = years)
 
   yearsToDisplay <- setYearsToDispaly(years = years)

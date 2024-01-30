@@ -64,8 +64,15 @@ ui <- fluidPage(
 
       # Output: Tabet
       tabsetPanel(type = "tabs",
+                  tabPanel("Summary",
+                           h3("Summary of Dataset"),
+                           br(),
+                           fluidRow(
+                             splitLayout(cellWidths = c("100%"), plotOutput("summaryRegionData")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("summaryInstTypeData")),
+                           )),
                   tabPanel("Titles",
-                           h3("A Comparison of Titles Held"),
+                           h3("A Comparison of Titles Held For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("100%"), plotOutput("titleUserInstitute")),
@@ -73,7 +80,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("academicPlot"), plotOutput('instTypePlot')),
                            )),
                   tabPanel("Volumes",
-                           h3("A Comparison of Volumes Held"),
+                           h3("A Comparison of Volumes Held For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("100%"), plotOutput("volumeUserInstitute")),
@@ -81,7 +88,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("volumeAcademic"), plotOutput('volumeInstType')),
                            )),
                   tabPanel("Ebooks",
-                           h3("A Comparison of eBooks Held"),
+                           h3("A Comparison of eBooks For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookUserInstitute"), plotOutput('eBookVolumeComp')),
@@ -89,7 +96,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookAcademicPlot"), plotOutput('eBookInstType')),
                            )),
                   tabPanel("Library Expenditures",
-                           h3("A Comparison of Total Library Expenditures"),
+                           h3("A Comparison of Total Library Expenditures For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
@@ -97,7 +104,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleAcademicPlot"), plotOutput('tleInstType')),
                            )),
                   tabPanel("Salaries & Wages",
-                           h3("A Comparison of Library Salaries & Wages"),
+                           h3("A Comparison of Library Salaries & Wages For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesUserInstitute"), plotOutput('salariesExpComp')),
@@ -105,7 +112,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesAcademicPlot"), plotOutput('salariesInstType')),
                            )),
                   tabPanel("Staff Counts",
-                           h3("A Comparison of Library Staff Counts"),
+                           h3("A Comparison of Library Staff Counts For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput('staffFTEComp')),
@@ -154,6 +161,24 @@ server <- function(input, output, session) {
                       choices = columns2,
                       selected = columns2[2])
   })
+
+  # -- Summary
+  summaryVisualizing <- eventReactive(eventExpr = input$button2, {
+    visSummaryAllData(dataARL = csvInput(),
+                  institute = as.character(input$instituteInput),
+                  years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - summaryRegionData
+  output$summaryRegionData <- renderPlot({
+    summaryVisualizing()[[1]]
+  })
+
+  # plot - summaryInstTypeData
+  output$summaryInstTypeData <- renderPlot({
+    summaryVisualizing()[[2]]
+  })
+
 
   # -- Titles
   startvisualizing <- eventReactive(eventExpr = input$button2, {

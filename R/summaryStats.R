@@ -50,44 +50,28 @@
 #' }
 #'
 #' @examples
-#' visTitlesData(dataARL = ARLDataDownload,
-#'               institute = "TEXAS STATE",
-#'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#' visSummaryAllData(dataARL = ARLDataDownload,
+#'                 years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-#' @importFrom EnvStats stat_n_text
-visTitlesData <- function(dataARL, institute, years = NA) {
+visSummaryAllData <- function(dataARL, institute, years = NA) {
 
-  selectedData <- dataARL %>%
-    dplyr::select(
-      "Year",
-      "Institution Name",
-      "Institution type",
-      "Region",
-      "Rank in ARL investment index",
-      "ARL investment index value",
-      "Titles held",
-      "Volumes held",
-      "Electronic books") %>%
-    dplyr::mutate_at(
-      c('Titles held',
-        'Volumes held',
-        'Electronic books'), as.numeric)
+  selectedData <-
+    dataAdjustment(dataARL = dataARL,
+                   years = years)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
-  # Phrases for testing purposes
-  # cat("\n Years provided by user are:", years, "\n")
-  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
+
 
   # --- --- --- --- --- --- --- ---
   # Region
   # Visualize institute selected with medium
-  regionData <- dataARL %>%
+  summaryRegionData <- selectedData %>%
+    # ensure Median removed
     dplyr::filter(! `Region` %in% ".") %>%
     dplyr::select(`Region`, `Year`) %>%
-    # ensure Median removed
     dplyr::mutate(
       Country = dplyr::case_when(
         Region == "Canada" ~ "Canada",
@@ -99,220 +83,60 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                         fill = factor(`Country`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Number of institutes",
+    ggplot2::labs(y = "Number of Institutes",
                   x = "Year",
                   fill = "Country",
                   title = "Participation by Country") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()) +
+    ggplot2::scale_fill_manual(values = rev(setColorPalette())) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
-  # Add ranking labels on bars
+  # Add sample sizes
   ggplot2::geom_text(aes(y = 0.5, label = paste0("n=",`n`)),
                      position = position_dodge(width = 0.9),
                      angle = 90,
-                     size = 4,
+                     size = 6,
                      hjust = 'left')
 
 
-  # ---
-  # Plot of titles held Canadian institutes over 5 years
-  InstSelectedData <- selectedData %>% # user selected institute
-    dplyr::filter(`Institution Name` %in% institute)
-  InstCadData <- selectedData %>% # Canadian institutes
-    dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
-
-  titleInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
-    # ensure Median appear first in legend
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    # width = .75 ensures space between groups
+  # --- --- --- --- --- --- --- ---
+  # Type
+  # Visualize institute selected with medium
+  summaryInstTypeData <- selectedData %>%
+    # ensure Median removed
+    dplyr::filter(! `Institution type` %in% ".") %>%
+    dplyr::select(`Institution type`, `Year`) %>%
+    dplyr::group_by(`Institution type`, `Year`) %>%
+    dplyr::summarise(n = n()) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Titles held`,
-                        fill = factor(`Institution Name`),
+                        y = `n`,
+                        fill = factor(`Institution type`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Titles Held",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Number of Institutes",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Comparison With Titles Held By Canadian Institutes") +
+                  fill = "Institution Type",
+                  title = "Participation by Institution Type") +
     ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5))
-
-
-
-  # ---
-  # Plot of institute types over 5 years, with median, highest in USA and Canada
-  # selectedData$`Institution type` %>% unique()
-  # [1] "."                    "State"                "Canadian"             "Private"
-  # [5] "Nonacademic"          "Canadian Nonacademic"
-
-  # Select Canadian institute with max titles
-  CadAcademicMax <- selectedData %>%
-    dplyr::filter(`Institution type` %in% c("Canadian", "Canadian Nonacademic")) %>%
-    dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
-    dplyr::select(`Institution Name`)
-
-  # Select non Canadian institute with max titles
-  StateMax <- selectedData %>%
-    #dplyr::filter(!(`Institution type` %in% c("Canadian", "."))) %>% # for "." median?
-    dplyr::filter(`Institution type` %in% "State") %>%
-    dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
-    dplyr::select(`Institution Name`)
-
-  PrivateMax <- selectedData %>%
-    dplyr::filter(`Institution type` %in% "Private") %>%
-    dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
-    dplyr::select(`Institution Name`)
-
-  NonacademicMax <- selectedData %>%
-    dplyr::filter(`Institution type` %in% "Nonacademic") %>%
-    dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Titles held` == max(`Titles held`, na.rm = TRUE)) %>%
-    dplyr::select(`Institution Name`)
-
-  # Join above selections together with other data for all institutes
-  medianTable <- tibble::tibble(Year = yearsToDisplay,
-                                `Institution Name` = rep("MEDIAN", length(yearsToDisplay)))
-  userSelectTable <- tibble::tibble(Year = yearsToDisplay,
-                                    `Institution Name` = rep(institute, length(yearsToDisplay)))
-  topTitlesInst <- dplyr::inner_join(rbind(medianTable,
-                                           userSelectTable,
-                                           CadAcademicMax,
-                                           StateMax,
-                                           PrivateMax,
-                                           NonacademicMax),
-                                     selectedData, by= c("Year", "Institution Name"))
-
-  titleInstType <- topTitlesInst %>%
-    # ensure Median appear first in legend
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
-    ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Titles held`,
-                        fill = factor(`Institution Name`),
-                        width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Titles Held",
-                  x = "Year",
-                  fill = "Institute",
-                  title = "Max Titles Held by Institute Type") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
                    axis.text.y = element_text(color = 'black', size = 10)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
-    # Add ranking labels on bars
-    ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
+    # Add sample sizes
+    ggplot2::geom_text(aes(y = 0.5, label = paste0("n=",`n`)),
                        position = position_dodge(width = 0.9),
                        angle = 90,
-                       size = 4,
+                       size = 6,
                        hjust = 'left')
 
 
-
-  # ---
-  # Join above selections together with other data for academic institutes
-  topTitlesAcademicInst <- dplyr::inner_join(rbind(medianTable,
-                                                   userSelectTable,
-                                                   CadAcademicMax,
-                                                   StateMax,
-                                                   PrivateMax),
-                                             selectedData, by= c("Year", "Institution Name"))
-
-  titleAcademicPlot <- topTitlesAcademicInst %>%
-    # ensure Median appear first in legend
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Titles held`,
-                        fill = factor(`Institution Name`),
-                        width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Titles Held",
-                  x = "Year",
-                  fill = "Institute",
-                  title = "Comparison of Max Titles Held by Academic Institute Type") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
-    # Add ranking labels on bars
-    ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
-                       position = position_dodge(width = 0.9),
-                       angle = 90,
-                       size = 4,
-                       hjust = 'left')
-
-
-
-
-  # ---
-  # Plot comparing top 5 ARL ranks and their titles
-
-  topARLRankData <- selectedData %>%
-    dplyr::filter(`Rank in ARL investment index` %in% c("1", "2", "3", "4", "5"))
-
-  selectARLRankData <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% c("MEDIAN", institute))
-
-  combinedRankData <- rbind(topARLRankData, selectARLRankData)
-
-  titleARLRankTop <- combinedRankData %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`, levels = c("1", "2", "3", "4", "5"))) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Titles held`,
-                        fill = factor(`Institution Name`),
-                        width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Titles Held",
-                  x = "Year",
-                  fill = "Institute",
-                  title = "Titles Held by Institutes with Highest Investment ARL Rank") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 10, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
-    # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9), vjust = 0)
-
-
-  return(list(titleUserInstitute = titleUserInstitute,
-              titleInstCanadian = titleInstCanadian,
-              titleInstType = titleInstType,
-              titleAcademicPlot = titleAcademicPlot,
-              titleARLRankTop = titleARLRankTop))
+  return(list(summaryRegionData = summaryRegionData,
+              summaryInstTypeData = summaryInstTypeData))
 }
 
 # [END]

@@ -77,7 +77,7 @@ setColorPalette <- function(returnCol = TRUE) {
   }
 }
 
-dataAdjustment <- function(dataARL, institute, years = NA) {
+dataAdjustment <- function(dataARL, years = NA) {
 
   yearsToDisplay <- setYearsToDispaly(years = years)
   # Phrases for testing purposes

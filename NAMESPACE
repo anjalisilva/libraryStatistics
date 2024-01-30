@@ -2,6 +2,7 @@
 
 export(visLibrarySalaries)
 export(visStaffCounts)
+export(visSummaryAllData)
 export(visTitlesData)
 export(visTotalLibraryExp)
 export(visVolumeData)
