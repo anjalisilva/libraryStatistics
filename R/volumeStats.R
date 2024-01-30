@@ -59,26 +59,12 @@
 #' @import magrittr
 visVolumeData <- function(dataARL, institute, years = NA) {
 
-  selectedData <- dataARL %>%
-    dplyr::select(
-      "Year",
-      "Institution Name",
-      "Institution type",
-      "Region",
-      "Rank in ARL investment index",
-      "ARL investment index value",
-      "Titles held",
-      "Volumes held",
-      "Electronic books") %>%
-    dplyr::mutate_at(
-      c('Titles held',
-        'Volumes held',
-        'Electronic books'), as.numeric)
+  selectedData <-
+    dataAdjustment(dataARL = dataARL,
+                   institute = institute,
+                   years = years)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
-  # Phrases for testing purposes
-  # cat("\n Years provided by user are:", years, "\n")
-  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
 
   # --- --- --- --- --- --- --- ---
   # volumes
