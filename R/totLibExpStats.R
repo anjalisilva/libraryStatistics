@@ -92,8 +92,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   title = "Total Library Expenditures By Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5))
 
@@ -118,11 +118,11 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Type",
-                  title = "Total Library Expenditures Proportion By Selected Institute") +
+                  title = "Total Library Expenditures Proportion \nBy Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5))
@@ -154,8 +154,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   title = "Total Library Expenditures Held By Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5))
@@ -226,8 +226,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   title = "Max Total Library Expenditures by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) +
@@ -235,7 +235,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
                        angle = 90,
-                       size = 4,
+                       size = 6,
                        hjust = 'left')
 
 
@@ -266,8 +266,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   title = "Max Total Library Expenditures by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) +
@@ -275,7 +275,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
                        angle = 90,
-                       size = 4,
+                       size = 6,
                        hjust = 'left')
 
 
@@ -312,14 +312,16 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
                                               vjust = 0.5,
-                                              color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9), vjust = 0)
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
 
 
   return(list(tleUserInstitute = tleUserInstitute,

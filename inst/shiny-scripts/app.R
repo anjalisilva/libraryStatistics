@@ -13,14 +13,14 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
 
-      tags$p("Instructions: This is a Shiny App that is part of the libraryStatistics
+      tags$p("Instructions: This is a Shiny Application (app) that is part of the libraryStatistics
              R package. Most of the functions available via the package are made
              available with Shiny App. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
              survey of Association of Research Libraries (ARL). First upload the dataset.
-             The list of choices for 'Institute' and 'Years' will appear. Select
-             one institute and upto 5 years, and press 'Analyze'. Explore
-             the results by navigating the tabs to the right."),
+             The list of choices for 'Institute' and 'Years' based on uploaded dataset
+             will appear. Select one institute and upto 5 years, and press 'Analyze'.
+             Explore the results by navigating the tabs to the right."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -36,7 +36,8 @@ ui <- fluidPage(
                 in comma-separated value (.csv) format with rows corresponding
                 to years and columns to variables. The first column must
                 be 'Year', followed by other variables in no particular order,
-                e.g., 'Institution Name', 'Institution type', etc.",
+                e.g., 'Institution Name', 'Institution type', etc. as downloaded
+                from ARL Data Portal.",
                 accept = c(".csv")),
       selectInput(inputId = "instituteInput",
                   label = "Institute: select one library",
@@ -96,32 +97,40 @@ ui <- fluidPage(
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookUserInstitute"), plotOutput('eBookVolumeComp')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookARLRankTop"), plotOutput('eBookInstCanadian')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookAcademicPlot"), plotOutput('eBookInstType')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("eBookARLRankTop")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('eBookInstCanadian')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("eBookAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('eBookInstType')),
                            )),
                   tabPanel("Library Expenditures",
                            h3("A Comparison of Total Library Expenditures For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTop"), plotOutput('tleInstCanadian')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleAcademicPlot"), plotOutput('tleInstType')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),
                            )),
                   tabPanel("Salaries & Wages",
                            h3("A Comparison of Library Salaries & Wages For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesUserInstitute"), plotOutput('salariesExpComp')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesARLRankTop"), plotOutput('salariesInstCanadian')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesAcademicPlot"), plotOutput('salariesInstType')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("salariesARLRankTop")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('salariesInstCanadian')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("salariesAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('salariesInstType')),
                            )),
                   tabPanel("Staff Counts",
                            h3("A Comparison of Library Staff Counts For Selected Institute"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput('staffFTEComp')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEARLRankTop"), plotOutput('staffFTEInstCanadian')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEAcademicPlot"), plotOutput('staffFTEInstType')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("staffFTEARLRankTop")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstCanadian')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("staffFTEAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstType')),
                            ))
 
 

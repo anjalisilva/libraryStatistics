@@ -124,7 +124,8 @@ visSummaryAllData <- function(dataARL, institute, years = NA) {
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = rev(setColorPalette())) +
+    ggplot2::scale_fill_manual(values = c("red", "#fcbba1", "#4eb3d3",
+                                          "lightblue", "#0868ac")) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add sample sizes

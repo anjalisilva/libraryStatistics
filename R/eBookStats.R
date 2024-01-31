@@ -92,8 +92,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                   title = "Electronic Books Held By Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5))
 
@@ -117,11 +117,11 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Volumes",
                   x = "Year",
                   fill = "Type",
-                  title = "Volumes Held With Electronic Book Proportion") +
+                  title = "Volumes Held With Electronic Book Proportion \nBy Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = c("black", "grey")) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5))
@@ -152,8 +152,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                   title = "Electronic Books Held By Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5))
@@ -224,8 +224,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                   title = "Max Electronic Books Held by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
@@ -233,7 +233,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
                        angle = 90,
-                       size = 4,
+                       size = 6,
                        hjust = 'left')
 
 
@@ -264,8 +264,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
                   title = "Max Electronic Books Held by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
@@ -273,7 +273,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
                        angle = 90,
-                       size = 4,
+                       size = 6,
                        hjust = 'left')
 
 
@@ -307,14 +307,15 @@ viseBookData <- function(dataARL, institute, years = NA) {
                   title = "Electronic Books Held by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9), vjust = 0)
+                       position = position_dodge(width = 0.9), vjust = 0,
+                       size = 6)
 
 
   return(list(eBookUserInstitute = eBookUserInstitute,

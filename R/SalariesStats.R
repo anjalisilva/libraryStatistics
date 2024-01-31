@@ -94,8 +94,8 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                   title = "Total Salaries & Wages By Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5))
 
@@ -120,11 +120,11 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
                   fill = "Type",
-                  title = "Total Salaries & Wages Proportion By Selected Institute") +
+                  title = "Total Salaries & Wages Proportion \nBy Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))[4:6]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5))
@@ -156,8 +156,8 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                   title = "Total Salaries & Wages Held By Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5))
@@ -229,8 +229,8 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                   title = "Max Total Salaries & Wages by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) +
@@ -238,7 +238,7 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
                        angle = 90,
-                       size = 4,
+                       size = 6,
                        hjust = 'left')
 
 
@@ -270,8 +270,8 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                   title = "Max Total Salaries & Wages by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) +
@@ -279,7 +279,7 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
     ggplot2::geom_text(aes(y = 0.5, label = `Institution type`),
                        position = position_dodge(width = 0.9),
                        angle = 90,
-                       size = 4,
+                       size = 6,
                        hjust = 'left')
 
 
@@ -316,14 +316,16 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
                                               vjust = 0.5,
-                                              color = 'black', size = 10),
-                   axis.text.y = element_text(color = 'black', size = 10)) +
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9), vjust = 0)
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
 
 
   return(list(salariesUserInstitute = salariesUserInstitute,
