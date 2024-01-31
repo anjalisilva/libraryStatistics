@@ -93,7 +93,7 @@ visSummaryAllData <- function(dataARL, institute, years = NA) {
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = c("red", "lightblue")) +
+    ggplot2::scale_fill_manual(values = c("red", "lightblue", setColorPalette())) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
   # Add sample sizes
@@ -124,8 +124,9 @@ visSummaryAllData <- function(dataARL, institute, years = NA) {
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = c("red", "#fcbba1", "#4eb3d3",
-                                          "lightblue", "#0868ac")) +
+    ggplot2::scale_fill_manual(values = c("red", "#fcbba1", "#0868ac",
+                                          "#4eb3d3", "lightblue",
+                                          setColorPalette())) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add sample sizes
@@ -133,8 +134,49 @@ visSummaryAllData <- function(dataARL, institute, years = NA) {
                        position = position_stack(vjust = .5),
                        size = 6)
 
+
+
+  # --- --- --- --- --- --- --- ---
+  # Titles
+  # Visualize institute selected with medium
+  titleAllData <- selectedData %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Titles held`,
+                        width = .75)) +
+    ggplot2::geom_violin() +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Titles Held",
+                  x = "Year",
+                  title = "Distribution of Titles Held") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
+
+
+  volumesAllData <- selectedData %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Volumes held`,
+                        width = .75)) +
+    ggplot2::geom_violin() +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Volumes Held",
+                  x = "Year",
+                  title = "Distribution of Volumes Held") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
+
+
   return(list(summaryRegionData = summaryRegionData,
-              summaryInstTypeData = summaryInstTypeData))
+              summaryInstTypeData = summaryInstTypeData,
+              titleAllData = titleAllData,
+              volumesAllData = volumesAllData))
 }
 
 # [END]

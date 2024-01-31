@@ -71,6 +71,8 @@ ui <- fluidPage(
                            fluidRow(
                              splitLayout(cellWidths = c("100%"), plotOutput("summaryRegionData")),
                              splitLayout(cellWidths = c("100%"), plotOutput("summaryInstTypeData")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("titleAllData")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("volumesAllData")),
                            )),
                   tabPanel("Titles",
                            h3("A Comparison of Titles Held For Selected Institute"),
@@ -131,6 +133,16 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstCanadian')),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstType')),
+                           )),
+                  tabPanel("Article Requests",
+                           h3("A Comparison of Article Requests For Selected Institute"),
+                           br(),
+                           fluidRow(
+                             splitLayout(cellWidths = c("100%"), plotOutput("articleUserInstitute")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('articleARLRankTop')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("articleInstCanadian")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("articleAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('articleInstType')),
                            ))
 
 
@@ -192,6 +204,17 @@ server <- function(input, output, session) {
     summaryVisualizing()[[2]]
   })
 
+
+  # plot - titleAllData
+  output$titleAllData <- renderPlot({
+    summaryVisualizing()[[3]]
+  })
+
+
+  # plot - volumesAllData
+  output$volumesAllData <- renderPlot({
+    summaryVisualizing()[[4]]
+  })
 
   # -- Titles
   startvisualizing <- eventReactive(eventExpr = input$button2, {
@@ -448,6 +471,43 @@ server <- function(input, output, session) {
   output$staffFTEComp <- renderPlot({
     startvisualizing6()[[6]]
   })
+
+
+  # -- Article Requests
+  startvisualizing7 <- eventReactive(eventExpr = input$button2, {
+    visArticleReqData(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - articleUserInstitute
+  output$articleUserInstitute <- renderPlot({
+    startvisualizing7()[[1]]
+  })
+
+  # plot - articleInstCanadian
+  output$articleInstCanadian <- renderPlot({
+    startvisualizing7()[[2]]
+  })
+
+  # plot - articleInstType
+  output$articleInstType <- renderPlot({
+    startvisualizing7()[[3]]
+  })
+
+  # plot - articleAcademicPlot
+  output$articleAcademicPlot <- renderPlot({
+    startvisualizing7()[[4]]
+  })
+
+  # plot - articleARLRankTop
+  output$articleARLRankTop <- renderPlot({
+    startvisualizing7()[[5]]
+  })
+
+
+
 
 
   observeEvent(input$data1, {
