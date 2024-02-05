@@ -324,11 +324,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        size = 6)
 
 
-  # Using total Lib stats per faculty
-
-  combinedRankDataTest <-
-  combinedRankData %>%
-
+  # Using total lib stats per faculty
   tleARLRankTopPerFaculty <- combinedRankData %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
@@ -341,10 +337,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures Per Total Teaching Faculty",
+    ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures Per Total Teaching Faculty\n by Institutes with Highest Investment ARL Rank") +
+                  title = "Total Library Expenditures Per Teaching Faculty\n by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -352,7 +348,77 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # Using total lib stats per student
+  tleARLRankTopPerStudent <- combinedRankData %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/
+                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Total Library Expenditures Per Student (FT + PT)\n by Institutes with Highest Investment ARL Rank") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # Using total lib stats per graduate student
+  tleARLRankTopPerGradStudent <- combinedRankData %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/
+                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Total Library Expenditures Per Grad Student (FT + PT)\n by Institutes with Highest Investment ARL Rank") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
@@ -363,12 +429,52 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
 
 
+  # Using total lib stats per PhD
+  tleARLRankTopPerPhD <- combinedRankData %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Total Library Expenditures Per Doctoral Degree Awarded \n by Institutes with Highest Investment ARL Rank") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+
+
   return(list(tleUserInstitute = tleUserInstitute,
               tleExpComp = tleExpComp,
               tleInstCanadian = tleInstCanadian,
               tleInstType = tleInstType,
               tleAcademicPlot = tleAcademicPlot,
-              tleARLRankTop = tleARLRankTop))
+              tleARLRankTop = tleARLRankTop,
+              tleARLRankTopPerFaculty = tleARLRankTopPerFaculty,
+              tleARLRankTopPerStudent = tleARLRankTopPerStudent,
+              tleARLRankTopPerGradStudent = tleARLRankTopPerGradStudent,
+              tleARLRankTopPerPhD = tleARLRankTopPerPhD))
 }
 
 # [END]

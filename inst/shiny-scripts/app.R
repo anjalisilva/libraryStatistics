@@ -110,6 +110,8 @@ ui <- fluidPage(
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput('tleARLRankTopPerStudent')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerPhD"), plotOutput('tleARLRankTopPerGradStudent')),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),
@@ -386,8 +388,28 @@ server <- function(input, output, session) {
     startvisualizing4()[[6]]
   })
 
+  # plot - tleARLRankTopPerFaculty
+  output$tleARLRankTopPerFaculty <- renderPlot({
+    startvisualizing4()[[7]]
+  })
 
-  # -- Salaraies
+  # plot - tleARLRankTopPerStudent
+  output$tleARLRankTopPerStudent <- renderPlot({
+    startvisualizing4()[[8]]
+  })
+
+  # plot - tleARLRankTopPerGradStudent
+  output$tleARLRankTopPerGradStudent <- renderPlot({
+    startvisualizing4()[[9]]
+  })
+
+  # plot - tleARLRankTopPerPhD
+  output$tleARLRankTopPerPhD <- renderPlot({
+    startvisualizing4()[[10]]
+  })
+
+
+  # -- Salaries
   startvisualizing5 <- eventReactive(eventExpr = input$button2, {
     visLibrarySalaries(
       dataARL = csvInput(),
