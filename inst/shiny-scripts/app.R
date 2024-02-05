@@ -110,8 +110,8 @@ ui <- fluidPage(
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput('tleARLRankTopPerStudent')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerPhD"), plotOutput('tleARLRankTopPerGradStudent')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleARLRankTopPerStudent")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerGradStudent"), plotOutput("tleARLRankTopPerPhD")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),

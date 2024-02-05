@@ -89,6 +89,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
+                  color = "Institute",
                   title = "Total Library Expenditures By Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
@@ -126,7 +127,11 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5))
-
+    # Show percentage
+    # +
+    # ggplot2::geom_text(aes(label = scales::percent(`value`)),
+    #                   position = "stack", vjust = +2.1, size = 3)
+    #
 
 
   # ---
@@ -445,7 +450,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures Per Doctoral Degree Awarded \n by Institutes with Highest Investment ARL Rank") +
+                  title = "Total Library Expenditures Per Doctoral Degree \n by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
