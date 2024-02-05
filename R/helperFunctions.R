@@ -108,7 +108,8 @@ dataAdjustment <- function(dataARL, years = NA) {
       "Professional salaries & wages",
       "Support staff salaries & wages",
       "Student assistant wages",
-      "Number of successful full-text article requests (journals)") %>%
+      "Number of successful full-text article requests (journals)",
+      "Total teaching faculty") %>%
     dplyr::mutate_at(
       c('Titles held',
         'Volumes held',
@@ -126,7 +127,8 @@ dataAdjustment <- function(dataARL, years = NA) {
         "Professional salaries & wages",
         "Support staff salaries & wages",
         "Student assistant wages",
-        "Number of successful full-text article requests (journals)"), as.numeric) %>%
+        "Number of successful full-text article requests (journals)",
+        "Total teaching faculty"), as.numeric) %>%
     dplyr::mutate('Total library expenditures (CAD)' = `Total library expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total materials expenditures (CAD)' = `Total materials expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total salaries & wages (CAD)' = `Total salaries & wages` * `Canadian dollar exchange rate`)  %>%

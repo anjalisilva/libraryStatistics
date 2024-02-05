@@ -324,6 +324,45 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        size = 6)
 
 
+  # Using total Lib stats per faculty
+
+  combinedRankDataTest <-
+  combinedRankData %>%
+
+  tleARLRankTopPerFaculty <- combinedRankData %>%
+    dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerFaculty`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures Per Total Teaching Faculty",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Total Library Expenditures Per Total Teaching Faculty\n by Institutes with Highest Investment ARL Rank") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+
   return(list(tleUserInstitute = tleUserInstitute,
               tleExpComp = tleExpComp,
               tleInstCanadian = tleInstCanadian,
