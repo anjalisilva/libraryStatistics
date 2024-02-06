@@ -89,7 +89,8 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Electornic Books",
                   x = "Year",
-                  title = "Electronic Books Held By Selected Institute") +
+                  color = "Institute",
+                  title = "Electronic Books Held by Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -149,7 +150,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Electronic Books",
                   x = "Year",
                   fill = "Institute",
-                  title = "Electronic Books Held By Canadian Institutes") +
+                  title = "Electronic Books Held by Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),

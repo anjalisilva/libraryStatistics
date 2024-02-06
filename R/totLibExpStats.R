@@ -90,7 +90,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   color = "Institute",
-                  title = "Total Library Expenditures By Selected Institute") +
+                  title = "Total Library Expenditures by Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -119,7 +119,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Type",
-                  title = "Total Library Expenditures Proportion \nBy Selected Institute") +
+                  title = "Total Library Expenditures Proportion\nby Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -156,7 +156,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures Held By Canadian Institutes") +
+                  title = "Total Library Expenditures Held by Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -211,7 +211,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                                            StateMax,
                                            PrivateMax,
                                            NonacademicMax),
-                                     selectedData, by= c("Year", "Institution Name"))
+                                     selectedData,
+                                     by = c("Year", "Institution Name"))
 
   tleInstType <- topTitlesInst %>%
     # ensure Median appear first in legend
@@ -252,7 +253,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                                                    CadAcademicMax,
                                                    StateMax,
                                                    PrivateMax),
-                                             selectedData, by= c("Year", "Institution Name"))
+                                             selectedData, by = c("Year", "Institution Name"))
 
   tleAcademicPlot <- topTLEAcademicInst %>%
     # ensure Median appear first in legend
@@ -345,7 +346,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures Per Teaching Faculty\n by Institutes with Highest Investment ARL Rank") +
+                  title = "Total Library Expenditures Per Teaching Faculty\nby Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -380,7 +381,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures Per Student (FT + PT)\n by Institutes with Highest Investment ARL Rank") +
+                  title = "Total Library Expenditures Per Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -415,7 +416,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures Per Grad Student (FT + PT)\n by Institutes with Highest Investment ARL Rank") +
+                  title = "Total Library Expenditures Per Grad Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -450,7 +451,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
                   fill = "Institute",
-                  title = "Total Library Expenditures Per Doctoral Degree \n by Institutes with Highest Investment ARL Rank") +
+                  title = "Total Library Expenditures Per Doctoral Degree\nby Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,

@@ -71,8 +71,8 @@ ui <- fluidPage(
                            fluidRow(
                              splitLayout(cellWidths = c("100%"), plotOutput("summaryRegionData")),
                              splitLayout(cellWidths = c("100%"), plotOutput("summaryInstTypeData")),
-                             splitLayout(cellWidths = c("100%"), plotOutput("titleAllData")),
-                             splitLayout(cellWidths = c("100%"), plotOutput("volumesAllData")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("titleAllData")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("volumesAllData")),
                            )),
                   tabPanel("Titles",
                            h3("A Comparison of Titles Held For Selected Institute"),

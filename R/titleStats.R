@@ -9,8 +9,10 @@
 
 
 # To do
-# 1. Similar to expenditures, for library prof staff, do
-# Library Staff per faculty, student, phd
+# 0. Institution name to institute
+# 1. Have a summary stats tab for dataset
+# For titles: institute with min, max, median
+# For volumes: institute with min, max, median
 
 
 # visCollection
@@ -102,7 +104,8 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
-                  title = "Titles Held By Selected Institute") +
+                  color = "Institute",
+                  title = "Titles Held by Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -134,7 +137,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Titles Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Titles Held By Canadian Institutes") +
+                  title = "Titles Held by Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
