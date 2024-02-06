@@ -9,10 +9,12 @@
 
 
 # To do
-# 0. Institution name to institute
+# 0.Fix total lib expenditure y axis labels
 # 1. Have a summary stats tab for dataset
 # For titles: institute with min, max, median
 # For volumes: institute with min, max, median
+# 2. Add materials borrowed + loaned
+# 3. Num of doctoral degrees + fields
 
 
 # visCollection
@@ -306,12 +308,32 @@ visTitlesData <- function(dataARL, institute, years = NA) {
                        vjust = 0,
                        size = 6)
 
+  # --- --- --- --- --- --- --- ---
+  # Titles in entire dataset
+  titleAllData <- selectedData %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Titles held`,
+                        width = .75)) +
+    ggplot2::geom_violin() +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Titles Held",
+                  x = "Year",
+                  title = "Distribution of Titles Held in Dataset") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
+
+
 
    return(list(titleUserInstitute = titleUserInstitute,
                titleInstCanadian = titleInstCanadian,
                titleInstType = titleInstType,
                titleAcademicPlot = titleAcademicPlot,
-               titleARLRankTop = titleARLRankTop))
+               titleARLRankTop = titleARLRankTop,
+               titleAllData = titleAllData))
   }
 
 # [END]

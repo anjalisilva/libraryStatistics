@@ -71,31 +71,29 @@ ui <- fluidPage(
                            fluidRow(
                              splitLayout(cellWidths = c("100%"), plotOutput("summaryRegionData")),
                              splitLayout(cellWidths = c("100%"), plotOutput("summaryInstTypeData")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("titleAllData")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("volumesAllData")),
                            )),
                   tabPanel("Titles",
-                           h3("A Comparison of Titles Held For Selected Institute"),
+                           h3("A Comparison of Titles Held"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("100%"), plotOutput("titleUserInstitute")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("titleAllData"), plotOutput("titleUserInstitute")),
                              splitLayout(cellWidths = c("100%"), plotOutput("plotARLRankTop")),
                              splitLayout(cellWidths = c("100%"), plotOutput('InstCanadianPlot')),
                              splitLayout(cellWidths = c("100%"), plotOutput("academicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('instTypePlot')),
                            )),
                   tabPanel("Volumes",
-                           h3("A Comparison of Volumes Held For Selected Institute"),
+                           h3("A Comparison of Volumes Held"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("100%"), plotOutput("volumeUserInstitute")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("volumesAllData"), plotOutput("volumeUserInstitute")),
                              splitLayout(cellWidths = c("100%"), plotOutput("volumeARLRankTop")),
                              splitLayout(cellWidths = c("100%"), plotOutput("volumeInstCanadian")),
                              splitLayout(cellWidths = c("100%"), plotOutput("volumeAcademic")),
                              splitLayout(cellWidths = c("100%"), plotOutput("volumeInstType")),
                            )),
                   tabPanel("Ebooks",
-                           h3("A Comparison of eBooks For Selected Institute"),
+                           h3("A Comparison of eBooks"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookUserInstitute"), plotOutput('eBookVolumeComp')),
@@ -105,7 +103,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("100%"), plotOutput('eBookInstType')),
                            )),
                   tabPanel("Library Expenditures",
-                           h3("A Comparison of Total Library Expenditures For Selected Institute"),
+                           h3("A Comparison of Total Library Expenditures"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
@@ -117,32 +115,34 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),
                            )),
                   tabPanel("Salaries & Wages",
-                           h3("A Comparison of Library Salaries & Wages For Selected Institute"),
+                           h3("A Comparison of Library Salaries & Wages"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesUserInstitute"), plotOutput('salariesExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("salariesARLRankTop")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salProfStaffperCount")),
                              splitLayout(cellWidths = c("100%"), plotOutput('salariesInstCanadian')),
                              splitLayout(cellWidths = c("100%"), plotOutput("salariesAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('salariesInstType')),
                            )),
                   tabPanel("Staff Counts",
-                           h3("A Comparison of Library Staff Counts For Selected Institute"),
+                           h3("A Comparison of Library Staff Counts"),
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput('staffFTEComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEARLRankTop")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperFaculty"), plotOutput('staffFTEperStudent')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffFTEperPhD')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffPercentage")),
                              splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstCanadian')),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstType')),
                            )),
                   tabPanel("Article Requests",
-                           h3("A Comparison of Article Requests For Selected Institute"),
+                           h3("A Comparison of Article Requests"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("100%"), plotOutput("articleUserInstitute")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("articlesAllData"), plotOutput("articleUserInstitute")),
                              splitLayout(cellWidths = c("100%"), plotOutput('articleARLRankTop')),
                              splitLayout(cellWidths = c("100%"), plotOutput("articleInstCanadian")),
                              splitLayout(cellWidths = c("100%"), plotOutput("articleAcademicPlot")),
@@ -209,16 +209,6 @@ server <- function(input, output, session) {
   })
 
 
-  # plot - titleAllData
-  output$titleAllData <- renderPlot({
-    summaryVisualizing()[[3]]
-  })
-
-
-  # plot - volumesAllData
-  output$volumesAllData <- renderPlot({
-    summaryVisualizing()[[4]]
-  })
 
   # -- Titles
   startvisualizing <- eventReactive(eventExpr = input$button2, {
@@ -268,6 +258,13 @@ server <- function(input, output, session) {
     startvisualizing()[[5]]
   })
 
+  # plot - titleAllData
+  output$titleAllData <- renderPlot({
+    startvisualizing()[[6]]
+  })
+
+
+
   # -- Volumes
   # Using button
   startvisualizing2 <- eventReactive(eventExpr = input$button2, {
@@ -312,6 +309,13 @@ server <- function(input, output, session) {
   output$volumeARLRankTop <- renderPlot({
     startvisualizing2()[[5]]
   })
+
+  # plot - volumesAllData
+  output$volumesAllData <- renderPlot({
+    startvisualizing2()[[6]]
+  })
+
+
 
   # -- eBooks
   startvisualizing3 <- eventReactive(eventExpr = input$button2, {
@@ -449,6 +453,11 @@ server <- function(input, output, session) {
     startvisualizing5()[[6]]
   })
 
+  # plot - salProfStaffperCount
+  output$salProfStaffperCount <- renderPlot({
+    startvisualizing5()[[7]]
+  })
+
 
   # URLs for downloading data
   url1 <- a("Example Dataset 2", href="https://raw.githubusercontent.com/anjalisilva/TestingPackage/master/inst/extdata/GeneCountsData2.csv")
@@ -518,6 +527,15 @@ server <- function(input, output, session) {
   })
 
 
+  # plot - profStaffPercentage
+  output$profStaffPercentage <- renderPlot({
+    startvisualizing6()[[11]]
+  })
+
+
+
+
+
   # -- Article Requests
   startvisualizing7 <- eventReactive(eventExpr = input$button2, {
     visArticleReqData(
@@ -549,6 +567,11 @@ server <- function(input, output, session) {
   # plot - articleARLRankTop
   output$articleARLRankTop <- renderPlot({
     startvisualizing7()[[5]]
+  })
+
+  # plot - articlesAllData
+  output$articlesAllData <- renderPlot({
+    startvisualizing7()[[6]]
   })
 
 

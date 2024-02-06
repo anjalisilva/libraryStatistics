@@ -121,7 +121,7 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Total Salaries & Wages",
                   x = "Year",
                   fill = "Type",
-                  title = "Total Salaries & Wages Proportion \nBy Selected Institute") +
+                  title = "Total Salaries & Wages Proportion\nby Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -329,12 +329,48 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                        size = 6)
 
 
+  # ---
+  # Prof staff salaries per prof staff count ratio
+  salProfStaffperCount <- combinedRankData %>%
+    dplyr::mutate(salProfStaffperCount = `Professional salaries & wages` / `Professional staff`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `salProfStaffperCount`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat="identity") +
+    ggplot2::labs(y = "Professional Staff Salaries Per\nProfessional Staff",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Professional Staff Salaries Per Professional Staff\nby Institutes with Highest Investment ARL Rank") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
   return(list(salariesUserInstitute = salariesUserInstitute,
               salariesExpComp = salariesExpComp,
               salariesInstCanadian = salariesInstCanadian,
               salariesInstType = salariesInstType,
               salariesAcademicPlot = salariesAcademicPlot,
-              salariesARLRankTop = salariesARLRankTop))
+              salariesARLRankTop = salariesARLRankTop,
+              salProfStaffperCount = salProfStaffperCount))
 }
 
 # [END]

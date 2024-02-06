@@ -302,11 +302,11 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Professional staff`,
+                        y = `staffPerFaculty`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff Per Teaching Faculty",
                   x = "Year",
                   fill = "Institute",
                   title = "Professional Staff (FTE) Per Teaching Faculty\nby Institutes with Highest Investment ARL Rank") +
@@ -326,7 +326,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
   # ---
   # Prof staff per student
   staffFTEperStudent <- combinedRankData %>%
-    dplyr::mutate(staffPerFaculty = `Professional staff`/
+    dplyr::mutate(staffFTEperStudent = `Professional staff`/
                 (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
@@ -334,11 +334,11 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Professional staff`,
+                        y = `staffFTEperStudent`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff Per Student",
                   x = "Year",
                   fill = "Institute",
                   title = "Professional Staff (FTE) Per Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
@@ -359,7 +359,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
   # ---
   # Prof staff per graduate student
   staffFTEperGradStudent <- combinedRankData %>%
-    dplyr::mutate(staffPerFaculty = `Professional staff`/
+    dplyr::mutate(staffFTEperGradStudent = `Professional staff`/
                  (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
@@ -367,11 +367,11 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Professional staff`,
+                        y = `staffFTEperGradStudent`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff Per Grad Student",
                   x = "Year",
                   fill = "Institute",
                   title = "Professional Staff (FTE) Per Grad Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
@@ -391,21 +391,53 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
   # ---
   # Using total lib stats per doctoral degree
   staffFTEperPhD <- combinedRankData %>%
-    dplyr::mutate(staffPerFaculty = `Professional staff`/ `Doctor's degrees awarded`) %>%
+    dplyr::mutate(staffFTEperPhD = `Professional staff`/ `Doctor's degrees awarded`) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Professional staff`,
+                        y = `staffFTEperPhD`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff Per Doctoral Degree",
                   x = "Year",
                   fill = "Institute",
                   title = "Professional Staff (FTE) Per Doctoral Degree\nby Institutes with Highest Investment ARL Rank") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # ---
+  # Prof staff as a percentage of total staff
+  profStaffPercentage <- combinedRankData %>%
+    dplyr::mutate(profStaffPercentageTotal = (`Professional staff`/ `Total prof. + support + student staff`) * 100) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `profStaffPercentageTotal`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat="identity") +
+    ggplot2::labs(y = "Percentage",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Professional Staff As A % of Total Staff\nby Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -426,6 +458,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     dplyr::filter(`Institution Name` %in% c(institute)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years %>%
     dplyr::select(`Institution Name`, `Year`,
                   `Professional staff`,
@@ -462,6 +495,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
               staffFTEperFaculty = staffFTEperFaculty,
               staffFTEperStudent = staffFTEperStudent,
               staffFTEperGradStudent = staffFTEperGradStudent,
-              staffFTEperPhD = staffFTEperPhD))
+              staffFTEperPhD = staffFTEperPhD,
+              profStaffPercentage = profStaffPercentage))
 }
 # [END]
