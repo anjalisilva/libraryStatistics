@@ -287,7 +287,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Plot comparing top 5 ARL ranks and their titles
+  # Plot comparing top 5 ARL ranks and their exp
 
   topARLRankData <- selectedData %>%
     dplyr::filter(`Rank in ARL investment index` %in% c("1", "2", "3", "4", "5"))
@@ -328,7 +328,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        vjust = 0,
                        size = 6)
 
-
+  # ---
   # Using total lib stats per faculty
   tleARLRankTopPerFaculty <- combinedRankData %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
@@ -362,7 +362,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        vjust = 0,
                        size = 6)
 
-
+  # ---
   # Using total lib stats per student
   tleARLRankTopPerStudent <- combinedRankData %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
@@ -397,7 +397,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        vjust = 0,
                        size = 6)
 
-
+  # ---
   # Using total lib stats per graduate student
   tleARLRankTopPerGradStudent <- combinedRankData %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
@@ -433,8 +433,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        size = 6)
 
 
-
-  # Using total lib stats per PhD
+  # ---
+  # Using total lib stats per doctoral degree
   tleARLRankTopPerPhD <- combinedRankData %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%

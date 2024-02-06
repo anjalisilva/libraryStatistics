@@ -8,6 +8,10 @@
 # ARLDataDownload <- readr::read_csv(inputCountsPath)
 
 
+# To do
+# 1. Similar to expenditures, for library prof staff, do
+# Library Staff per faculty, student, phd
+
 
 # visCollection
 #' Plots to Compare Titles in Collection Over Years
