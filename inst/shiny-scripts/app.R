@@ -120,7 +120,7 @@ ui <- fluidPage(
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesUserInstitute"), plotOutput('salariesExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("salariesARLRankTop")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salProfStaffperCount")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salProfStaffperCount"), plotOutput("salSupportStaffperCount")),
                              splitLayout(cellWidths = c("100%"), plotOutput('salariesInstCanadian')),
                              splitLayout(cellWidths = c("100%"), plotOutput("salariesAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('salariesInstType')),
@@ -456,6 +456,11 @@ server <- function(input, output, session) {
   # plot - salProfStaffperCount
   output$salProfStaffperCount <- renderPlot({
     startvisualizing5()[[7]]
+  })
+
+  # plot - salSupportStaffperCount
+  output$salSupportStaffperCount <- renderPlot({
+    startvisualizing5()[[8]]
   })
 
 

@@ -343,7 +343,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures",
+    ggplot2::labs(y = "Total Library Expenditures\nPer Teaching Faculty",
                   x = "Year",
                   fill = "Institute",
                   title = "Total Library Expenditures Per Teaching Faculty\nby Institutes with Highest Investment ARL Rank") +
@@ -378,7 +378,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures",
+    ggplot2::labs(y = "Total Library Expenditures\nPer Student",
                   x = "Year",
                   fill = "Institute",
                   title = "Total Library Expenditures Per Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
@@ -413,7 +413,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures",
+    ggplot2::labs(y = "Total Library Expenditures\nPer Grad Student",
                   x = "Year",
                   fill = "Institute",
                   title = "Total Library Expenditures Per Grad Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
@@ -448,7 +448,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures",
+    ggplot2::labs(y = "Total Library Expenditures\nPer Doctoral Degree",
                   x = "Year",
                   fill = "Institute",
                   title = "Total Library Expenditures Per Doctoral Degree\nby Institutes with Highest Investment ARL Rank") +
