@@ -312,7 +312,8 @@ visTitlesData <- function(dataARL, institute, years = NA) {
   # --- --- --- --- --- --- --- ---
   # Titles in entire dataset
   titleAllData <- selectedData %>%
-    dplyr::filter()
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         width = .75)) +

@@ -298,6 +298,8 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
   # ---
   # Articles for all dataset
   articlesAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Number of successful full-text article requests (journals)`,
                         width = .75)) +

@@ -289,8 +289,10 @@ visVolumeData <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Volumes for all dataset
+  # Volumes for entire dataset
   volumesAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Volumes held`,
                         width = .75)) +
