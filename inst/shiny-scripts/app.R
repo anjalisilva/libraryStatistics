@@ -132,7 +132,7 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput('staffFTEComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEARLRankTop")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperFaculty"), plotOutput('staffFTEperStudent')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffFTEperPhD')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffFTEperDoctoral')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffPercentage")),
                              splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstCanadian')),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEAcademicPlot")),
@@ -526,8 +526,8 @@ server <- function(input, output, session) {
     startvisualizing6()[[9]]
   })
 
-  # plot - staffFTEperPhD
-  output$staffFTEperPhD <- renderPlot({
+  # plot - staffFTEperDoctoral
+  output$staffFTEperDoctoral <- renderPlot({
     startvisualizing6()[[10]]
   })
 
