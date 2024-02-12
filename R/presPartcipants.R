@@ -32,14 +32,14 @@
 #'         institute over user selected number of years for presentations
 #'         and participants attended. The median line is provided for comparison.
 #'   \item presInstCanadian - A barplot comparing Canadian institutes
-#'         based on articles held, along with user selected institute over
+#'         based on group presentations, along with user selected institute over
 #'         user selected number of years. The median is provided for
 #'         comparison.
 #'   \item presInstType - A barplot comparing maximum presentations by
 #'         institute type over user selected number of years. The user
 #'         selected institute is provided for comparison. Institute
 #'         types include: "Canadian", "Private", "State", and "Nonacademic".
-#'          The median is provided for comparison.
+#'         The median is provided for comparison.
 #'   \item presAcademicPlot - A barplot comparing maximum presentations by
 #'         academic institute type over user selected number of years.
 #'         The user selected institute is provided for comparison.
@@ -49,17 +49,21 @@
 #'         top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
+#'   \item pressAllData - A violin plot showing the distribution of
+#'         group presentations per years selected by user, for the
+#'         entire dataset uploaded.
+#'
 #' }
 #'
 #' @examples
-#' visArticleReqData(dataARL = ARLDataDownload,
+#' visPresentationData(dataARL = ARLDataDownload,
 #'               institute = "TEXAS STATE",
 #'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-visArticleReqData <- function(dataARL, institute, years = NA) {
+visPresentationData <- function(dataARL, institute, years = NA) {
 
   selectedData <-
     dataAdjustment(dataARL = dataARL,
@@ -69,17 +73,19 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
     setYearsToDispaly(years = years)
 
   # --- --- --- --- --- --- --- ---
-  # articles
+  # presentations
   # Visualize institute selected with medium
-  articleUserInstitute <- selectedData %>%
+  presUserInstitute <- selectedData %>%
     dplyr::filter(`Institution Name` %in% c(institute, "MEDIAN")) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
+    dplyr::select("Institution Name", "Year", "Group presentations", "Presentation participants") %>%
+    reshape2::melt(id = c("Year", "Institution Name")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Number of successful full-text article requests (journals)`,
+                        y = `value`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
                        linewidth = 0.5,
@@ -87,27 +93,28 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Article Requests",
+    ggplot2::labs(y = "Count",
                   x = "Year",
                   color = "Institute",
-                  title = "Article Requests by Selected Institute") +
+                  title = "Group Presentations & Participants by Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5))
+                                breaks = scales::pretty_breaks(n = 5)) +
+    ggplot2::facet_wrap(vars(variable), scales = "free")
 
 
 
   # ---
-  # Plot of articles held Canadian institutes over 5 years
+  # Plot of presentations held Canadian institutes over 5 years
   InstSelectedData <- selectedData %>% # user selected institute
     dplyr::filter(`Institution Name` %in% institute)
   InstCadData <- selectedData %>% # Canadian institutes
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
 
-  articleInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
+  presInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -115,14 +122,14 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
     # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Number of successful full-text article requests (journals)`,
+                        y = `Group presentations`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Article Requests",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Group Presentations",
                   x = "Year",
                   fill = "Institute",
-                  title = "Article Requests by Canadian Institutes") +
+                  title = "Group Presentations by Canadian Institutes") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -143,8 +150,8 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
   CadAcademicMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% c("Canadian", "Canadian Nonacademic")) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Number of successful full-text article requests (journals)` ==
-                    max(`Number of successful full-text article requests (journals)`, na.rm = TRUE)) %>%
+    dplyr::filter(`Group presentations` ==
+                    max(`Group presentations`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   # Select non Canadian institute with max articles
@@ -152,22 +159,22 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
     #dplyr::filter(!(`Institution type` %in% c("Canadian", "."))) %>% # for "." median?
     dplyr::filter(`Institution type` %in% "State") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Number of successful full-text article requests (journals)` ==
-                    max(`Number of successful full-text article requests (journals)`, na.rm = TRUE)) %>%
+    dplyr::filter(`Group presentations` ==
+                    max(`Group presentations`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   PrivateMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% "Private") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Number of successful full-text article requests (journals)` ==
-                    max(`Number of successful full-text article requests (journals)`, na.rm = TRUE)) %>%
+    dplyr::filter(`Group presentations` ==
+                    max(`Group presentations`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   NonacademicMax <- selectedData %>%
     dplyr::filter(`Institution type` %in% "Nonacademic") %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::filter(`Number of successful full-text article requests (journals)` ==
-                    max(`Number of successful full-text article requests (journals)`, na.rm = TRUE)) %>%
+    dplyr::filter(`Group presentations` ==
+                    max(`Group presentations`, na.rm = TRUE)) %>%
     dplyr::select(`Institution Name`)
 
   # Join above selections together with other data for all institutes
@@ -183,7 +190,7 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
                                              NonacademicMax),
                                        selectedData, by = c("Year", "Institution Name"))
 
-  articleInstType <- topArticlesInst %>%
+  presInstType <- topArticlesInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
@@ -191,14 +198,14 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
     # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Number of successful full-text article requests (journals)`,
+                        y = `Group presentations`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Article Requests",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Group Presentations",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Article Requests by Institute Type") +
+                  title = "Max Group Presentations by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -224,21 +231,21 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
                                                      PrivateMax),
                                                selectedData, by = c("Year", "Institution Name"))
 
-  articleAcademicPlot <- topArticlesAcademicInst %>%
+  presAcademicPlot <- topArticlesAcademicInst %>%
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Number of successful full-text article requests (journals)`,
+                        y = `Group presentations`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Article Requests",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Group Presentations",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Article Requests by Academic Institute Type") +
+                  title = "Max Group Presentations by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -267,21 +274,21 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
 
   combinedRankData <- rbind(topARLRankData, selectARLRankData)
 
-  articleARLRankTop <- combinedRankData %>%
+  presARLRankTop <- combinedRankData %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
     # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Number of successful full-text article requests (journals)`,
+                        y = `Group presentations`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Article Requests",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Group Presentations",
                   x = "Year",
                   fill = "Institute",
-                  title = "Article Requests by Institutes with Highest Investment ARL Rank") +
+                  title = "Group Presentations by Institutes with Highest Investment ARL Rank") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -297,16 +304,16 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Articles for all dataset
-  articlesAllData <- selectedData %>%
+  # Presentations for all dataset
+  presAllData <- selectedData %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Number of successful full-text article requests (journals)`,
+                        y = `Group presentations`,
                         width = .75)) +
     ggplot2::geom_violin() +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Article Requests",
+    ggplot2::labs(y = "Group Presentations",
                   x = "Year",
-                  title = "Distribution of Article Requests in Dataset") +
+                  title = "Distribution of Group Presentations in Dataset") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -315,12 +322,12 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
                                 breaks = scales::pretty_breaks(n = 5))
 
 
-  return(list(articleUserInstitute = articleUserInstitute,
-              articleInstCanadian = articleInstCanadian,
-              articleInstType = articleInstType,
-              articleAcademicPlot = articleAcademicPlot,
-              articleARLRankTop = articleARLRankTop,
-              articlesAllData = articlesAllData))
+  return(list(presUserInstitute = presUserInstitute,
+              presInstCanadian = presInstCanadian,
+              presInstType = presInstType,
+              presAcademicPlot = presAcademicPlot,
+              presARLRankTop = presARLRankTop,
+              presAllData = presAllData))
 }
 
 # [END]

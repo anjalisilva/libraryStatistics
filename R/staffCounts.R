@@ -107,7 +107,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   color = "Institute",
                   title = "Professional Staff (FTE) by Selected Institute") +
@@ -138,7 +138,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   fill = "Institute",
                   title = "Professional Staff (FTE) by Canadian Institutes") +
@@ -210,7 +210,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   fill = "Institute",
                   title = "Max Professional Staff (FTE) Counts by Institute Type") +
@@ -250,7 +250,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   fill = "Institute",
                   title = "Max Professional Staff (FTE) Counts by Academic Institute Type") +
@@ -292,8 +292,8 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         y = `Professional staff`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   fill = "Institute",
                   title = "Professional Staff (FTE) by Institutes with Highest Investment ARL Rank") +
@@ -388,7 +388,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         y = `staffFTEperGradStudent`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff Per Grad Student",
                   x = "Year",
                   fill = "Institute",
@@ -419,7 +419,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         y = `staffFTEperDoctoral`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff Per Doctoral Degree",
                   x = "Year",
                   fill = "Institute",
@@ -451,7 +451,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         y = `profStaffPercentageTotal`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Percentage",
                   x = "Year",
                   fill = "Institute",
@@ -490,10 +490,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                y = `value`,
                fill = factor(`Staff Type`))) +
     ggplot2::geom_bar(position = "stack", stat = "identity") +
-    ggplot2::labs(y = "Staff Counts (FTE)",
+    ggplot2::labs(y = "Staff (FTE) Counts ",
                   x = "Year",
                   fill = "Type",
-                  title = "Staff Counts (FTE) Proportion\nby Selected Institute") +
+                  title = "Staff (FTE) Counts Proportion\nby Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -511,7 +511,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Professional staff`,
                         width = .75)) +
-    ggplot2::labs(y = "Professional Staff (FTE)",
+    ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   title = "Professional Staff (FTE) in Dataset") +
     ggplot2::geom_violin() +
@@ -530,9 +530,9 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total prof. + support + student staff`,
                         width = .75)) +
-    ggplot2::labs(y = "Staff",
+    ggplot2::labs(y = "Staff (FTE) Counts",
                   x = "Year",
-                  title = "All Staff (Prof, Suport, Casual) in Dataset") +
+                  title = "All Staff (Prof, Suport, Casual; FTE) in Dataset") +
     ggplot2::geom_violin() +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::theme_bw() +

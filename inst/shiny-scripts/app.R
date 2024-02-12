@@ -139,6 +139,15 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstType')),
                            )),
+                  tabPanel("Presentations",
+                           h3("A Comparison of Group Presentations and Participants"),
+                           br(),
+                           fluidRow(
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("presAllData"), plotOutput('presUserInstitute')),
+                             splitLayout(cellWidths = c("100%"), plotOutput('presARLRankTop')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("presAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("presInstType")),
+                           )),
                   tabPanel("Article Requests",
                            h3("A Comparison of Article Requests"),
                            br(),
@@ -546,6 +555,45 @@ server <- function(input, output, session) {
   # plot - staffAllData
   output$staffAllData <- renderPlot({
     startvisualizing6()[[13]]
+  })
+
+
+  # -- Presentations and Participants
+  startvisualizing8 <- eventReactive(eventExpr = input$button2, {
+    visPresentationData(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - presUserInstitute
+  output$presUserInstitute <- renderPlot({
+    startvisualizing8()[[1]]
+  })
+
+  # plot - presInstCanadian
+  output$presInstCanadian <- renderPlot({
+    startvisualizing8()[[2]]
+  })
+
+  # plot - presInstType
+  output$presInstType <- renderPlot({
+    startvisualizing8()[[3]]
+  })
+
+  # plot - presAcademicPlot
+  output$presAcademicPlot <- renderPlot({
+    startvisualizing8()[[4]]
+  })
+
+  # plot - presARLRankTop
+  output$presARLRankTop <- renderPlot({
+    startvisualizing8()[[5]]
+  })
+
+  # plot - presAllData
+  output$presAllData <- renderPlot({
+    startvisualizing8()[[6]]
   })
 
 

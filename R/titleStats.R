@@ -13,8 +13,6 @@
 # 3. Num of doctoral degrees + fields
 # 4. Initial circulations
 # 5. Gate counts
-# 6. Presentations to groups + participants
-#.   Participants/presentation
 # 7. Add average change per year for titles, volumes
 #.   articles, gate counts
 
