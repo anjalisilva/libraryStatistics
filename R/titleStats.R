@@ -273,7 +273,6 @@ visTitlesData <- function(dataARL, institute, years = NA) {
 
   # ---
   # Plot comparing top 5 ARL ranks and their titles
-
   topARLRankData <- selectedData %>%
     dplyr::filter(`Rank in ARL investment index` %in% c("1", "2", "3", "4", "5"))
 
@@ -313,6 +312,7 @@ visTitlesData <- function(dataARL, institute, years = NA) {
   # --- --- --- --- --- --- --- ---
   # Titles in entire dataset
   titleAllData <- selectedData %>%
+    dplyr::filter()
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Titles held`,
                         width = .75)) +
