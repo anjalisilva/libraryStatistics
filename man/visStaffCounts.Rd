@@ -47,10 +47,25 @@ Returns three bar plots showing staff count statistics
         top 5 ARL investment ranks over user selected number of years.
         The user selected institute is provided for comparison.
         The median is provided for comparison.
-   \ite staffFTEComp - A barplot showing proportion of professional,
+   \item staffFTEComp - A barplot showing proportion of professional,
         support and student assitant staff, making up the total
         staff (FTE) counts in the selected institute over the
         user provided period.
+   \item staffFTEperFaculty - A barplot showing the proportion of
+        professional staff (FTE) per full-time instructional faculty.
+   \item staffFTEperStudent - A barplot showing the proportion of
+        professional staff (FTE) per students of status full-time
+        and part-time, both graduate and undergraduate.
+   \item staffFTEperGradStudent - A barplot showing the proportion of
+        professional staff (FTE) per graduate students of status full-time
+        and part-time.
+   \item staffFTEperDoctoral - A barplot showing the proportion of
+        professional staff (FTE) per doctoral degree awarded.
+   \item profStaffPercentage - A barplot showing the proportion of
+        professional staff (FTE) as a percentage of total staff.
+   \item staffAllData - A violin plot showing the distribution
+        of staff counts per years selected by user, for the
+        entire dataset uploaded.
 }
 }
 \description{
