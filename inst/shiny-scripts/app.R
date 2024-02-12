@@ -144,6 +144,7 @@ ui <- fluidPage(
                            br(),
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("presAllData"), plotOutput('presUserInstitute')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("participantsAllData"), plotOutput('partUserInstitute')),
                              splitLayout(cellWidths = c("100%"), plotOutput('presARLRankTop')),
                              splitLayout(cellWidths = c("100%"), plotOutput("presAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput("presInstType")),
@@ -571,32 +572,41 @@ server <- function(input, output, session) {
     startvisualizing8()[[1]]
   })
 
+  # plot - partUserInstitute
+  output$partUserInstitute <- renderPlot({
+    startvisualizing8()[[2]]
+  })
+
+
   # plot - presInstCanadian
   output$presInstCanadian <- renderPlot({
-    startvisualizing8()[[2]]
+    startvisualizing8()[[3]]
   })
 
   # plot - presInstType
   output$presInstType <- renderPlot({
-    startvisualizing8()[[3]]
+    startvisualizing8()[[4]]
   })
 
   # plot - presAcademicPlot
   output$presAcademicPlot <- renderPlot({
-    startvisualizing8()[[4]]
+    startvisualizing8()[[5]]
   })
 
   # plot - presARLRankTop
   output$presARLRankTop <- renderPlot({
-    startvisualizing8()[[5]]
+    startvisualizing8()[[6]]
   })
 
   # plot - presAllData
   output$presAllData <- renderPlot({
-    startvisualizing8()[[6]]
+    startvisualizing8()[[7]]
   })
 
-
+  # plot - participantsAllData
+  output$participantsAllData <- renderPlot({
+    startvisualizing8()[[8]]
+  })
 
   # -- Article Requests
   startvisualizing7 <- eventReactive(eventExpr = input$button2, {

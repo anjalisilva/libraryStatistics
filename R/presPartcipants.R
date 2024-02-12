@@ -82,10 +82,8 @@ visPresentationData <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
     # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
-    dplyr::select("Institution Name", "Year", "Group presentations", "Presentation participants") %>%
-    reshape2::melt(id = c("Year", "Institution Name")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `value`,
+                        y = `Group presentations`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
                        linewidth = 0.5,
@@ -96,14 +94,44 @@ visPresentationData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Count",
                   x = "Year",
                   color = "Institute",
-                  title = "Group Presentations & Participants by Selected Institute") +
+                  title = "Group Presentations by Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
-    ggplot2::facet_wrap(vars(variable), scales = "free")
+                                breaks = scales::pretty_breaks(n = 5))
+
+
+  # ---
+  # participants
+  # Visualize institute selected with medium
+  partUserInstitute <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% c(institute, "MEDIAN")) %>%
+    # ensure Median appear first in legend
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
+    # dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
+    # width = .75 ensures space between groups
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Presentation participants`,
+                        width = .75)) +
+    ggplot2::geom_line(linetype = "dashed",
+                       linewidth = 0.5,
+                       aes(group = `Institution Name`,
+                           color = `Institution Name`)) +
+    ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Count",
+                  x = "Year",
+                  color = "Institute",
+                  title = "Participants by Selected Institute") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
 
 
 
@@ -321,13 +349,33 @@ visPresentationData <- function(dataARL, institute, years = NA) {
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5))
 
+  # ---
+  # Participants for all dataset
+  participantsAllData <- selectedData %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Presentation participants`,
+                        width = .75)) +
+    ggplot2::geom_violin() +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Presentation Participants",
+                  x = "Year",
+                  title = "Distribution of Participants in Dataset") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
+
 
   return(list(presUserInstitute = presUserInstitute,
+              partUserInstitute = partUserInstitute,
               presInstCanadian = presInstCanadian,
               presInstType = presInstType,
               presAcademicPlot = presAcademicPlot,
               presARLRankTop = presARLRankTop,
-              presAllData = presAllData))
+              presAllData = presAllData,
+              participantsAllData = participantsAllData))
 }
 
 # [END]
