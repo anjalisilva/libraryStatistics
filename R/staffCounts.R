@@ -48,10 +48,25 @@
 #'         top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
-#'    \ite staffFTEComp - A barplot showing proportion of professional,
+#'    \item staffFTEComp - A barplot showing proportion of professional,
 #'         support and student assitant staff, making up the total
 #'         staff (FTE) counts in the selected institute over the
 #'         user provided period.
+#'    \item staffFTEperFaculty - A barplot showing the proportion of
+#'         professional staff (FTE) per full-time instructional faculty.
+#'    \item staffFTEperStudent - A barplot showing the proportion of
+#'         professional staff (FTE) per students of status full-time
+#'         and part-time, both graduate and undergraduate.
+#'    \item staffFTEperGradStudent - A barplot showing the proportion of
+#'         professional staff (FTE) per graduate students of status full-time
+#'         and part-time.
+#'    \item staffFTEperDoctoral - A barplot showing the proportion of
+#'         professional staff (FTE) per doctoral degree awarded.
+#'    \item profStaffPercentage - A barplot showing the proportion of
+#'         professional staff (FTE) as a percentage of total staff.
+#'    \item staffAllData - A violin plot showing the distribution
+#'         of staff counts per years selected by user, for the
+#'         entire dataset uploaded.
 #' }
 #'
 #' @examples
@@ -390,15 +405,15 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
   # ---
   # Using total lib stats per doctoral degree
-  staffFTEperPhD <- combinedRankData %>%
-    dplyr::mutate(staffFTEperPhD = `Professional staff`/ `Doctor's degrees awarded`) %>%
+  staffFTEperDoctoral <- combinedRankData %>%
+    dplyr::mutate(staffFTEperDoctoral = `Professional staff`/ `Doctor's degrees awarded`) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `staffFTEperPhD`,
+                        y = `staffFTEperDoctoral`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
@@ -485,6 +500,27 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                                 breaks = scales::pretty_breaks(n = 5))
 
 
+  # --- --- --- --- --- --- --- ---
+  # Professional staff counts in entire dataset
+  staffAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Professional staff`,
+                        width = .75)) +
+    ggplot2::labs(y = "Professional Staff (FTE)",
+                  x = "Year",
+                  title = "Professional Staff (FTE) in Dataset") +
+    ggplot2::geom_violin() +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
+
+
 
   return(list(staffFTEUserInstitute = staffFTEUserInstitute,
               staffFTEInstCanadian = staffFTEInstCanadian,
@@ -495,7 +531,8 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
               staffFTEperFaculty = staffFTEperFaculty,
               staffFTEperStudent = staffFTEperStudent,
               staffFTEperGradStudent = staffFTEperGradStudent,
-              staffFTEperPhD = staffFTEperPhD,
-              profStaffPercentage = profStaffPercentage))
+              staffFTEperDoctoral = staffFTEperDoctoral,
+              profStaffPercentage = profStaffPercentage,
+              staffAllData = staffAllData))
 }
 # [END]
