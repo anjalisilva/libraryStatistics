@@ -129,7 +129,8 @@ ui <- fluidPage(
                            h3("A Comparison of Library Staff Counts"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput('staffFTEComp')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffAllData"), plotOutput("staffFTEUserInstitute")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("staffFTEComp")),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEARLRankTop")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperFaculty"), plotOutput('staffFTEperStudent')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffFTEperDoctoral')),
@@ -535,6 +536,11 @@ server <- function(input, output, session) {
   # plot - profStaffPercentage
   output$profStaffPercentage <- renderPlot({
     startvisualizing6()[[11]]
+  })
+
+  # plot - staffAllData
+  output$staffAllData <- renderPlot({
+    startvisualizing6()[[12]]
   })
 
 
