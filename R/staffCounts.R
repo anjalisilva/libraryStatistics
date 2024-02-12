@@ -64,9 +64,12 @@
 #'         professional staff (FTE) per doctoral degree awarded.
 #'    \item profStaffPercentage - A barplot showing the proportion of
 #'         professional staff (FTE) as a percentage of total staff.
-#'    \item staffAllData - A violin plot showing the distribution
-#'         of staff counts per years selected by user, for the
+#'    \item profStaffAllData - A violin plot showing the distribution
+#'         of professional staff counts per years selected by user, for the
 #'         entire dataset uploaded.
+#'    \item staffAllData - A violin plot showing the distribution
+#'         of all (professional, support and casual) staff counts per
+#'         years selected by user, for the entire dataset uploaded.
 #' }
 #'
 #' @examples
@@ -502,7 +505,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
   # --- --- --- --- --- --- --- ---
   # Professional staff counts in entire dataset
-  staffAllData <- selectedData %>%
+  profStaffAllData <- selectedData %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
@@ -511,6 +514,25 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Professional Staff (FTE)",
                   x = "Year",
                   title = "Professional Staff (FTE) in Dataset") +
+    ggplot2::geom_violin() +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5))
+
+
+  staffAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Total prof. + support + student staff`,
+                        width = .75)) +
+    ggplot2::labs(y = "Staff",
+                  x = "Year",
+                  title = "All Staff (Prof, Suport, Casual) in Dataset") +
     ggplot2::geom_violin() +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::theme_bw() +
@@ -533,6 +555,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
               staffFTEperGradStudent = staffFTEperGradStudent,
               staffFTEperDoctoral = staffFTEperDoctoral,
               profStaffPercentage = profStaffPercentage,
+              profStaffAllData = profStaffAllData,
               staffAllData = staffAllData))
 }
 # [END]

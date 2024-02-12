@@ -63,9 +63,12 @@ Returns three bar plots showing staff count statistics
         professional staff (FTE) per doctoral degree awarded.
    \item profStaffPercentage - A barplot showing the proportion of
         professional staff (FTE) as a percentage of total staff.
-   \item staffAllData - A violin plot showing the distribution
-        of staff counts per years selected by user, for the
+   \item profStaffAllData - A violin plot showing the distribution
+        of professional staff counts per years selected by user, for the
         entire dataset uploaded.
+   \item staffAllData - A violin plot showing the distribution
+        of all (professional, support and casual) staff counts per
+        years selected by user, for the entire dataset uploaded.
 }
 }
 \description{
