@@ -129,8 +129,8 @@ ui <- fluidPage(
                            h3("A Comparison of Library Staff Counts"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffAllData"), plotOutput("staffAllData")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput("staffFTEComp")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffAllData"), plotOutput("staffFTEUserInstitute")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffAllData"), plotOutput("staffFTEComp")),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEARLRankTop")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperFaculty"), plotOutput('staffFTEperStudent')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffFTEperDoctoral')),

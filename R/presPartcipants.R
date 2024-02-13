@@ -91,7 +91,7 @@ visPresentationData <- function(dataARL, institute, years = NA) {
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Count",
+    ggplot2::labs(y = "Group Presentations",
                   x = "Year",
                   color = "Institute",
                   title = "Group Presentations by Selected Institute") +
@@ -122,7 +122,7 @@ visPresentationData <- function(dataARL, institute, years = NA) {
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
-    ggplot2::labs(y = "Count",
+    ggplot2::labs(y = "Presentation Participants",
                   x = "Year",
                   color = "Institute",
                   title = "Participants by Selected Institute") +
