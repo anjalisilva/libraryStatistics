@@ -13,14 +13,15 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
 
-      tags$p("Instructions: This is a Shiny Application (app) that is part of the libraryStatistics
-             R package. Most of the functions available via the package are made
-             available with Shiny App. The libraryStatistics is an R package for
+      tags$p("Instructions: This is the Shiny Application that is part of the libraryStatistics
+             R package. Functions available via the package are made
+             available here. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
              survey of Association of Research Libraries (ARL). First upload the dataset.
              The list of choices for 'Institute' and 'Years' based on uploaded dataset
              will appear. Select one institute and upto 5 years, and press 'Analyze'.
-             Explore the results by navigating the tabs to the right."),
+             Explore the results by navigating the tabs to the right. If choices are
+             altered, you will have to press 'Analyze' again."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -653,11 +654,8 @@ server <- function(input, output, session) {
   observeEvent(input$data1, {
     # Show a modal when the button is pressed
     shinyalert(title = "Example Dataset 1",
-               text = "This is a simulated dataset generated from mixtures of multivariate Poisson log-normal
-               distributions with G = 2 components. It has a size of n = 1000 observations along rows and d = 6
-               samples along columns. Data was generated January, 2022. To save the file, click on link, then click 'Download' from the top right side.
-               Citation: Silva, A., S. J. Rothstein, P. D. McNicholas, and S. Subedi (2019). A multivariate Poisson-log normal
-               mixture model for clustering transcriptome sequencing data. BMC Bioinformatics. 2019;20(1):394. URL https://pubmed.ncbi.nlm.nih.gov/31311497/",
+               text = "You may download a simulated example dataset generated
+               with the format required from link: https://exampledata.ca",
                type = "info")
   })
 

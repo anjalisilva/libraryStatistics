@@ -110,7 +110,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   color = "Institute",
-                  title = paste0("Professional Staff (FTE) for ", institute)) +
+                  title = "Professional Staff (FTE) by Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -493,7 +493,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Staff (FTE) Counts ",
                   x = "Year",
                   fill = "Type",
-                  title = paste0("Staff (FTE) Counts Proportion for\n", institute)) +
+                  title = "Staff (FTE) Counts Proportion\nby Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
