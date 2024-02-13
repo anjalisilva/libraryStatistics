@@ -18,10 +18,13 @@ ui <- fluidPage(
              available here. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
              survey of Association of Research Libraries (ARL). First upload the dataset.
-             The list of choices for 'Institute' and 'Years' based on uploaded dataset
-             will appear. Select one institute and upto 5 years, and press 'Analyze'.
+             To download data from ARL Data Portal, it is recommended that all variables
+             are selected, with columns being 'Variables' and data sorted by
+             'Institution Name' (default options). Once data is uploaded, the list of
+             choices for 'Institute' and 'Years' based on uploaded dataset
+             will appear here. Select one institute and upto 5 years, and press 'Analyze'.
              Explore the results by navigating the tabs to the right. If choices are
-             altered, you will have to press 'Analyze' again."),
+             later altered, press 'Analyze' again to update results."),
 
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -35,9 +38,10 @@ ui <- fluidPage(
       fileInput(inputId = "file1",
                 label = "Dataset: Upload a dataset below to analyze. File should be
                 in comma-separated value (.csv) format with rows corresponding
-                to years and columns to variables. The first column must
-                be 'Year', followed by other variables in no particular order,
-                e.g., 'Institution Name', 'Institution type', etc. as downloaded
+                to years and columns to ARL indicators (variables). The first column must
+                be 'Year', followed by other indicators in no particular order,
+                e.g., 'Institution Name', 'Institution type', etc. as directly
+                downloaded
                 from ARL Data Portal.",
                 accept = c(".csv")),
       selectInput(inputId = "instituteInput",
