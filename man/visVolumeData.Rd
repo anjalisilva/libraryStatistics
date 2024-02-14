@@ -48,7 +48,7 @@ Returns three bar plots showing volume statistics
         The user selected institute is provided for comparison.
          The median is provided for comparison.
   \item volumesAllData - Violin plots showing the distribution
-        of volumes for entire dataset uploaded by user for the
+        of volumes for all institutes in dataset uploaded by user for the
         years chosen by the user.
 }
 }

@@ -48,6 +48,10 @@ Returns three bar plots showing title statistics
         top 5 ARL investment ranks over user selected number of years.
         The user selected institute is provided for comparison.
         The median is provided for comparison.
+  \item tleAllData - Violin plots showing the distribution
+        of total library expenditures for all institutes in dataset
+        uploaded by user for the years chosen by the user.
+
 }
 }
 \description{

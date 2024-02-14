@@ -49,6 +49,10 @@
 #'         top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
+#'   \item tleAllData - Violin plots showing the distribution
+#'         of total library expenditures for all institutes in dataset
+#'         uploaded by user for the years chosen by the user.
+#'
 #' }
 #'
 #' @examples
@@ -469,6 +473,28 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        size = 6)
 
 
+  # ---
+  # Using total lib stats in the entire dataset
+  tleAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Total library expenditures`,
+                        width = .75)) +
+    ggplot2::geom_violin() +
+    ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Total Library Expenditures",
+                  x = "Year",
+                  title = "Distribution of Total Library Expenditures in Dataset") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    EnvStats::stat_n_text(size = 6)
+
 
 
   return(list(tleUserInstitute = tleUserInstitute,
@@ -480,7 +506,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
               tleARLRankTopPerFaculty = tleARLRankTopPerFaculty,
               tleARLRankTopPerStudent = tleARLRankTopPerStudent,
               tleARLRankTopPerGradStudent = tleARLRankTopPerGradStudent,
-              tleARLRankTopPerPhD = tleARLRankTopPerPhD))
+              tleARLRankTopPerPhD = tleARLRankTopPerPhD,
+              tleAllData = tleAllData))
 }
 
 # [END]

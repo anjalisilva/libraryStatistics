@@ -52,6 +52,9 @@
 #'   \item salariesExpComp - A barplot showing proportion of professional,
 #'         support and student assistant staff making up the total salaries,
 #'         over the period selected by user.
+#'   \item salAllData - Violin plots showing the distribution
+#'         of total salaries for all institutes in the dataset uploaded by
+#'          the user for the years chosen by the user.
 #' }
 #'
 #' @examples
@@ -399,6 +402,29 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                        size = 6)
 
 
+  # --- --- --- --- --- --- --- ---
+  # Salaries in entire dataset
+  salAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Total salaries & wages`,
+                        width = .75)) +
+    ggplot2::geom_violin() +
+    ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Total Salaries & Wages",
+                  x = "Year",
+                  title = "Distribution of Total Salaries & Wages in Dataset") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    EnvStats::stat_n_text(size = 6)
+
+
 
   return(list(salariesUserInstitute = salariesUserInstitute,
               salariesExpComp = salariesExpComp,
@@ -407,7 +433,8 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
               salariesAcademicPlot = salariesAcademicPlot,
               salariesARLRankTop = salariesARLRankTop,
               salProfStaffperCount = salProfStaffperCount,
-              salSupportStaffperCount = salSupportStaffperCount))
+              salSupportStaffperCount = salSupportStaffperCount,
+              salAllData = salAllData))
 }
 
 # [END]

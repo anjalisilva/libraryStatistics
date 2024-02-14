@@ -101,7 +101,7 @@ ui <- fluidPage(
                            h3("A Comparison of eBooks"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("100%"), plotOutput("eBooksAllData")),
+                             splitLayout(cellWidths = c("70%", "30%"), plotOutput("eBooksAllData"), plotOutput("")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookUserInstitute"), plotOutput('eBookVolumeComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("eBookARLRankTop")),
                              splitLayout(cellWidths = c("100%"), plotOutput('eBookInstCanadian')),
@@ -112,6 +112,7 @@ ui <- fluidPage(
                            h3("A Comparison of Total Library Expenditures"),
                            br(),
                            fluidRow(
+                             splitLayout(cellWidths = c("70%"), plotOutput("tleAllData")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleARLRankTopPerStudent")),
@@ -433,6 +434,11 @@ server <- function(input, output, session) {
   # plot - tleARLRankTopPerPhD
   output$tleARLRankTopPerPhD <- renderPlot({
     startvisualizing4()[[10]]
+  })
+
+  # plot - tleAllData
+  output$tleAllData <- renderPlot({
+    startvisualizing4()[[11]]
   })
 
 

@@ -48,8 +48,8 @@ Returns three bar plots showing title statistics
         The user selected institute is provided for comparison.
         The median is provided for comparison.
   \item titleAllData - Violin plots showing the distribution
-        of titles for entire dataset uploaded by the user for the
-        years chosen by the user.
+        of titles for for all institutes in the dataset uploaded by
+        the user for the years chosen by the user.
 }
 }
 \description{

@@ -69,7 +69,8 @@
 #'         entire dataset uploaded.
 #'    \item staffAllData - A violin plot showing the distribution
 #'         of all (professional, support and casual) staff counts per
-#'         years selected by user, for the entire dataset uploaded.
+#'         years selected by user, for the all institutes in dataset
+#'         uploaded.
 #' }
 #'
 #' @examples

@@ -51,6 +51,9 @@ Returns three bar plots showing salary statistics
   \item salariesExpComp - A barplot showing proportion of professional,
         support and student assistant staff making up the total salaries,
         over the period selected by user.
+  \item salAllData - Violin plots showing the distribution
+        of total salaries for all institutes in the dataset uploaded by
+         the user for the years chosen by the user.
 }
 }
 \description{

@@ -1,6 +1,6 @@
 
 
-# ARLDataDownload <- readr::read_csv("ARL Data Download.csv")
+# ARLDataDownload <- readr::read_csv("ARL Data Download_Dec2023.csv")
 # ARLDataDownload <- readr::read_csv("\\\\utl.utoronto.ca/Staff/Data/silvah/Desktop/ARL Data Download.csv")
 # ARLDataDownload <- readr::read_csv(
 #   "/Users/user/Library/CloudStorage/GoogleDrive-anjali@alumni.uoguelph.ca/My Drive/UTorontoLibrary/Shiny/ARL Data Download.csv")
@@ -67,8 +67,8 @@
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
 #'   \item titleAllData - Violin plots showing the distribution
-#'         of titles for entire dataset uploaded by the user for the
-#'         years chosen by the user.
+#'         of titles for for all institutes in the dataset uploaded by
+#'         the user for the years chosen by the user.
 #' }
 #'
 #' @examples

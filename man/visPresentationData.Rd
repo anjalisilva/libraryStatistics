@@ -47,9 +47,9 @@ Returns three bar plots showing title statistics
         top 5 ARL investment ranks over user selected number of years.
         The user selected institute is provided for comparison.
         The median is provided for comparison.
-  \item pressAllData - A violin plot showing the distribution of
-        group presentations per years selected by user, for the
-        entire dataset uploaded.
+  \item pressAllData - Violin plots showing the distribution
+        of group presentations for all institutes in the dataset uploaded by user
+        for the years chosen by the user.
 
 }
 }
