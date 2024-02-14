@@ -343,7 +343,7 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Professional Staff Salaries Per\nProfessional Staff",
+    ggplot2::labs(y = "Professional Staff Salaries Per\nProfessional Staff (FTE)",
                   x = "Year",
                   fill = "Institute",
                   title = "Professional Staff Salaries Per Professional Staff\nby Institutes with Highest Investment ARL Rank") +
@@ -378,7 +378,7 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Support Staff Salaries Per\nSupport Staff",
+    ggplot2::labs(y = "Support Staff Salaries Per\nSupport Staff (FTE)",
                   x = "Year",
                   fill = "Institute",
                   title = "Support Staff Salaries Per Support Staff\nby Institutes with Highest Investment ARL Rank") +
