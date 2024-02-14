@@ -218,7 +218,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                         y = `Electronic books`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Electronic Books",
                   x = "Year",
                   fill = "Institute",
