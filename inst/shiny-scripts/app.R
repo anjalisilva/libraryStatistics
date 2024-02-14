@@ -101,6 +101,7 @@ ui <- fluidPage(
                            h3("A Comparison of eBooks"),
                            br(),
                            fluidRow(
+                             splitLayout(cellWidths = c("100%"), plotOutput("eBooksAllData")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("eBookUserInstitute"), plotOutput('eBookVolumeComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("eBookARLRankTop")),
                              splitLayout(cellWidths = c("100%"), plotOutput('eBookInstCanadian')),
@@ -370,6 +371,10 @@ server <- function(input, output, session) {
     startvisualizing3()[[6]]
   })
 
+  # plot - eBooksAllData
+  output$eBooksAllData <- renderPlot({
+    startvisualizing3()[[7]]
+  })
 
 
   # -- Total Library Expenditures

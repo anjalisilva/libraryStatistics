@@ -47,6 +47,9 @@
 #'         top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'          The median is provided for comparison.
+#'   \item volumesAllData - Violin plots showing the distribution
+#'         of volumes for entire dataset uploaded by user for the
+#'         years chosen by the user.
 #' }
 #'
 #' @examples

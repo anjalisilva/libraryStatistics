@@ -49,6 +49,9 @@
 #'         top 5 ARL investment ranks over user selected number of years.
 #'         The user selected institute is provided for comparison.
 #'         The median is provided for comparison.
+#'   \item eBooksAllData - Violin plots showing the distribution
+#'         of eBooks for entire dataset uploaded by user for the
+#'         years chosen by the user.
 #' }
 #'
 #' @examples
@@ -318,13 +321,36 @@ viseBookData <- function(dataARL, institute, years = NA) {
                        position = position_dodge(width = 0.9), vjust = 0,
                        size = 6)
 
+  # ---
+  # Ebooks in the entire dataset
+  eBooksAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `Electronic books`,
+                        width = .75)) +
+    ggplot2::geom_violin() +
+    ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
+    ggplot2::scale_color_manual(values = c(setColorPalette())) +
+    ggplot2::labs(y = "Electornic Books",
+                  x = "Year",
+                  title = "Distribution of Electornic Books in Dataset") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    EnvStats::stat_n_text(size = 6)
+
 
   return(list(eBookUserInstitute = eBookUserInstitute,
               eBookVolumeComp = eBookVolumeComp,
               eBookInstCanadian = eBookInstCanadian,
               eBookInstType = eBookInstType,
               eBookAcademicPlot = eBookAcademicPlot,
-              eBookARLRankTop = eBookARLRankTop))
+              eBookARLRankTop = eBookARLRankTop,
+              eBooksAllData = eBooksAllData))
 }
 
 # [END]
