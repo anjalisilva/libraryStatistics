@@ -125,6 +125,7 @@ ui <- fluidPage(
                            h3("A Comparison of Library Salaries & Wages"),
                            br(),
                            fluidRow(
+                             splitLayout(cellWidths = c("70%"), plotOutput("salAllData")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesUserInstitute"), plotOutput('salariesExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("salariesARLRankTop")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("salProfStaffperCount"), plotOutput("salSupportStaffperCount")),
@@ -488,6 +489,11 @@ server <- function(input, output, session) {
   # plot - salSupportStaffperCount
   output$salSupportStaffperCount <- renderPlot({
     startvisualizing5()[[8]]
+  })
+
+  # plot - salAllData
+  output$salAllData <- renderPlot({
+    startvisualizing5()[[9]]
   })
 
 

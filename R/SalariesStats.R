@@ -426,7 +426,7 @@ visLibrarySalaries <- function(dataARL, institute, years = NA) {
 
 
 
-  return(list(salariesUserInstitute = salariesUserInstitute,
+    return(list(salariesUserInstitute = salariesUserInstitute,
               salariesExpComp = salariesExpComp,
               salariesInstCanadian = salariesInstCanadian,
               salariesInstType = salariesInstType,
