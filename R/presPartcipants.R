@@ -349,7 +349,7 @@ visPresentationData <- function(dataARL, institute, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
-    EnvStats::stat_n_text()
+    EnvStats::stat_n_text(size = 6)
 
   # ---
   # Participants for all dataset
@@ -369,7 +369,7 @@ visPresentationData <- function(dataARL, institute, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
-    EnvStats::stat_n_text()
+    EnvStats::stat_n_text(size = 6)
 
 
   return(list(presUserInstitute = presUserInstitute,

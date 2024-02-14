@@ -304,6 +304,7 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
                         y = `Number of successful full-text article requests (journals)`,
                         width = .75)) +
     ggplot2::geom_violin() +
+    ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Article Requests",
                   x = "Year",
@@ -313,7 +314,8 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5))
+                                breaks = scales::pretty_breaks(n = 5)) +
+    EnvStats::stat_n_text(size = 6)
 
 
   return(list(articleUserInstitute = articleUserInstitute,
