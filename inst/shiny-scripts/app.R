@@ -14,8 +14,7 @@ ui <- fluidPage(
     sidebarPanel(width = 3,
 
       tags$p("Instructions: This is the Shiny Application that is part of the libraryStatistics
-             R package. Functions available via the package are made
-             available here. The libraryStatistics is an R package for
+             R package. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
              survey of Association of Research Libraries (ARL). First upload the dataset.
              To download data from ARL Data Portal, it is recommended that all variables
@@ -27,7 +26,6 @@ ui <- fluidPage(
              later altered, press 'Analyze' again to update results."),
 
       # br() element to introduce extra vertical spacing ----
-      br(),
       br(),
       br(),
       # input
@@ -115,9 +113,10 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("70%"), plotOutput("tleAllData")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleARLRankTopPerStudent")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleTopPerFaculty")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerStudent"), plotOutput("tleTopPerStudent")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerGradStudent"), plotOutput("tleTopPerGradStudent")),
-                             splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTopPerPhD")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerDoctoral"), plotOutput("tleTopPerDoctoral")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),
@@ -433,8 +432,8 @@ server <- function(input, output, session) {
     startvisualizing4()[[9]]
   })
 
-  # plot - tleARLRankTopPerPhD
-  output$tleARLRankTopPerPhD <- renderPlot({
+  # plot - tleARLRankTopPerDoctoral
+  output$tleARLRankTopPerDoctoral <- renderPlot({
     startvisualizing4()[[10]]
   })
 
@@ -443,10 +442,26 @@ server <- function(input, output, session) {
     startvisualizing4()[[11]]
   })
 
-  # plot - tleTopPerGradStudent
-  output$tleTopPerGradStudent <- renderPlot({
+  # plot - tleTopPerFaculty
+  output$tleTopPerFaculty <- renderPlot({
     startvisualizing4()[[12]]
   })
+
+  # plot - tleTopPerStudent
+  output$tleTopPerStudent <- renderPlot({
+    startvisualizing4()[[13]]
+  })
+
+  # plot - tleTopPerGradStudent
+  output$tleTopPerGradStudent <- renderPlot({
+    startvisualizing4()[[14]]
+  })
+
+  # plot - tleTopPerDoctoral
+  output$tleTopPerDoctoral <- renderPlot({
+    startvisualizing4()[[15]]
+  })
+
 
 
   # -- Salaries
