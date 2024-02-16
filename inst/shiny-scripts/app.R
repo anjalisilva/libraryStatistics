@@ -116,7 +116,8 @@ ui <- fluidPage(
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleARLRankTopPerStudent")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerGradStudent"), plotOutput("tleARLRankTopPerPhD")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerGradStudent"), plotOutput("tleTopPerGradStudent")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTopPerPhD")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),
@@ -440,6 +441,11 @@ server <- function(input, output, session) {
   # plot - tleAllData
   output$tleAllData <- renderPlot({
     startvisualizing4()[[11]]
+  })
+
+  # plot - tleTopPerGradStudent
+  output$tleTopPerGradStudent <- renderPlot({
+    startvisualizing4()[[12]]
   })
 
 

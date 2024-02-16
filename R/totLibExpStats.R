@@ -80,7 +80,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     # ensure Median appear first in legend
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
@@ -109,7 +108,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::filter(`Institution Name` %in% c(institute)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, institute)) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years %>%
     dplyr::select(`Institution Name`, `Year`,
                   `Total materials expenditures`,
                   `Total salaries & wages`,
@@ -150,7 +148,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # width = .75 ensures space between groups
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
@@ -223,7 +220,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     # ggplot2::ggplot(aes(x = reorder(factor(Year), +(`Titles held`)),
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
@@ -264,8 +260,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
-    ggplot2::ggplot(aes(x = factor(`Year`),
+   ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
@@ -307,7 +302,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Total library expenditures`,
                         fill = factor(`Institution Name`),
@@ -341,7 +335,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerFaculty`,
                         fill = factor(`Institution Name`),
@@ -376,7 +369,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
                         fill = factor(`Institution Name`),
@@ -411,7 +403,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
                         fill = factor(`Institution Name`),
@@ -446,7 +437,6 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
     dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::filter(`Year` %in% c(yearsToDisplay)) %>% # Limit to five years
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
                         fill = factor(`Institution Name`),
@@ -497,10 +487,53 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
 
   # ---
-  # Using total lib stats per graduate student
+  # Using total lib stats per graduate student by top contributors (not ARL)
   tlePerGradStudent <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
                     (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerStudent))
+
+  selectInst <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% institute) %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/
+                    (`Part-time graduate students` + `Total fulltime graduate students`))
+
+  combinedTopData <- rbind(tlePerGradStudent, selectInst)
+
+  tleTopPerGradStudent <- combinedTopData %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures\nPer Grad Student",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Institutes with Highest Total Library\nExpenditures Per Grad Student (FT + PT)") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
 
 
 
@@ -514,7 +547,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
               tleARLRankTopPerStudent = tleARLRankTopPerStudent,
               tleARLRankTopPerGradStudent = tleARLRankTopPerGradStudent,
               tleARLRankTopPerPhD = tleARLRankTopPerPhD,
-              tleAllData = tleAllData))
+              tleAllData = tleAllData,
+              tleTopPerGradStudent = tleTopPerGradStudent))
 }
 
 # [END]
