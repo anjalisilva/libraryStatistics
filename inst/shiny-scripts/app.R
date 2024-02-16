@@ -11,7 +11,7 @@ ui <- fluidPage(
   sidebarLayout(
 
     # Sidebar panel for inputs ----
-    sidebarPanel(
+    sidebarPanel(width = 3,
 
       tags$p("Instructions: This is the Shiny Application that is part of the libraryStatistics
              R package. Functions available via the package are made
@@ -66,7 +66,7 @@ ui <- fluidPage(
 
 
     # Main panel for displaying outputs
-    mainPanel(
+    mainPanel(width = 9,
 
       # Output: Tabet
       tabsetPanel(type = "tabs",
