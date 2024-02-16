@@ -334,7 +334,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        size = 6)
 
   # ---
-  # Using total lib stats per faculty
+  # Using total lib stats per faculty by ARL rank
   tleARLRankTopPerFaculty <- combinedRankData %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
@@ -368,7 +368,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        size = 6)
 
   # ---
-  # Using total lib stats per student
+  # Using total lib stats per student by ARL rank
   tleARLRankTopPerStudent <- combinedRankData %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
                     (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
@@ -403,7 +403,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                        size = 6)
 
   # ---
-  # Using total lib stats per graduate student
+  # Using total lib stats per graduate student by ARL rank
   tleARLRankTopPerGradStudent <- combinedRankData %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
                     (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
@@ -494,6 +494,13 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     EnvStats::stat_n_text(size = 6)
+
+
+  # ---
+  # Using total lib stats per graduate student
+  tlePerGradStudent <- selectedData %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/
+                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
 
 
 

@@ -334,6 +334,8 @@ visPresentationData <- function(dataARL, institute, years = NA) {
   # ---
   # Presentations for all dataset
   presAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Group presentations`,
                         width = .75)) +
@@ -354,6 +356,8 @@ visPresentationData <- function(dataARL, institute, years = NA) {
   # ---
   # Participants for all dataset
   participantsAllData <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `Presentation participants`,
                         width = .75)) +
