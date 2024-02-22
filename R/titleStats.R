@@ -10,7 +10,7 @@
 
 # To do
 # 1. Right now comparing user selection against
-#.   other ARL high ranks. But are those the ones
+#.   other ARL high ranks. But are those the ones - salaries/FTEs
 # 2. Add materials borrowed + loaned
 # 3. Num of doctoral degrees + fields
 # 4. Initial circulations
