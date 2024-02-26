@@ -591,6 +591,8 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
   selectInstPerFaculty <- selectedData %>%
     dplyr::filter(`Institution Name` %in% institute) %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`)
+    # Replace INF values with NA
+    dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf))
 
   combinedPerFaculty <- rbind(tlePerFaculty, selectInstPerFaculty)
 
@@ -639,7 +641,9 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
   selectInstPerStudent <- selectedData %>%
     dplyr::filter(`Institution Name` %in% institute) %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
-                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`))
+                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf))
 
   combinedPerStudent <- rbind(tlePerStudent, selectInstPerStudent)
 
@@ -688,7 +692,9 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
   selectInstGrad <- selectedData %>%
     dplyr::filter(`Institution Name` %in% institute) %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`))
+                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf))
 
   combinedTopData <- rbind(tlePerGradStudent, selectInstGrad)
 
@@ -735,7 +741,9 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
   selectInstDoc <- selectedData %>%
     dplyr::filter(`Institution Name` %in% institute) %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`)
+    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf))
 
   combinedTopDoc <- rbind(tleTopPerDoctoral, selectInstDoc)
 
