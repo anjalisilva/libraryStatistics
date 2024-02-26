@@ -70,6 +70,21 @@ Returns three bar plots showing staff count statistics
         of all (professional, support and casual) staff counts per
         years selected by user, for the all institutes in dataset
         uploaded.
+   \item staffTopPerFaculty - A barplot comparing user selected institute
+        with institutes with highest value for count of professional staff (FTE)
+        per teaching faculty, over user selected number of years.
+   \item staffTopPerStudent - A barplot comparing user selected institute
+        with institutes with highest value for count of professional staff (FTE)
+        per total students reported that are either part-time (PT)
+        or full-time (FT), over user selected number of years.
+   \item staffTopPerGradStudent - A barplot comparing user selected institute
+        with institutes with highest value for count of professional staff (FTE)
+        expenditures per total graduate students reported that are either
+        part-time (PT) or full-time (FT), over user selected number of years.
+   \item staffTopPerDoctoral - A barplot comparing user selected institute
+        with institutes with highest value for count of professional staff (FTE)
+        expenditures per doctoral degrees awarded, over user selected number
+        of years.
 }
 }
 \description{

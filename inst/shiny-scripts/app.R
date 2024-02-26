@@ -120,7 +120,7 @@ ui <- fluidPage(
                              br(),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
                              br(),
-                             h4("--- Total Library Expenditures as Ratios with on ARL Ranks ---", align = "center"),
+                             h4("--- Total Library Expenditures as Ratios with ARL Ranks ---", align = "center"),
                              br(),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleTopPerFaculty")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerStudent"), plotOutput("tleTopPerStudent")),
@@ -153,15 +153,32 @@ ui <- fluidPage(
                            h3("A Comparison of Library Staff Counts"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffAllData"), plotOutput("staffFTEUserInstitute")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffAllData"), plotOutput("staffFTEComp")),
+                             h4("--- Staff Counts (FTE) Trends in the Uploaded Dataset ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffAllData"), plotOutput("staffAllData")),
+                             br(),
+                             h4("--- Staff Counts (FTE) Trends for Selected Institute ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput("staffFTEComp")),
+                             br(),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEARLRankTop")),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperFaculty"), plotOutput('staffFTEperStudent')),
-                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffFTEperDoctoral')),
+                             br(),
+                             h4("--- Professional Staff Counts (FTE) as Ratios with ARL Ranks ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperFaculty"), plotOutput('staffTopPerFaculty')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperStudent"), plotOutput('staffTopPerStudent')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffTopPerGradStudent')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperDoctoral"), plotOutput('staffTopPerDoctoral')),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffPercentage")),
-                             splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstCanadian')),
+                             br(),
+                             h4("--- Professional Staff Counts (FTE) as Overall Maximums ---", align = "center"),
+                             br(),
                              splitLayout(cellWidths = c("100%"), plotOutput("staffFTEAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstType')),
+                             br(),
+                             h4("--- Professional Staff Counts (FTE) for Canadian Institutes ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstCanadian')),
                            )),
                   tabPanel("Presentations",
                            h3("A Comparison of Group Presentations and Participants"),
@@ -618,6 +635,26 @@ server <- function(input, output, session) {
   # plot - staffAllData
   output$staffAllData <- renderPlot({
     startvisualizing6()[[13]]
+  })
+
+  # plot - staffTopPerFaculty
+  output$staffTopPerFaculty <- renderPlot({
+    startvisualizing6()[[14]]
+  })
+
+  # plot - staffPerStudent
+  output$staffTopPerStudent <- renderPlot({
+    startvisualizing6()[[15]]
+  })
+
+  # plot - staffPerGradStudent
+  output$staffTopPerGradStudent <- renderPlot({
+    startvisualizing6()[[16]]
+  })
+
+  # plot - staffTopPerDoctoral
+  output$staffTopPerDoctoral <- renderPlot({
+    startvisualizing6()[[17]]
   })
 
 

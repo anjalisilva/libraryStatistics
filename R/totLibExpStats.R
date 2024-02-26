@@ -93,8 +93,8 @@
 #'
 #' @examples
 #' visTotalLibraryExp(dataARL = ARLDataDownload,
-#'               institute = "BOSTON",
-#'               years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#'                    institute = "BOSTON",
+#'                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -387,10 +387,11 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Total Library Expenditures",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Total Library Expenditures by Institutes with Highest Total Library Expenditures") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                  fill = "Institute") +
+    ggplot2::theme_bw()  +
+    ggplot2::ggtitle(label = "Total Library Expenditures by Institutes with Highest Total Library Expenditures",
+                     subtitle = "ARL rank is shown on top of each bar; median value in green and selected institute in red color.") +
+ ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
                                               vjust = 0.5,
@@ -590,7 +591,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
 
   selectInstPerFaculty <- selectedData %>%
     dplyr::filter(`Institution Name` %in% institute) %>%
-    dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`)
+    dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf))
 

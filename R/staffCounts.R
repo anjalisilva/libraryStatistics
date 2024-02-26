@@ -71,6 +71,21 @@
 #'         of all (professional, support and casual) staff counts per
 #'         years selected by user, for the all institutes in dataset
 #'         uploaded.
+#'    \item staffTopPerFaculty - A barplot comparing user selected institute
+#'         with institutes with highest value for count of professional staff (FTE)
+#'         per teaching faculty, over user selected number of years.
+#'    \item staffTopPerStudent - A barplot comparing user selected institute
+#'         with institutes with highest value for count of professional staff (FTE)
+#'         per total students reported that are either part-time (PT)
+#'         or full-time (FT), over user selected number of years.
+#'    \item staffTopPerGradStudent - A barplot comparing user selected institute
+#'         with institutes with highest value for count of professional staff (FTE)
+#'         expenditures per total graduate students reported that are either
+#'         part-time (PT) or full-time (FT), over user selected number of years.
+#'    \item staffTopPerDoctoral - A barplot comparing user selected institute
+#'         with institutes with highest value for count of professional staff (FTE)
+#'         expenditures per doctoral degrees awarded, over user selected number
+#'         of years.
 #' }
 #'
 #' @examples
@@ -296,9 +311,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Professional Staff (FTE) by Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Professional Staff (FTE) by Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; median value in green and selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -513,12 +529,13 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         y = `Professional staff`,
                         width = .75)) +
     ggplot2::labs(y = "Professional Staff (FTE) Counts",
-                  x = "Year",
-                  title = "Professional Staff (FTE) in Dataset") +
+                  x = "Year") +
     ggplot2::geom_violin() +
     ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Professional Staff (FTE) in Dataset",
+                     subtitle = "The sample size (n) equals number of institutes submitting data.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -534,12 +551,13 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         y = `Total prof. + support + student staff`,
                         width = .75)) +
     ggplot2::labs(y = "Staff (FTE) Counts",
-                  x = "Year",
-                  title = "All Staff (Prof, Suport, Casual; FTE) in Dataset") +
+                  x = "Year") +
     ggplot2::geom_violin() +
     ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "All Staff (Prof, Suport, Casual; FTE) in Dataset",
+                     subtitle = "The sample size (n) equals number of institutes submitting data.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -716,7 +734,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     dplyr::filter(`Institution Name` %in% institute) %>%
     dplyr::mutate(staffPerDoctoral = `Professional staff`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
-    dplyr::mutate(staffPerStudent = na_if(staffPerStudent, Inf))
+    dplyr::mutate(staffPerDoctoral = na_if(staffPerDoctoral, Inf))
 
   combinedTopDoc <- rbind(staffTopPerDoctoral, selectInstDoc)
 
@@ -768,8 +786,8 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
               profStaffAllData = profStaffAllData,
               staffAllData = staffAllData,
               staffTopPerFaculty = staffTopPerFaculty,
-              staffPerStudent = staffPerStudent,
-              staffPerGradStudent = staffPerGradStudent,
+              staffTopPerStudent = staffTopPerStudent,
+              staffTopPerGradStudent = staffTopPerGradStudent,
               staffTopPerDoctoral = staffTopPerDoctoral))
 }
 # [END]
