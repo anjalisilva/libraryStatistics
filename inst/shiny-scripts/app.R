@@ -110,16 +110,32 @@ ui <- fluidPage(
                            h3("A Comparison of Total Library Expenditures"),
                            br(),
                            fluidRow(
-                             splitLayout(cellWidths = c("70%"), plotOutput("tleAllData")),
+                             h4("--- Total Library Expenditures Trends in the Uploaded Dataset ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("15%", "70%", "15%"), plotOutput(""), plotOutput("tleAllData"), plotOutput("")),
+                             br(),
+                             h4("--- Total Library Expenditures Trends for Selected Institute ---", align = "center"),
+                             br(),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
+                             br(),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
+                             br(),
+                             h4("--- Total Library Expenditures as Ratios with on ARL Ranks ---", align = "center"),
+                             br(),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleTopPerFaculty")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerStudent"), plotOutput("tleTopPerStudent")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerGradStudent"), plotOutput("tleTopPerGradStudent")),
                              splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerDoctoral"), plotOutput("tleTopPerDoctoral")),
-                             splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
+                             br(),
+                             h4("--- Total Library Expenditures as Overall Maximums ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleTop")),
                              splitLayout(cellWidths = c("100%"), plotOutput("tleAcademicPlot")),
                              splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),
+                             br(),
+                             h4("--- Total Library Expenditures for Canadian Institutes ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
                            )),
                   tabPanel("Salaries & Wages",
                            h3("A Comparison of Library Salaries & Wages"),
@@ -387,82 +403,85 @@ server <- function(input, output, session) {
       years = as.vector(input$yearsInput, mode = "numeric"))
   })
 
+  # plot - tleAllData
+  output$tleAllData <- renderPlot({
+    startvisualizing4()[[1]]
+  })
+
   # plot - tleUserInstitute
   output$tleUserInstitute <- renderPlot({
-    startvisualizing4()[[1]]
+    startvisualizing4()[[2]]
   })
 
   # plot - tleExpComp
   output$tleExpComp <- renderPlot({
-    startvisualizing4()[[2]]
+    startvisualizing4()[[3]]
   })
 
   # plot - tleInstCanadian
   output$tleInstCanadian <- renderPlot({
-    startvisualizing4()[[3]]
+    startvisualizing4()[[4]]
   })
 
   # plot - tleInstType
   output$tleInstType <- renderPlot({
-    startvisualizing4()[[4]]
+    startvisualizing4()[[5]]
   })
 
   # plot - tleAcademicPlot
   output$tleAcademicPlot <- renderPlot({
-    startvisualizing4()[[5]]
+    startvisualizing4()[[6]]
   })
 
   # plot - tleARLRankTop
   output$tleARLRankTop <- renderPlot({
-    startvisualizing4()[[6]]
+    startvisualizing4()[[7]]
   })
 
   # plot - tleARLRankTopPerFaculty
   output$tleARLRankTopPerFaculty <- renderPlot({
-    startvisualizing4()[[7]]
+    startvisualizing4()[[8]]
   })
 
   # plot - tleARLRankTopPerStudent
   output$tleARLRankTopPerStudent <- renderPlot({
-    startvisualizing4()[[8]]
+    startvisualizing4()[[9]]
   })
 
   # plot - tleARLRankTopPerGradStudent
   output$tleARLRankTopPerGradStudent <- renderPlot({
-    startvisualizing4()[[9]]
+    startvisualizing4()[[10]]
   })
 
   # plot - tleARLRankTopPerDoctoral
   output$tleARLRankTopPerDoctoral <- renderPlot({
-    startvisualizing4()[[10]]
+    startvisualizing4()[[11]]
   })
 
-  # plot - tleAllData
-  output$tleAllData <- renderPlot({
-    startvisualizing4()[[11]]
+  # plot - tleTop
+  output$tleTop <- renderPlot({
+    startvisualizing4()[[12]]
   })
 
   # plot - tleTopPerFaculty
   output$tleTopPerFaculty <- renderPlot({
-    startvisualizing4()[[12]]
+    startvisualizing4()[[13]]
   })
 
   # plot - tleTopPerStudent
   output$tleTopPerStudent <- renderPlot({
-    startvisualizing4()[[13]]
+    startvisualizing4()[[14]]
   })
 
   # plot - tleTopPerGradStudent
   output$tleTopPerGradStudent <- renderPlot({
-    startvisualizing4()[[14]]
+    startvisualizing4()[[15]]
   })
 
   # plot - tleTopPerDoctoral
   output$tleTopPerDoctoral <- renderPlot({
-    startvisualizing4()[[15]]
+    startvisualizing4()[[16]]
   })
-
-
 
   # -- Salaries
   startvisualizing5 <- eventReactive(eventExpr = input$button2, {
