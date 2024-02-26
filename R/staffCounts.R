@@ -549,6 +549,210 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
 
 
 
+  # ---- ---
+  # Using total lib stats per faculty by top contributors (not ARL)
+  staffPerFaculty <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::mutate(staffPerFaculty = `Professional staff`/`Total teaching faculty`) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerFaculty = na_if(staffPerFaculty, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, staffPerFaculty) %>%
+    dplyr::arrange(`Year`, desc(staffPerFaculty))
+
+  selectInstPerFaculty <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% institute) %>%
+    dplyr::mutate(staffPerFaculty = `Professional staff`/`Total teaching faculty`) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerFaculty = na_if(staffPerFaculty, Inf))
+
+  combinedPerFaculty <- rbind(staffPerFaculty, selectInstPerFaculty)
+
+  staffTopPerFaculty <- combinedPerFaculty %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `staffPerFaculty`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Professional Staff (FTE)\nPer Teaching Faculty",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Institutes with Highest Professional Staff (FTE)\n Per Teaching Faculty") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # ---
+  # Using total lib stats per student by top contributors (not ARL)
+  staffPerStudent <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::mutate(staffPerStudent = `Professional staff`/
+                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerStudent = na_if(staffPerStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, staffPerStudent) %>%
+    dplyr::arrange(`Year`, desc(staffPerStudent))
+
+  selectInstPerStudent <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% institute) %>%
+    dplyr::mutate(staffPerStudent = `Professional staff`/
+                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerStudent = na_if(staffPerStudent, Inf))
+
+  combinedPerStudent <- rbind(staffPerStudent, selectInstPerStudent)
+
+  staffTopPerStudent <- combinedPerStudent %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `staffPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Professional Staff (FTE)\nPer Student",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Institutes with Highest Professional Staff (FTE)\n Per Student (FT + PT)") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # ---
+  # Using total lib stats per graduate student by top contributors (not ARL)
+  staffPerGradStudent <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::mutate(staffPerStudent = `Professional staff`/
+                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerStudent = na_if(staffPerStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, staffPerStudent) %>%
+    dplyr::arrange(`Year`, desc(staffPerStudent))
+
+  selectInstGrad <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% institute) %>%
+    dplyr::mutate(staffPerStudent = `Professional staff`/
+                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerStudent = na_if(staffPerStudent, Inf))
+
+  combinedTopData <- rbind(staffPerGradStudent, selectInstGrad)
+
+  staffTopPerGradStudent <- combinedTopData %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `staffPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Professional Staff (FTE)\nPer Grad Student",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Institutes with Highest Professional Staff (FTE)\n Per Grad Student (FT + PT)") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # ---
+  # Using total lib stats per doctoral degree by top contributors (not ARL)
+  staffTopPerDoctoral <- selectedData %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::mutate(staffPerDoctoral = `Professional staff`/ `Doctor's degrees awarded`) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerDoctoral = na_if(staffPerDoctoral, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, staffPerDoctoral) %>%
+    dplyr::arrange(`Year`, desc(staffPerDoctoral))
+
+  selectInstDoc <- selectedData %>%
+    dplyr::filter(`Institution Name` %in% institute) %>%
+    dplyr::mutate(staffPerDoctoral = `Professional staff`/ `Doctor's degrees awarded`) %>%
+    # Replace INF values with NA
+    dplyr::mutate(staffPerStudent = na_if(staffPerStudent, Inf))
+
+  combinedTopDoc <- rbind(staffTopPerDoctoral, selectInstDoc)
+
+  staffTopPerDoctoral <- combinedTopDoc %>%
+    dplyr::mutate(staffPerDoctoral = `Professional staff`/ `Doctor's degrees awarded`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
+    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `staffPerDoctoral`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Professional Staff (FTE)\nPer Doctoral Degree",
+                  x = "Year",
+                  fill = "Institute",
+                  title = "Institutes with Highest Professional Staff (FTE)\nPer Doctoral Degree") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+
 
   return(list(staffFTEUserInstitute = staffFTEUserInstitute,
               staffFTEInstCanadian = staffFTEInstCanadian,
@@ -562,6 +766,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
               staffFTEperDoctoral = staffFTEperDoctoral,
               profStaffPercentage = profStaffPercentage,
               profStaffAllData = profStaffAllData,
-              staffAllData = staffAllData))
+              staffAllData = staffAllData,
+              staffTopPerFaculty = staffTopPerFaculty,
+              staffPerStudent = staffPerStudent,
+              staffPerGradStudent = staffPerGradStudent,
+              staffTopPerDoctoral = staffTopPerDoctoral))
 }
 # [END]
