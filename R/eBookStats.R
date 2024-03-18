@@ -337,7 +337,7 @@ viseBookData <- function(dataARL, institute, years = NA) {
                   x = "Year") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Distribution of Electornic Books in Dataset",
-                     subtitle = "The sample size (n) equals number of institutes submitting data.") +
+                     subtitle = "The sample size (n) equals number of institutes submitting data.\nGreen dot represents the median value.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +

@@ -540,7 +540,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Professional Staff (FTE) in Dataset",
-                     subtitle = "The sample size (n) equals number of institutes submitting data.") +
+                     subtitle = "The sample size (n) equals number of institutes submitting data.\nGreen dot represents the median value.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +

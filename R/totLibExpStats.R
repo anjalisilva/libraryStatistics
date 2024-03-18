@@ -570,7 +570,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   x = "Year") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Distribution of Total Library Expenditures in Dataset",
-            subtitle = "The sample size (n) equals number of institutes submitting data.") +
+            subtitle = "The sample size (n) equals number of institutes submitting data.\nGreen dot represents the median value.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    # plot.title = element_text(hjust = 0.5),
                    # plot.subtitle = element_text(hjust = 0.5),
