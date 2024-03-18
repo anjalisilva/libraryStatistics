@@ -121,7 +121,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                         y = `Total library expenditures`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
-                       linewidth = 0.5,
+                       linewidth = 1,
                        aes(group = `Institution Name`,
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
@@ -162,7 +162,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))) +
+    ggplot2::scale_fill_manual(values = rev(c(setColorPalette()))[4:6]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5))
     # Show percentage
@@ -347,7 +347,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   fill = "Institute") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Total Library Expenditures by Institutes with Highest Investment ARL Rank",
-                     subtitle = "ARL rank is shown on top of each bar; median value in green and selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar; median value in blue and selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -390,7 +390,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   fill = "Institute") +
     ggplot2::theme_bw()  +
     ggplot2::ggtitle(label = "Total Library Expenditures by Institutes with Highest Total Library Expenditures",
-                     subtitle = "ARL rank is shown on top of each bar; median value in green and selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar; median value in blue and selected institute in red color.") +
  ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -570,7 +570,7 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
                   x = "Year") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Distribution of Total Library Expenditures in Dataset",
-            subtitle = "The sample size (n) equals number of institutes submitting data.\nGreen dot represents the median value.") +
+            subtitle = "The sample size (n) equals number of institutes submitting data.\nBlue dot represents the median value.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    # plot.title = element_text(hjust = 0.5),
                    # plot.subtitle = element_text(hjust = 0.5),

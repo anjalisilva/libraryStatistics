@@ -82,7 +82,7 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                         y = `Volumes held`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
-                       linewidth = 0.5,
+                       linewidth = 1,
                        aes(group = `Institution Name`,
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
@@ -193,7 +193,7 @@ visVolumeData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Volumes Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Volumes Held by Institute Type") +
+                  title = "Maximum Volumes Held by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -233,7 +233,7 @@ visVolumeData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Volumes Held",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Volumes Held by Academic Institute Type") +
+                  title = "Maximum Volumes Held by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -278,7 +278,7 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                   fill = "Institute") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Volumes Held by Institutes with Highest Investment ARL Rank",
-                     subtitle = "ARL rank is shown on top of each bar; median value in green and selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar; median value in blue and selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -307,7 +307,7 @@ visVolumeData <- function(dataARL, institute, years = NA) {
                   x = "Year") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Distribution of Volumes Held in Dataset",
-                     subtitle = "The sample size (n) equals number of institutes submitting data.\nGreen dot represents the median value.") +
+                     subtitle = "The sample size (n) equals number of institutes submitting data.\nBlue dot represents the median value.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +

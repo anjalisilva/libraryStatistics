@@ -118,7 +118,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                         y = `Professional staff`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
-                       linewidth = 0.5,
+                       linewidth = 1,
                        aes(group = `Institution Name`,
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
@@ -229,7 +229,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Professional Staff (FTE) Counts by Institute Type") +
+                  title = "Maximum Professional Staff (FTE) Counts by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -269,7 +269,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Professional Staff (FTE) Counts",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Professional Staff (FTE) Counts by Academic Institute Type") +
+                  title = "Maximum Professional Staff (FTE) Counts by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -314,7 +314,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
                   fill = "Institute") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Professional Staff (FTE) by Institutes with Highest Investment ARL Rank",
-                     subtitle = "ARL rank is shown on top of each bar; median value in green and selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar; median value in blue and selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -540,7 +540,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Professional Staff (FTE) in Dataset",
-                     subtitle = "The sample size (n) equals number of institutes submitting data.\nGreen dot represents the median value.") +
+                     subtitle = "The sample size (n) equals number of institutes submitting data.\nBlue dot represents the median value.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -562,7 +562,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "All Staff (Prof, Suport, Casual; FTE) in Dataset",
-                     subtitle = "The sample size (n) equals number of institutes submitting data.") +
+                     subtitle = "The sample size (n) equals number of institutes submitting data.\nBlue dot represents the median value.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +

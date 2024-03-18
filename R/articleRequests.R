@@ -84,7 +84,7 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
                         y = `Number of successful full-text article requests (journals)`,
                         width = .75)) +
     ggplot2::geom_line(linetype = "dashed",
-                       linewidth = 0.5,
+                       linewidth = 1,
                        aes(group = `Institution Name`,
                            color = `Institution Name`)) +
     ggplot2::geom_point(size = 0.5, aes(color = `Institution Name`)) +
@@ -200,7 +200,7 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Article Requests",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Article Requests by Institute Type") +
+                  title = "Maximum Article Requests by Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -240,7 +240,7 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Article Requests",
                   x = "Year",
                   fill = "Institute",
-                  title = "Max Article Requests by Academic Institute Type") +
+                  title = "Maximum Article Requests by Academic Institute Type") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -310,8 +310,9 @@ visArticleReqData <- function(dataARL, institute, years = NA) {
     ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Article Requests",
-                  x = "Year",
-                  title = "Distribution of Article Requests in Dataset") +
+                  x = "Year") +
+    ggplot2::ggtitle(label = "Distribution of Article Requests in Dataset",
+                     subtitle = "The sample size (n) equals number of institutes submitting data.\nBlue dot represents the median value.") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),

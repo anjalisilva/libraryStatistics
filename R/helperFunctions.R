@@ -49,27 +49,27 @@ setColorPalette <- function(returnCol = TRUE) {
   if(returnCol == TRUE) {
     # set color palette
     colorPaletteCustom <- c(
-      '#33a02c',
+      '#2166ac',
       'red',
-      '#a6cee3',
-      '#b15928',
       'darkgrey',
       '#c51b7d',
       '#ff7f00',
-      'darkgreen',
+      '#8073ac',
+      '#b15928',
       '#fee08b',
+      '#a6cee3',
+      '#dfc27d',
+      '#e6f598',
+      '#f1b6da',
+      '#d1e5f0',
+      'magenta',
+      '#f4a582',
       '#5e4fa2',
       '#ccebc5',
-      '#e6f598',
-      'black',
-      '#f1b6da',
-      '#66c2a5',
-      'blue',
-      'magenta',
-      '#8dd3c7',
+      '#cab2d6',
       '#3288bd',
-      '#dfc27d',
-      '#cab2d6')
+      '#fddbc7',
+      'black')
     return(colorPaletteCustom)
 
   } else {
