@@ -343,9 +343,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Professional Staff Per Teaching Faculty",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Professional Staff (FTE) Per Teaching Faculty\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Professional Staff (FTE) Per Teaching Faculty\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -375,9 +376,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Professional Staff Per Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Professional Staff (FTE) Per Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Professional Staff (FTE) Per Student (FT + PT)\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -408,9 +410,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff Per Grad Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Professional Staff (FTE) Per Grad Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Professional Staff (FTE) Per Grad Student (FT + PT)\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -439,9 +442,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff Per Doctoral Degree",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Professional Staff (FTE) Per Doctoral Degree\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Professional Staff (FTE) Per Doctoral Degree\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -471,9 +475,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Percentage",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Professional Staff As A % of Total Staff\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Professional Staff As A % of Total Staff\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -510,7 +515,7 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::labs(y = "Staff (FTE) Counts ",
                   x = "Year",
                   fill = "Type",
-                  title = "Staff (FTE) Counts Proportion\nby Selected Institute") +
+                  title = "Staff (FTE) Counts Proportion by Selected Institute") +
     ggplot2::theme_bw() +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
@@ -597,9 +602,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff (FTE)\nPer Teaching Faculty",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Professional Staff (FTE)\n Per Teaching Faculty") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Professional Staff (FTE)\n Per Teaching Faculty",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -648,9 +654,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff (FTE)\nPer Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Professional Staff (FTE)\n Per Student (FT + PT)") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Professional Staff (FTE)\n Per Student (FT + PT)",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -699,9 +706,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff (FTE)\nPer Grad Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Professional Staff (FTE)\n Per Grad Student (FT + PT)") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Professional Staff (FTE)\n Per Grad Student (FT + PT)",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -751,9 +759,10 @@ visStaffCounts <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Professional Staff (FTE)\nPer Doctoral Degree",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Professional Staff (FTE)\nPer Doctoral Degree") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Professional Staff (FTE)\nPer Doctoral Degree",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,

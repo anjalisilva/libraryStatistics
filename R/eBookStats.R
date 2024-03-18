@@ -307,9 +307,10 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat="identity") +
     ggplot2::labs(y = "Electronic Books",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Electronic Books Held by Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Electronic Books Held by Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; median value in green and selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
@@ -333,9 +334,10 @@ viseBookData <- function(dataARL, institute, years = NA) {
     ggplot2::stat_summary(fun = median, geom = "point", size = 2, color = setColorPalette()[1]) +
     ggplot2::scale_color_manual(values = c(setColorPalette())) +
     ggplot2::labs(y = "Electornic Books",
-                  x = "Year",
-                  title = "Distribution of Electornic Books in Dataset") +
+                  x = "Year") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Distribution of Electornic Books in Dataset",
+                     subtitle = "The sample size (n) equals number of institutes submitting data.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +

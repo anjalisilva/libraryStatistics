@@ -424,9 +424,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Teaching Faculty",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Total Library Expenditures Per Teaching Faculty\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Teaching Faculty\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -460,9 +461,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Total Library Expenditures Per Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Student (FT + PT)\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -496,9 +498,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Grad Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Total Library Expenditures Per Grad Student (FT + PT)\nby Institutes with Highest Investment ARL Rank") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Grad Student (FT + PT)\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -532,9 +535,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Doctoral Degree",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Total Library Expenditures Per Doctoral Degree\nby Institutes with Highest Investment ARL Rank") +
-    ggplot2::theme_bw() +
+                  fill = "Institute") +
+    ggplot2::theme_bw()  +
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Doctoral Degree\nby Institutes with Highest Investment ARL Rank",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -607,9 +611,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Teaching Faculty",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Total Library\nExpenditures Per Teaching Faculty") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Teaching Faculty",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -658,9 +663,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Total Library\nExpenditures Per Student (FT + PT)") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Student (FT + PT)",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -709,9 +715,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Grad Student",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Total Library\nExpenditures Per Grad Student (FT + PT)") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Grad Student (FT + PT)",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -761,9 +768,10 @@ visTotalLibraryExp <- function(dataARL, institute, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Doctoral Degree",
                   x = "Year",
-                  fill = "Institute",
-                  title = "Institutes with Highest Total Library\nExpenditures Per Doctoral Degree") +
+                  fill = "Institute") +
     ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Doctoral Degree",
+                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,

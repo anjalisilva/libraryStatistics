@@ -50,14 +50,12 @@ Returns three bar plots showing title statistics
 }
 }
 \description{
-A function to visualize title statistics using multiple plot types
-as described below. Institution types in the input data are
-assumed to be of the categories: "Canadian", "Canadian Nonacademic",
-"Private", "State", and "Nonacademic". For title statistics
+A function to visualize sample sizes on institutes submitting data to ARL for
+each year via barplots for the entire dataset uploaded by the user. Institution
+types in the input data are assumed to be of the categories: "Canadian",
+"Canadian Nonacademic", "Private", "State", and "Nonacademic". For summary
 visualization, the following variables (or columns) are required
-in the dataset: "Year", "Institution Name", "Institution type",
-"Region", "Rank in ARL investment index", "ARL investment index value",
-and "Titles held".
+in the dataset: "Year", "Institution type", "Region", and "Year".
 }
 \examples{
 visSummaryAllData(dataARL = ARLDataDownload,
