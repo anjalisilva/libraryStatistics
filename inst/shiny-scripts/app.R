@@ -13,7 +13,7 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(width = 3,
 
-      tags$p("Instructions: This is the Shiny Application that is part of the libraryStatistics
+      tags$p("Instructions: This is the Shiny application that is part of the libraryStatistics
              R package. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
              survey of Association of Research Libraries (ARL). First upload the dataset.
