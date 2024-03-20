@@ -16,10 +16,10 @@ ui <- fluidPage(
       tags$p("Instructions: This is the Shiny application that is part of the libraryStatistics
              R package. The libraryStatistics is an R package for
              analyzing and visualizing library statistics published from the annual
-             survey of Association of Research Libraries (ARL). First upload the dataset.
-             To download data from ARL Data Portal, it is recommended that all variables
-             are selected, with columns being 'Variables' and data sorted by
-             'Institution Name' (default options). Once data is uploaded, the list of
+             survey of Association of Research Libraries (ARL). First upload a dataset
+             downloaded from ARL Data Portal. To download data from ARL Data Portal, it
+             is recommended that all variables are selected, with columns being 'Variables'
+             and data sorted by 'Institution Name' (default options). Once data is uploaded, the list of
              choices for 'Institute' and 'Years' based on uploaded dataset
              will appear here. Select one institute and upto 5 years, and press 'Analyze'.
              Explore the results by navigating the tabs to the right. If choices are
