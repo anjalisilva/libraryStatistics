@@ -79,6 +79,10 @@ setColorPalette <- function(returnCol = TRUE) {
 
 dataAdjustment <- function(dataARL, years = NA) {
 
+  # A function that takes all data supplied by the user and filter
+  # it for values being displayed by the current package
+  # and years selected by the user
+
   yearsToDisplay <- setYearsToDispaly(years = years)
   # Phrases for testing purposes
   # cat("\n Years provided by user are:", years, "\n")

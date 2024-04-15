@@ -1,0 +1,752 @@
+library(shiny)
+library(shinyalert)
+
+# Define UI for random distribution app ----
+ui <- fluidPage(
+
+  # App title ----
+  titlePanel(tags$h1(tags$b("libraryStatistics:"),"Visualize Statistics by Association of Research Libraries Survey")),
+
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+
+    # Sidebar panel for inputs ----
+    sidebarPanel(width = 3,
+
+      tags$p("Instructions: This is the Shiny application that is part of the libraryStatistics
+             R package. The libraryStatistics is an R package for
+             analyzing and visualizing library statistics published from the annual
+             survey of Association of Research Libraries (ARL). First upload a dataset
+             downloaded from ARL Data Portal. To download data from ARL Data Portal, it
+             is recommended that all variables are selected, with columns being 'Variables'
+             and data sorted by 'Institution Name' (default options). Once data is uploaded, the list of
+             choices for 'Institute' and 'Years' based on uploaded dataset
+             will appear here. Select one institute and upto 5 years, and press 'Analyze'.
+             Explore the results by navigating the tabs to the right. If choices are
+             later altered, press 'Analyze' again to update results."),
+
+      # br() element to introduce extra vertical spacing ----
+      br(),
+      br(),
+      # input
+      shinyalert::useShinyalert(),  # Set up shinyalert
+      uiOutput("tab2"),
+      actionButton(inputId = "data1",
+                   label = "Demo Dataset for Testing"),
+      fileInput(inputId = "file1",
+                label = "Dataset: Upload a dataset below to analyze. File should be
+                in comma-separated value (.csv) format with rows corresponding
+                to years and columns to ARL indicators (variables). The first column must
+                be 'Year', followed by other indicators in no particular order,
+                e.g., 'Institution Name', 'Institution type', etc. as directly
+                downloaded
+                from ARL Data Portal.",
+                accept = c(".csv")),
+      checkboxGroupInput(inputId = "instituteInput",
+                  label = "Institute: Select upto 5 choices"),
+      checkboxGroupInput(inputId = "yearsInput",
+                         label = "Years: Select upto 5 choices and press 'Analyze'. If
+                         more than 5 values provided, most recent 5 years will be
+                         autoselected."),
+
+      # br() element to introduce extra vertical spacing ----
+      br(),
+
+      # actionButton
+      actionButton(inputId = "button2",
+                   label = "Analyze"),
+
+      # br() element to introduce extra vertical spacing -
+      br(),
+
+    ), # End of side pannel
+
+
+    # Main panel for displaying outputs
+    mainPanel(width = 9,
+
+      # Output: Tabet
+      tabsetPanel(type = "tabs",
+                  tabPanel("Library Expenditures",
+                           h3("A Comparison of Total Library Expenditures", align = "center"),
+                           br(),
+                           fluidRow(
+                             h4("--- Total Library Expenditures Trends in the Uploaded Dataset ---", align = "center"),
+                             br(),
+                             h4("--- Total Library Expenditures Trends for Selected Institute ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleUserInstitute"), plotOutput('tleExpComp')),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleARLRankTop")),
+                             br(),
+                             h4("--- Total Library Expenditures as Ratios with ARL Ranks ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerFaculty"), plotOutput("tleTopPerFaculty")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerStudent"), plotOutput("tleTopPerStudent")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerGradStudent"), plotOutput("tleTopPerGradStudent")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleARLRankTopPerDoctoral"), plotOutput("tleTopPerDoctoral")),
+                             br(),
+                             h4("--- Total Library Expenditures as Overall Maximums ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleTop")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('tleInstType')),
+                             br(),
+                             h4("--- Total Library Expenditures for Canadian Institutes ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("tleInstCanadian")),
+                           )),
+                  tabPanel("Salaries & Wages",
+                           h3("A Comparison of Library Salaries & Wages", align = "center"),
+                           br(),
+                           fluidRow(
+                             h4("--- Library Salaries & Wages Trends in the Uploaded Dataset ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("15%", "70%", "15%"), plotOutput(""), plotOutput("salAllData"), plotOutput("")),
+                             br(),
+                             h4("--- Library Salaries & Wages Trends for Selected Institute ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salariesUserInstitute"), plotOutput('salariesExpComp')),
+                             splitLayout(cellWidths = c("100%"), plotOutput("salariesARLRankTop")),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("salProfStaffperCount"), plotOutput("salSupportStaffperCount")),
+                             br(),
+                             h4("--- Library Salaries & Wages as Overall Maximums ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("salariesAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('salariesInstType')),
+                             br(),
+                             h4("--- Library Salaries & Wages for Canadian Institutes ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput('salariesInstCanadian')),
+                           )),
+                  tabPanel("Staff Counts",
+                           h3("A Comparison of Library Staff Counts", align = "center"),
+                           br(),
+                           fluidRow(
+                             h4("--- Staff Counts (FTE) Trends in the Uploaded Dataset ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffAllData"), plotOutput("staffAllData")),
+                             br(),
+                             h4("--- Staff Counts (FTE) Trends for Selected Institute ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEUserInstitute"), plotOutput("staffFTEComp")),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("staffFTEARLRankTop")),
+                             br(),
+                             h4("--- Professional Staff Counts (FTE) as Ratios with ARL Ranks ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperFaculty"), plotOutput('staffTopPerFaculty')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperStudent"), plotOutput('staffTopPerStudent')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperGradStudent"), plotOutput('staffTopPerGradStudent')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("staffFTEperDoctoral"), plotOutput('staffTopPerDoctoral')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("profStaffPercentage")),
+                             br(),
+                             h4("--- Professional Staff Counts (FTE) as Overall Maximums ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("staffFTEAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstType')),
+                             br(),
+                             h4("--- Professional Staff Counts (FTE) for Canadian Institutes ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput('staffFTEInstCanadian')),
+                           )),
+                  tabPanel("Presentations",
+                           h3("A Comparison of Group Presentations and Participants", align = "center"),
+                           br(),
+                           fluidRow(
+                             h4("--- Group Presentations & Participants Trends in the Uploaded Dataset and for Selected Institute---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("presAllData"), plotOutput('presUserInstitute')),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("participantsAllData"), plotOutput('partUserInstitute')),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput('presARLRankTop')),
+                             br(),
+                             h4("--- Group Presentations & Participants as Overall Maximums ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("presAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput("presInstType")),
+                             h4("--- Group Presentations & Participants for Canadian Institutes ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput('presInstCanadian')),
+                          )),
+                  tabPanel("Article Requests",
+                           h3("A Comparison of Article Requests", align = "center"),
+                           br(),
+                           fluidRow(
+                             h4("--- Article Requests Trends in the Uploaded Dataset and for Selected Institute---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("50%", "50%"), plotOutput("articlesAllData"), plotOutput("articleUserInstitute")),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput('articleARLRankTop')),
+                             br(),
+                             h4("--- Article Requests as Overall Maximums ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("articleAcademicPlot")),
+                             splitLayout(cellWidths = c("100%"), plotOutput('articleInstType')),
+                             br(),
+                             h4("--- Article Requests for Canadian Institutes ---", align = "center"),
+                             br(),
+                             splitLayout(cellWidths = c("100%"), plotOutput("articleInstCanadian")),
+                           ))
+
+
+      )
+    )
+  )
+)
+
+# Define server logic for random distribution app ----
+server <- function(input, output, session) {
+
+  # Reactive expression to generate the requested distribution ----
+  # This is called whenever the inputs change. The output functions
+  # defined below then use the value computed from this expression
+
+
+  # Step I: save input csv as a reactive
+  csvInput <- reactive({
+    if (is.null(input$file1)) {
+      return(NULL)
+    } else {
+      readr::read_csv(file = input$file1$datapath)
+    }
+  })
+
+  observe({
+    columns <- unique(csvInput()$Year)
+    updateCheckboxGroupInput(session,
+                             "yearsInput",
+                             label = NULL,
+                             choices = columns,
+                             selected = columns[1])
+  })
+
+
+  observe({
+    columns2 <- unique(csvInput()$`Institution Name`)
+    updateCheckboxGroupInput(session,
+                      "instituteInput",
+                      label = NULL,
+                      choices = columns2,
+                      selected = columns2[2])
+  })
+
+  # -- Summary
+  summaryVisualizing <- eventReactive(eventExpr = input$button2, {
+    visSummaryAllData(dataARL = csvInput(),
+                  institute = as.character(input$instituteInput),
+                  years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - summaryRegionData
+  output$summaryRegionData <- renderPlot({
+    summaryVisualizing()[[1]]
+  })
+
+  # plot - summaryInstTypeData
+  output$summaryInstTypeData <- renderPlot({
+    summaryVisualizing()[[2]]
+  })
+
+
+
+  # -- Titles
+  startvisualizing <- eventReactive(eventExpr = input$button2, {
+    visTitlesData(dataARL = csvInput(),
+                  institute = as.character(input$instituteInput),
+                  years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # startvisualizing <- reactive({
+  #  if (is.null(input$file1)) {
+  #    cat("\n Upload the data file\n")
+  #  } else {
+  #  visTitlesData(dataARL = csvInput(),
+  #                institute = as.character(input$instituteInput),
+  #                years = as.vector(input$yearsInput, mode = "numeric"))
+  #  }
+  # })
+
+  # Only used for test purposes
+  # output$textoutput <- renderText({
+  #   as.vector(input$yearsInput, mode = "numeric")[1]
+  # })
+
+  # plot - titleUserInstitute
+  output$titleUserInstitute <- renderPlot({
+    startvisualizing()[[1]]
+  })
+
+  # plot - InstCanadianPlot
+  output$InstCanadianPlot <- renderPlot({
+    startvisualizing()[[2]]
+  })
+
+  # plot - instTypePlot
+  output$instTypePlot <- renderPlot({
+    startvisualizing()[[3]]
+  })
+
+  # plot - academicPlot
+  output$academicPlot <- renderPlot({
+    startvisualizing()[[4]]
+  })
+
+
+  # plot - plotARLRankTop
+  output$plotARLRankTop <- renderPlot({
+    startvisualizing()[[5]]
+  })
+
+  # plot - titleAllData
+  output$titleAllData <- renderPlot({
+    startvisualizing()[[6]]
+  })
+
+
+
+  # -- Volumes
+  # Using button
+  startvisualizing2 <- eventReactive(eventExpr = input$button2, {
+    visVolumeData(dataARL = csvInput(),
+                  institute = as.character(input$instituteInput),
+                  years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # Without using the button
+  #startvisualizing2 <- reactive({
+  #  if (is.null(input$file1)) {
+  #    cat("\n Upload the data file\n")
+  #  } else {
+  #    visVolumeData(dataARL = csvInput(),
+  #                  institute = as.character(input$instituteInput),
+  #                  years = as.vector(input$yearsInput, mode = "numeric"))
+  #  }
+  # })
+
+  # plot - titleUserInstitute
+  output$volumeUserInstitute <- renderPlot({
+    startvisualizing2()[[1]]
+  })
+
+  # plot - InstCanadianPlot
+  output$volumeInstCanadian <- renderPlot({
+    startvisualizing2()[[2]]
+  })
+
+  # plot - instTypePlot
+  output$volumeInstType <- renderPlot({
+    startvisualizing2()[[3]]
+  })
+
+  # plot - academicPlot
+  output$volumeAcademic <- renderPlot({
+    startvisualizing2()[[4]]
+  })
+
+
+  # plot - plotARLRankTop
+  output$volumeARLRankTop <- renderPlot({
+    startvisualizing2()[[5]]
+  })
+
+  # plot - volumesAllData
+  output$volumesAllData <- renderPlot({
+    startvisualizing2()[[6]]
+  })
+
+
+
+  # -- eBooks
+  startvisualizing3 <- eventReactive(eventExpr = input$button2, {
+    viseBookData(dataARL = csvInput(),
+                 institute = as.character(input$instituteInput),
+                 years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - eBookUserInstitute
+  output$eBookUserInstitute <- renderPlot({
+    startvisualizing3()[[1]]
+  })
+
+  # plot - eBookVolumeComp
+  output$eBookVolumeComp <- renderPlot({
+    startvisualizing3()[[2]]
+  })
+
+  # plot - eBookInstCanadian
+  output$eBookInstCanadian <- renderPlot({
+    startvisualizing3()[[3]]
+  })
+
+  # plot - eBookInstType
+  output$eBookInstType <- renderPlot({
+    startvisualizing3()[[4]]
+  })
+
+  # plot - eBookAcademicPlot
+  output$eBookAcademicPlot <- renderPlot({
+    startvisualizing3()[[5]]
+  })
+
+  # plot - eBookARLRankTop
+  output$eBookARLRankTop <- renderPlot({
+    startvisualizing3()[[6]]
+  })
+
+  # plot - eBooksAllData
+  output$eBooksAllData <- renderPlot({
+    startvisualizing3()[[7]]
+  })
+
+
+  # -- Total Library Expenditures
+  startvisualizing4 <- eventReactive(eventExpr = input$button2, {
+    visTotalLibraryExp(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - tleAllData
+  output$tleAllData <- renderPlot({
+    startvisualizing4()[[1]]
+  })
+
+  # plot - tleUserInstitute
+  output$tleUserInstitute <- renderPlot({
+    startvisualizing4()[[2]]
+  })
+
+  # plot - tleExpComp
+  output$tleExpComp <- renderPlot({
+    startvisualizing4()[[3]]
+  })
+
+  # plot - tleInstCanadian
+  output$tleInstCanadian <- renderPlot({
+    startvisualizing4()[[4]]
+  })
+
+  # plot - tleInstType
+  output$tleInstType <- renderPlot({
+    startvisualizing4()[[5]]
+  })
+
+  # plot - tleAcademicPlot
+  output$tleAcademicPlot <- renderPlot({
+    startvisualizing4()[[6]]
+  })
+
+  # plot - tleARLRankTop
+  output$tleARLRankTop <- renderPlot({
+    startvisualizing4()[[7]]
+  })
+
+  # plot - tleARLRankTopPerFaculty
+  output$tleARLRankTopPerFaculty <- renderPlot({
+    startvisualizing4()[[8]]
+  })
+
+  # plot - tleARLRankTopPerStudent
+  output$tleARLRankTopPerStudent <- renderPlot({
+    startvisualizing4()[[9]]
+  })
+
+  # plot - tleARLRankTopPerGradStudent
+  output$tleARLRankTopPerGradStudent <- renderPlot({
+    startvisualizing4()[[10]]
+  })
+
+  # plot - tleARLRankTopPerDoctoral
+  output$tleARLRankTopPerDoctoral <- renderPlot({
+    startvisualizing4()[[11]]
+  })
+
+  # plot - tleTop
+  output$tleTop <- renderPlot({
+    startvisualizing4()[[12]]
+  })
+
+  # plot - tleTopPerFaculty
+  output$tleTopPerFaculty <- renderPlot({
+    startvisualizing4()[[13]]
+  })
+
+  # plot - tleTopPerStudent
+  output$tleTopPerStudent <- renderPlot({
+    startvisualizing4()[[14]]
+  })
+
+  # plot - tleTopPerGradStudent
+  output$tleTopPerGradStudent <- renderPlot({
+    startvisualizing4()[[15]]
+  })
+
+  # plot - tleTopPerDoctoral
+  output$tleTopPerDoctoral <- renderPlot({
+    startvisualizing4()[[16]]
+  })
+
+  # -- Salaries
+  startvisualizing5 <- eventReactive(eventExpr = input$button2, {
+    visLibrarySalaries(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - salariesUserInstitute
+  output$salariesUserInstitute <- renderPlot({
+    startvisualizing5()[[1]]
+  })
+
+  # plot - salariesExpComp
+  output$salariesExpComp <- renderPlot({
+    startvisualizing5()[[2]]
+  })
+
+  # plot - salariesInstCanadian
+  output$salariesInstCanadian <- renderPlot({
+    startvisualizing5()[[3]]
+  })
+
+  # plot - salariesInstType
+  output$salariesInstType <- renderPlot({
+    startvisualizing5()[[4]]
+  })
+
+  # plot - salariesAcademicPlot
+  output$salariesAcademicPlot <- renderPlot({
+    startvisualizing5()[[5]]
+  })
+
+  # plot - salariesARLRankTop
+  output$salariesARLRankTop <- renderPlot({
+    startvisualizing5()[[6]]
+  })
+
+  # plot - salProfStaffperCount
+  output$salProfStaffperCount <- renderPlot({
+    startvisualizing5()[[7]]
+  })
+
+  # plot - salSupportStaffperCount
+  output$salSupportStaffperCount <- renderPlot({
+    startvisualizing5()[[8]]
+  })
+
+  # plot - salAllData
+  output$salAllData <- renderPlot({
+    startvisualizing5()[[9]]
+  })
+
+
+  # URLs for downloading data
+  url1 <- a("Example Dataset 2", href="https://raw.githubusercontent.com/anjalisilva/TestingPackage/master/inst/extdata/GeneCountsData2.csv")
+  output$tab1 <- renderUI({
+    tagList("Download:", url1)
+  })
+
+
+
+  # -- Staff Counts (FTE)
+  startvisualizing6 <- eventReactive(eventExpr = input$button2, {
+    visStaffCounts(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - staffFTEUserInstitute
+  output$staffFTEUserInstitute <- renderPlot({
+    startvisualizing6()[[1]]
+  })
+
+  # plot - staffFTEInstCanadian
+  output$staffFTEInstCanadian <- renderPlot({
+    startvisualizing6()[[2]]
+  })
+
+  # plot - staffFTEInstType
+  output$staffFTEInstType <- renderPlot({
+    startvisualizing6()[[3]]
+  })
+
+  # plot - staffFTEAcademicPlot
+  output$staffFTEAcademicPlot <- renderPlot({
+    startvisualizing6()[[4]]
+  })
+
+  # plot - staffFTEARLRankTop
+  output$staffFTEARLRankTop <- renderPlot({
+    startvisualizing6()[[5]]
+  })
+
+  # plot - staffFTEComp
+  output$staffFTEComp <- renderPlot({
+    startvisualizing6()[[6]]
+  })
+
+
+  # plot - staffFTEperFaculty
+  output$staffFTEperFaculty <- renderPlot({
+    startvisualizing6()[[7]]
+  })
+
+  # plot - staffFTEperStudent
+  output$staffFTEperStudent <- renderPlot({
+    startvisualizing6()[[8]]
+  })
+
+  # plot - staffFTEperGradStudent
+  output$staffFTEperGradStudent <- renderPlot({
+    startvisualizing6()[[9]]
+  })
+
+  # plot - staffFTEperDoctoral
+  output$staffFTEperDoctoral <- renderPlot({
+    startvisualizing6()[[10]]
+  })
+
+
+  # plot - profStaffPercentage
+  output$profStaffPercentage <- renderPlot({
+    startvisualizing6()[[11]]
+  })
+
+  # plot - profStaffAllData
+  output$profStaffAllData <- renderPlot({
+    startvisualizing6()[[12]]
+  })
+
+  # plot - staffAllData
+  output$staffAllData <- renderPlot({
+    startvisualizing6()[[13]]
+  })
+
+  # plot - staffTopPerFaculty
+  output$staffTopPerFaculty <- renderPlot({
+    startvisualizing6()[[14]]
+  })
+
+  # plot - staffPerStudent
+  output$staffTopPerStudent <- renderPlot({
+    startvisualizing6()[[15]]
+  })
+
+  # plot - staffPerGradStudent
+  output$staffTopPerGradStudent <- renderPlot({
+    startvisualizing6()[[16]]
+  })
+
+  # plot - staffTopPerDoctoral
+  output$staffTopPerDoctoral <- renderPlot({
+    startvisualizing6()[[17]]
+  })
+
+
+  # -- Presentations and Participants
+  startvisualizing8 <- eventReactive(eventExpr = input$button2, {
+    visPresentationData(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - presUserInstitute
+  output$presUserInstitute <- renderPlot({
+    startvisualizing8()[[1]]
+  })
+
+  # plot - partUserInstitute
+  output$partUserInstitute <- renderPlot({
+    startvisualizing8()[[2]]
+  })
+
+
+  # plot - presInstCanadian
+  output$presInstCanadian <- renderPlot({
+    startvisualizing8()[[3]]
+  })
+
+  # plot - presInstType
+  output$presInstType <- renderPlot({
+    startvisualizing8()[[4]]
+  })
+
+  # plot - presAcademicPlot
+  output$presAcademicPlot <- renderPlot({
+    startvisualizing8()[[5]]
+  })
+
+  # plot - presARLRankTop
+  output$presARLRankTop <- renderPlot({
+    startvisualizing8()[[6]]
+  })
+
+  # plot - presAllData
+  output$presAllData <- renderPlot({
+    startvisualizing8()[[7]]
+  })
+
+  # plot - participantsAllData
+  output$participantsAllData <- renderPlot({
+    startvisualizing8()[[8]]
+  })
+
+  # -- Article Requests
+  startvisualizing7 <- eventReactive(eventExpr = input$button2, {
+    visArticleReqData(
+      dataARL = csvInput(),
+      institute = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - articleUserInstitute
+  output$articleUserInstitute <- renderPlot({
+    startvisualizing7()[[1]]
+  })
+
+  # plot - articleInstCanadian
+  output$articleInstCanadian <- renderPlot({
+    startvisualizing7()[[2]]
+  })
+
+  # plot - articleInstType
+  output$articleInstType <- renderPlot({
+    startvisualizing7()[[3]]
+  })
+
+  # plot - articleAcademicPlot
+  output$articleAcademicPlot <- renderPlot({
+    startvisualizing7()[[4]]
+  })
+
+  # plot - articleARLRankTop
+  output$articleARLRankTop <- renderPlot({
+    startvisualizing7()[[5]]
+  })
+
+  # plot - articlesAllData
+  output$articlesAllData <- renderPlot({
+    startvisualizing7()[[6]]
+  })
+
+
+
+
+
+  observeEvent(input$data1, {
+    # Show a modal when the button is pressed
+    shinyalert(title = "Example Dataset 1",
+               text = "You may download a simulated example dataset generated
+               with the format required from link: https://exampledata.ca",
+               type = "info")
+  })
+
+
+}
+
+# Create Shiny app ----
+shinyApp(ui, server)
