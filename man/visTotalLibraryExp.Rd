@@ -11,7 +11,9 @@ visTotalLibraryExp(dataARL, members = NA, years = NA)
 downloaded from ARL platform. The years should be placed along
 rows. The first column must be 'Year', followed by other variables
 in no particular order, e.g., 'Institution Name', 'Institution type',
-etc.}
+etc. To download data from ARL Data Portal, it is recommended that
+all variables are selected, with columns being 'Variables' and data
+sorted by 'Institution Name' (default options).}
 
 \item{members}{A character vector specifying up to five ARL member
 institutes of interest, as identified in the dataset. E.g.,

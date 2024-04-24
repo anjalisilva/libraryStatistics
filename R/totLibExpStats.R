@@ -9,7 +9,9 @@
 #'   downloaded from ARL platform. The years should be placed along
 #'   rows. The first column must be 'Year', followed by other variables
 #'   in no particular order, e.g., 'Institution Name', 'Institution type',
-#'   etc.
+#'   etc. To download data from ARL Data Portal, it is recommended that
+#'   all variables are selected, with columns being 'Variables' and data
+#'   sorted by 'Institution Name' (default options).
 #'@param members A character vector specifying up to five ARL member
 #'   institutes of interest, as identified in the dataset. E.g.,
 #'   c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").
@@ -233,6 +235,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
 # Using total lib stats per faculty by user selected members ####
 
+  # ---
+  # Using total lib stats per faculty by user selection
   tlePerFacultyUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
@@ -256,7 +260,141 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "User Selected Members with Total Library Expenditures\nPer Teaching Faculty",
+    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Teaching Faculty For User Selected Members",
+                     subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # ---
+  # Using total lib stats per student by user selection
+  tlePerStudentUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/
+                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerStudent))
+
+  tleTopPerStudentUser <- tlePerStudentUserSelected %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures\nPer Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Student (FT + PT) For User Selected Members",
+                     subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # ---
+  # Using total lib stats per graduate student by user selection
+  tlePerGradStudentUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/
+                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerStudent))
+
+  tleTopPerGradStudentUser <- tlePerGradStudentUserSelected %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures\nPer Grad Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Grad Student (FT + PT) For User Selected Members",
+                     subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) +
+    # Add ranking labels on bars
+    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+                       position = position_dodge(width = 0.9),
+                       vjust = 0,
+                       size = 6)
+
+
+  # ---
+  # Using total lib stats per doctoral degree by top contributors (not ARL)
+  tleTopPerDoctoralUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerStudent))
+
+
+  tleTopPerDoctoralUser <- tleTopPerDoctoralUserSelected %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures\nPer Doctoral Degree",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Doctoral Degree  For User Selected Members",
                      subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -277,7 +415,11 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
   return(list(tleTopPerFaculty = tleTopPerFaculty,
               tleTopPerStudent = tleTopPerStudent,
               tleTopPerGradStudent = tleTopPerGradStudent,
-              tleTopPerDoctoral = tleTopPerDoctoral))
+              tleTopPerDoctoral = tleTopPerDoctoral,
+              tleTopPerFacultyUser = tleTopPerFacultyUser,
+              tleTopPerStudentUser = tleTopPerStudentUser,
+              tleTopPerGradStudentUser = tleTopPerGradStudentUser,
+              tleTopPerDoctoralUser= tleTopPerDoctoralUser))
 }
 
 # [END]
