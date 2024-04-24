@@ -23,7 +23,7 @@ An R Package with a Shiny Dashboard for Visualizing Library Statistics Data from
 <!-- badges: end -->
 
 ## Description
-`libraryStatistics` is an R package and a Shiny dashboard that permit to visualize, track trends, and compare up to five years of data from the annual survey of Association of Research Libraries (ARL).
+`libraryStatistics` is an R package and a Shiny dashboard that permit to visualize, track trends, and compare up to five years of data from the annual survey of Association of Research Libraries (ARL). ARL data describes the collections, staffing, expenditures, and service activities of the ARL member libraries in the United States and Canada.
 
 
 ## Installation
