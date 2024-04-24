@@ -2,28 +2,23 @@
 #' Plots to Compare Total Library Expenditures Over Years
 #'
 #' A function to visualize total library expenditures in United
-#' States Dollars (USD) using multiple plot types as described below.
-#' Institution types in the input data are assumed to be of the
-#' categories: "Canadian", "Canadian Nonacademic",
-#' "Private", "State", and "Nonacademic". For title statistics
-#' visualization, the following variables (or columns) are required
-#' in the dataset: "Year", "Institution Name", "Institution type",
-#' "Region", "Rank in ARL investment index", "ARL investment index value",
-#' and "Total library expenditures".
+#' States Dollars (USD) as ratios in comparison to various statistics
+#' reported in the annual survey of Association of Research Libraries (ARL).
 #'
-#'@param dataARL A data frame containing data downloaded from
-#'   ARL. The years should be placed along rows. The first column must
-#'   be 'Year', followed by other variables in no particular order,
-#'   e.g., 'Institution Name', 'Institution type', etc.
-#'@param institute A character vector specifying the institute of
-#'   interest, as identified in the dataset. E.g., "TORONTO" for
-#'   University of Toronto Libraries.
+#'@param dataARL A dataframe containing ARL survey data directly
+#'   downloaded from ARL platform. The years should be placed along
+#'   rows. The first column must be 'Year', followed by other variables
+#'   in no particular order, e.g., 'Institution Name', 'Institution type',
+#'   etc.
+#'@param members A character vector specifying up to five ARL member
+#'   institutes of interest, as identified in the dataset. E.g.,
+#'   c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").
 #'@param years A numeric vector specifying up to 5 calendar years
 #'   for which data should be plotted, e.g., c(2015, 2016, 2017,
 #'   2018, 2019). If no value is provided (i.e., NA), then most
-#'   recent five years available in the data will be used. If more
-#'   than 5 values provided, last 5 values will be selected. Default
-#'   is NA.
+#'   recent five years available in the uploaded data will be used.
+#'   If more than 5 values provided, last 5 values will be selected.
+#'   Default is NA.
 #'
 #' @return Returns three bar plots showing title statistics
 #' \itemize{
@@ -103,7 +98,8 @@ visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
 
   selectedData <-
     dataAdjustment(dataARL = dataARL,
-                   years = years)
+                   years = years,
+                   institutes = institutes)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
 

@@ -1,6 +1,15 @@
 setYearsToDispaly <- function(years) {
-  # A helper function to return years to display
+  # Purpose: A helper function to return years to display
   # based on user input
+
+  # Check input
+  if(is.numeric(years) != TRUE) {
+    stop("The years argument should be a numeric vector specifying
+         up to 5 calendar years.")
+  } else if(is.vector(years) != TRUE) {
+    stop("The years argument should be a numeric vector specifying
+         up to 5 calendar years.")
+  }
 
   # Obtain years in data
   yearsInData <- years %>%
@@ -45,6 +54,7 @@ setYearsToDispaly <- function(years) {
 }
 
 setColorPalette <- function(returnCol = TRUE) {
+  # Purpose: Set the color palette
 
   if(returnCol == TRUE) {
     # set color palette
@@ -77,16 +87,31 @@ setColorPalette <- function(returnCol = TRUE) {
   }
 }
 
-dataAdjustment <- function(dataARL, years = NA) {
-
-  # A function that takes all data supplied by the user and filter
-  # it for values being displayed by the current package
+dataAdjustment <- function(dataARL, years = NA, institutes) {
+  # Purpose: A function that takes all data supplied by the user
+  # and filter it for values being displayed by the current package
   # and years selected by the user
+
 
   yearsToDisplay <- setYearsToDispaly(years = years)
   # Phrases for testing purposes
   # cat("\n Years provided by user are:", years, "\n")
   # cat("\n Years to analyze are:", yearsToDisplay, "\n")
+
+
+  # Obtain institutes in data
+  # Check input
+  if(is.character(institutes) != TRUE) {
+    stop("The institutes argument should be a numeric vector specifying
+         up to 5 calendar years.")
+  } else if(is.vector(years) != TRUE) {
+    stop("The years argument should be a numeric vector specifying
+         up to 5 calendar years.")
+  }
+
+  institutesInData <- institutes %>%
+    unique() %>%
+    sort(decreasing = FALSE)
 
   selectedData <- dataARL %>%
     dplyr::select(
