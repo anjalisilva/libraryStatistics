@@ -4,7 +4,7 @@
 \alias{visTotalLibraryExp}
 \title{Plots to Compare Total Library Expenditures Over Years}
 \usage{
-visTotalLibraryExp(dataARL, institutes, years = NA)
+visTotalLibraryExp(dataARL, members = NA, years = NA)
 }
 \arguments{
 \item{dataARL}{A dataframe containing ARL survey data directly
@@ -13,16 +13,16 @@ rows. The first column must be 'Year', followed by other variables
 in no particular order, e.g., 'Institution Name', 'Institution type',
 etc.}
 
+\item{members}{A character vector specifying up to five ARL member
+institutes of interest, as identified in the dataset. E.g.,
+c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").}
+
 \item{years}{A numeric vector specifying up to 5 calendar years
 for which data should be plotted, e.g., c(2015, 2016, 2017,
 2018, 2019). If no value is provided (i.e., NA), then most
 recent five years available in the uploaded data will be used.
 If more than 5 values provided, last 5 values will be selected.
 Default is NA.}
-
-\item{members}{A character vector specifying up to five ARL member
-institutes of interest, as identified in the dataset. E.g.,
-c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").}
 }
 \value{
 Returns three bar plots showing title statistics
@@ -98,7 +98,7 @@ reported in the annual survey of Association of Research Libraries (ARL).
 }
 \examples{
 visTotalLibraryExp(dataARL = ARLDataDownload,
-                   institutes = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
+                   members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
 
 }

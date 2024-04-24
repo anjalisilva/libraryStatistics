@@ -88,25 +88,25 @@
 #'
 #' @examples
 #' visTotalLibraryExp(dataARL = ARLDataDownload,
-#'                    institutes = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
+#'                    members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
 #'                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
+visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
   selectedData <-
     dataAdjustment(dataARL = dataARL,
                    years = years,
-                   institutes = institutes)
+                   members = members)
 
   yearsToDisplay <- setYearsToDispaly(years = years)
 
-# Plot of titles held Canadian institutes over 5 years ####
+# Plot of titles held Canadian members over 5 years ####
   InstSelectedData <- selectedData %>% # user selected institute
-    dplyr::filter(`Institution Name` %in% institutes)
-  InstCadData <- selectedData %>% # Canadian institutes
+    dplyr::filter(`Institution Name` %in% members)
+  InstCadData <- selectedData %>% # Canadian members
     dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
 
  tleInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
@@ -166,7 +166,7 @@ visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
                   x = "Year",
                   fill = "Institute") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Teaching Faculty",
+    ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Teaching Faculty",
                      subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -218,7 +218,7 @@ visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
                   x = "Year",
                   fill = "Institute") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Student (FT + PT)",
+    ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Student (FT + PT)",
                      subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -270,7 +270,7 @@ visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
                   x = "Year",
                   fill = "Institute") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Grad Student (FT + PT)",
+    ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Grad Student (FT + PT)",
                      subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -323,7 +323,7 @@ visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
                   x = "Year",
                   fill = "Institute") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Doctoral Degree",
+    ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Doctoral Degree",
                      subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -341,10 +341,10 @@ visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
                        size = 6)
 
 
-# Using total lib stats per faculty by user selected institutes ####
+# Using total lib stats per faculty by user selected members ####
 
   instSelectedData <- selectedData %>% # user selected institute
-    dplyr::filter(`Institution Name` %in% institutes)
+    dplyr::filter(`Institution Name` %in% members)
 
 
   tlePerFacultyUSelected <- instSelectedData %>%
@@ -377,7 +377,7 @@ visTotalLibraryExp <- function(dataARL, institutes, years = NA) {
                   x = "Year",
                   fill = "Institute") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Institutes with Highest Total Library Expenditures\nPer Teaching Faculty",
+    ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Teaching Faculty",
                      subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
