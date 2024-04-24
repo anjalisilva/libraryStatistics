@@ -1,20 +1,74 @@
-setYearsToDispaly <- function(years) {
+setYearsToDispaly <- function(years, dataARL) {
   # Purpose: A helper function to return years to display
   # based on user input
 
-  # Check input
-  if(is.numeric(years) != TRUE) {
-    stop("The years argument should be a numeric vector specifying
-         up to 5 calendar years.")
+
+  # If NA, then user wants program to select the years
+  if (all(is.na(years) == TRUE)) {
+    # Testing phrases
+    # cat("\n Run condition 1")
+
+    # Obtain years in uploaded data
+    yearsInData <- dataARL$Year %>%
+      unique() %>%
+      sort(decreasing = FALSE)
+
+    # Based on length of years in uploaded data, select last 5 or less years
+    if (length(yearsInData) == 5 || length(yearsInData) < 4) {
+      yearsToDisplay <- years
+    } else if(length(yearsInData) > 5) {
+      yearsToDisplay <-
+        yearsInData[(length(yearsInData) - 4):length(yearsInData)]
+    }
+  } else if(is.numeric(years) != TRUE) {
+    # Testing phrases
+    # cat("\n Run condition 2")
+    stop("Argument years should be set as a vector of numeric data
+         containing 5 years or set to NA")
   } else if(is.vector(years) != TRUE) {
-    stop("The years argument should be a numeric vector specifying
-         up to 5 calendar years.")
+    # Testing phrases
+    # cat("\n Run condition 2")
+    stop("Argument years should be set as a vector of numeric data
+         containing 5 years or set to NA")
+  } else {
+    # Testing phrases
+    # cat("\n Run condition 3")
+    # If more than 5 years provided by user
+    if(length(years) > 5) {
+      warning("More than five years provided in argument years. Most
+              recent 5 years will be used.")
+      yearsToDisplay <- years %>%
+        unique() %>%
+        sort(decreasing = FALSE) %>%
+        tail(5)
+
+    } else {
+      # Obtain data for last 5 years
+      yearsToDisplay <- years
+    }
+  }
+  return(yearsToDisplay)
+}
+
+setMemebersToDispaly <- function(years) {
+  # Purpose: A helper function to return members to display
+  # based on user input
+
+  # Check input
+  # Obtain members in data
+  if(is.character(members) != TRUE) {
+    stop("The members argument should be a character vector specifying
+         up to 5 ARL member institutes.")
+  } else if(is.vector(members) != TRUE) {
+    stop("The members argument should be a character vector specifying
+         up to 5 ARL member institutes.")
   }
 
-  # Obtain years in data
-  yearsInData <- years %>%
+  # obtain unique members and
+  membersInData <- members %>%
     unique() %>%
-    sort(decreasing = FALSE)
+    sort()
+
 
   # If NA, then user wants program to select the years
   if (all(is.na(years) == TRUE)) {
@@ -87,31 +141,18 @@ setColorPalette <- function(returnCol = TRUE) {
   }
 }
 
-dataAdjustment <- function(dataARL, years = NA, institutes) {
+dataAdjustment <- function(dataARL, years = NA, members) {
   # Purpose: A function that takes all data supplied by the user
   # and filter it for values being displayed by the current package
   # and years selected by the user
 
 
-  yearsToDisplay <- setYearsToDispaly(years = years)
+  yearsToDisplay <- setYearsToDispaly(years = years,
+                                      dataARL = dataARL)
   # Phrases for testing purposes
   # cat("\n Years provided by user are:", years, "\n")
   # cat("\n Years to analyze are:", yearsToDisplay, "\n")
 
-
-  # Obtain institutes in data
-  # Check input
-  if(is.character(institutes) != TRUE) {
-    stop("The institutes argument should be a numeric vector specifying
-         up to 5 calendar years.")
-  } else if(is.vector(years) != TRUE) {
-    stop("The years argument should be a numeric vector specifying
-         up to 5 calendar years.")
-  }
-
-  institutesInData <- institutes %>%
-    unique() %>%
-    sort(decreasing = FALSE)
 
   selectedData <- dataARL %>%
     dplyr::select(
