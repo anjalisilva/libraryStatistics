@@ -260,7 +260,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Teaching Faculty For User Selected Members",
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Teaching Faculty\n For User Selected Members",
                      subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -304,7 +304,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Student (FT + PT) For User Selected Members",
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Student (FT + PT)\n For User Selected Members",
                      subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -348,7 +348,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Grad Student (FT + PT) For User Selected Members",
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Grad Student (FT + PT)\n For User Selected Members",
                      subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -394,7 +394,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Total Library Expenditures\nPer Doctoral Degree  For User Selected Members",
+    ggplot2::ggtitle(label = "Total Library Expenditures Per Doctoral Degree\n For User Selected Members",
                      subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
