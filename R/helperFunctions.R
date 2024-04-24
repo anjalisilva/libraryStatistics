@@ -153,21 +153,9 @@ setColorPalette <- function(returnCol = TRUE) {
   }
 }
 
-dataAdjustment <- function(dataARL, years, members) {
+dataAdjustment <- function(dataARL) {
   # Purpose: A function that takes all data supplied by the user
-  # and filter it for values being displayed by the current package
-  # and years selected by the user
-
-
-  yearsToDisplay <- setYearsToDispaly(years = years,
-                                      dataARL = dataARL)
-  # Phrases for testing purposes
-  # cat("\n Years provided by user are:", years, "\n")
-  # cat("\n Years to analyze are:", yearsToDisplay, "\n")
-
-  membersToDisplay <- setMemebersToDispaly(members = members,
-                       dataARL = dataARL)
-
+  # and ensure that numeric values be displayed as numeric
 
   selectedData <- dataARL %>%
     dplyr::select(
@@ -233,9 +221,8 @@ dataAdjustment <- function(dataARL, years, members) {
     dplyr::mutate('Total library expenditures (CAD)' = `Total library expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total materials expenditures (CAD)' = `Total materials expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total salaries & wages (CAD)' = `Total salaries & wages` * `Canadian dollar exchange rate`)  %>%
-    dplyr::mutate('Other operating expenditures (CAD)' = `Other operating expenditures` * `Canadian dollar exchange rate`) %>%
-    dplyr::filter(`Year` %in% yearsToDisplay) %>%
-    dplyr::filter(`Institution Name` %in% membersToDisplay)
+    dplyr::mutate('Other operating expenditures (CAD)' = `Other operating expenditures` * `Canadian dollar exchange rate`)
+
 
   return(selectedData)
 

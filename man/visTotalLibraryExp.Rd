@@ -27,53 +27,6 @@ Default is NA.}
 \value{
 Returns three bar plots showing title statistics
 \itemize{
-  \item tleAllData - Violin plots showing the distribution
-        of total library expenditures for all institutes in dataset
-        uploaded by user for the years chosen by the user.
-  \item tleUserInstitute - A lineplot comparing user selected
-        institute over user selected number of years for total
-        library expenditures. The median line is provided for
-        comparison.
-  \item tleExpComp - A barplot showing the proportion making up total
-        library expenditures for user selected institute over user selected
-        number of years. The three categories include total materials
-        expenditures, total salaries and wages, and other operating expenditures.
-  \item tleInstCanadian - A barplot comparing Canadian institutes
-        based on total library expenditure, along with user selected
-        institute over user selected number of years. The median is
-        provided for comparison.
-  \item tleInstType - A barplot comparing maximum total library expenditure
-        by institute type over user selected number of years. The user
-        selected institute is provided for comparison. Institute
-        types include: "Canadian", "Private", "State", and "Nonacademic".
-         The median is provided for comparison.
-  \item tleAcademicPlot - A barplot comparing maximum total library
-        expenditure by academic institute type over user selected number
-        of years. The user selected institute is provided for comparison.
-        Institute types include: "Canadian" and "State". The median
-        is provided for comparison.
-  \item tleARLRankTop - A barplot comparing total library expenditures by
-        top 5 ARL investment ranks over user selected number of years.
-        The user selected institute is provided for comparison.
-        The median is provided for comparison.
-  \item tleARLRankTopPerFaculty - A barplot comparing user selected institute
-        with institutes with high ARL investment ranks, for total library
-        expenditures per teaching faculty, over user selected number of years.
-  \item tleARLRankTopPerStudent - A barplot comparing user selected institute
-        with institutes with high ARL investment ranks, for total library
-        expenditures per total students reported that are either part-time (PT)
-        or full-time (FT), over user selected number of years.
-  \item tleARLRankTopPerGradStudent - A barplot comparing user selected institute
-        with institutes with high ARL investment ranks, for total library
-        expenditures per total graduate students reported that are either
-        part-time (PT) or full-time (FT), over user selected number of years.
-  \item tleARLRankTopPerDoctoral - A barplot comparing user selected institute
-        with institutes with high ARL investment ranks, for total library
-        expenditures per doctoral degrees awarded, over user selected number
-        of years.
-  \item tleTop - A barplot comparing user selected institute with institutes
-        with highest value for total library expenditures, over user selected
-        number of years.
   \item tleTopPerFaculty - A barplot comparing user selected institute
         with institutes with highest value for total library
         expenditures per teaching faculty, over user selected number of years.

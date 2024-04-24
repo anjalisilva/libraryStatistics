@@ -22,53 +22,6 @@
 #'
 #' @return Returns three bar plots showing title statistics
 #' \itemize{
-#'   \item tleAllData - Violin plots showing the distribution
-#'         of total library expenditures for all institutes in dataset
-#'         uploaded by user for the years chosen by the user.
-#'   \item tleUserInstitute - A lineplot comparing user selected
-#'         institute over user selected number of years for total
-#'         library expenditures. The median line is provided for
-#'         comparison.
-#'   \item tleExpComp - A barplot showing the proportion making up total
-#'         library expenditures for user selected institute over user selected
-#'         number of years. The three categories include total materials
-#'         expenditures, total salaries and wages, and other operating expenditures.
-#'   \item tleInstCanadian - A barplot comparing Canadian institutes
-#'         based on total library expenditure, along with user selected
-#'         institute over user selected number of years. The median is
-#'         provided for comparison.
-#'   \item tleInstType - A barplot comparing maximum total library expenditure
-#'         by institute type over user selected number of years. The user
-#'         selected institute is provided for comparison. Institute
-#'         types include: "Canadian", "Private", "State", and "Nonacademic".
-#'          The median is provided for comparison.
-#'   \item tleAcademicPlot - A barplot comparing maximum total library
-#'         expenditure by academic institute type over user selected number
-#'         of years. The user selected institute is provided for comparison.
-#'         Institute types include: "Canadian" and "State". The median
-#'         is provided for comparison.
-#'   \item tleARLRankTop - A barplot comparing total library expenditures by
-#'         top 5 ARL investment ranks over user selected number of years.
-#'         The user selected institute is provided for comparison.
-#'         The median is provided for comparison.
-#'   \item tleARLRankTopPerFaculty - A barplot comparing user selected institute
-#'         with institutes with high ARL investment ranks, for total library
-#'         expenditures per teaching faculty, over user selected number of years.
-#'   \item tleARLRankTopPerStudent - A barplot comparing user selected institute
-#'         with institutes with high ARL investment ranks, for total library
-#'         expenditures per total students reported that are either part-time (PT)
-#'         or full-time (FT), over user selected number of years.
-#'   \item tleARLRankTopPerGradStudent - A barplot comparing user selected institute
-#'         with institutes with high ARL investment ranks, for total library
-#'         expenditures per total graduate students reported that are either
-#'         part-time (PT) or full-time (FT), over user selected number of years.
-#'   \item tleARLRankTopPerDoctoral - A barplot comparing user selected institute
-#'         with institutes with high ARL investment ranks, for total library
-#'         expenditures per doctoral degrees awarded, over user selected number
-#'         of years.
-#'   \item tleTop - A barplot comparing user selected institute with institutes
-#'         with highest value for total library expenditures, over user selected
-#'         number of years.
 #'   \item tleTopPerFaculty - A barplot comparing user selected institute
 #'         with institutes with highest value for total library
 #'         expenditures per teaching faculty, over user selected number of years.
@@ -96,49 +49,21 @@
 #' @import magrittr
 visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
-  selectedData <-
-    dataAdjustment(dataARL = dataARL,
-                   years = years,
-                   members = members)
+  selectedData <- dataAdjustment(dataARL = dataARL)
 
-  yearsToDisplay <- setYearsToDispaly(years = years)
+  yearsToDisplay <- setYearsToDispaly(years = years,
+                                      dataARL = dataARL)
 
-# Plot of titles held Canadian members over 5 years ####
-  InstSelectedData <- selectedData %>% # user selected institute
-    dplyr::filter(`Institution Name` %in% members)
-  InstCadData <- selectedData %>% # Canadian members
-    dplyr::filter(`Institution type` %in% c("Canadian",  "Canadian Nonacademic", "."))
-
- tleInstCanadian <- rbind(InstSelectedData, InstCadData) %>%
-    # ensure Median appear first in legend
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = "MEDIAN")) %>%
-    # width = .75 ensures space between groups
-    ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `Total library expenditures`,
-                        fill = factor(`Institution Name`),
-                        width = .75)) +
-    ggplot2::geom_bar(position = "dodge", stat="identity") +
-    ggplot2::labs(y = "Total Library Expenditures",
-                  x = "Year",
-                  fill = "Member",
-                  title = "Total Library Expenditures by Canadian Members") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(text = element_text(size = 15, color = 'black'),
-                   axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = 'black', size = 15),
-                   axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5))
+  membersToDisplay <- setMemebersToDispaly(members = members,
+                                           dataARL = dataARL)
 
 
-
-# Using total lib stats per faculty by top contributors ####
+# Using total lib stats per faculty by top contributors over 5 years ####
 
   tlePerFaculty <- selectedData %>%
+   dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
-    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
@@ -146,17 +71,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerFaculty) %>%
     dplyr::arrange(`Year`, desc(expPerFaculty))
 
-  selectInstPerFaculty <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% institute) %>%
-    dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf))
-
-  combinedPerFaculty <- rbind(tlePerFaculty, selectInstPerFaculty)
-
-  tleTopPerFaculty <- combinedPerFaculty %>%
+  tleTopPerFaculty <- tlePerFaculty %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerFaculty`,
                         fill = factor(`Institution Name`),
@@ -164,10 +80,10 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Teaching Faculty",
                   x = "Year",
-                  fill = "Institute") +
+                  fill = "ARL Member") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Teaching Faculty",
-                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -187,8 +103,9 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
   # ---
   # Using total lib stats per student by top contributors (not ARL)
   tlePerStudent <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
-    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
                     (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
     # Replace INF values with NA
@@ -197,18 +114,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerStudent) %>%
     dplyr::arrange(`Year`, desc(expPerStudent))
 
-  selectInstPerStudent <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% institute) %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/
-                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf))
-
-  combinedPerStudent <- rbind(tlePerStudent, selectInstPerStudent)
-
-  tleTopPerStudent <- combinedPerStudent %>%
+  tleTopPerStudent <- tlePerStudent %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
                         fill = factor(`Institution Name`),
@@ -216,10 +123,10 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Student",
                   x = "Year",
-                  fill = "Institute") +
+                  fill = "ARL Member") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Student (FT + PT)",
-                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -239,8 +146,9 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
   # ---
   # Using total lib stats per graduate student by top contributors (not ARL)
   tlePerGradStudent <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
-    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/
                     (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
     # Replace INF values with NA
@@ -249,18 +157,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerStudent) %>%
     dplyr::arrange(`Year`, desc(expPerStudent))
 
-  selectInstGrad <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% institute) %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf))
-
-  combinedTopData <- rbind(tlePerGradStudent, selectInstGrad)
-
-  tleTopPerGradStudent <- combinedTopData %>%
+  tleTopPerGradStudent <- tlePerGradStudent %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
                         fill = factor(`Institution Name`),
@@ -268,10 +166,10 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Grad Student",
                   x = "Year",
-                  fill = "Institute") +
+                  fill = "ARL Member") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Grad Student (FT + PT)",
-                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -291,8 +189,9 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
   # ---
   # Using total lib stats per doctoral degree by top contributors (not ARL)
   tleTopPerDoctoral <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
-    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
@@ -300,19 +199,10 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerStudent) %>%
     dplyr::arrange(`Year`, desc(expPerStudent))
 
-  selectInstDoc <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% institute) %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf))
 
-  combinedTopDoc <- rbind(tleTopPerDoctoral, selectInstDoc)
-
-  tleTopPerDoctoral <- combinedTopDoc %>%
+  tleTopPerDoctoral <- tleTopPerDoctoral %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Rank in ARL investment index` = factor(`Rank in ARL investment index`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
@@ -321,10 +211,10 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Doctoral Degree",
                   x = "Year",
-                  fill = "Institute") +
+                  fill = "ARL Member") +
     ggplot2::theme_bw() +
     ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Doctoral Degree",
-                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
+                     subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -343,13 +233,11 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
 # Using total lib stats per faculty by user selected members ####
 
-  instSelectedData <- selectedData %>% # user selected institute
-    dplyr::filter(`Institution Name` %in% members)
-
-
-  tlePerFacultyUSelected <- instSelectedData %>%
+  tlePerFacultyUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
-    dplyr::filter(! `Institution Name` %in% c(institute, "MEDIAN")) %>%
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
@@ -357,17 +245,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerFaculty) %>%
     dplyr::arrange(`Year`, desc(expPerFaculty))
 
-  selectInstPerFaculty <- selectedData %>%
-    dplyr::filter(`Institution Name` %in% institute) %>%
-    dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf))
-
-  combinedPerFaculty <- rbind(tlePerFaculty, selectInstPerFaculty)
-
-  tleTopPerFaculty <- combinedPerFaculty %>%
+  tleTopPerFacultyUser <- tlePerFacultyUserSelected %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(`Institution Name` = relevel(`Institution Name`, ref = institute)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerFaculty`,
                         fill = factor(`Institution Name`),
@@ -375,10 +254,10 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
     ggplot2::labs(y = "Total Library Expenditures\nPer Teaching Faculty",
                   x = "Year",
-                  fill = "Institute") +
+                  fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Total Library Expenditures\nPer Teaching Faculty",
-                     subtitle = "ARL rank is shown on top of each bar; selected institute in red color.") +
+    ggplot2::ggtitle(label = "User Selected Members with Total Library Expenditures\nPer Teaching Faculty",
+                     subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -395,19 +274,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                        size = 6)
 
 
-  return(list(tleAllData = tleAllData,
-              tleUserInstitute = tleUserInstitute,
-              tleExpComp = tleExpComp,
-              tleInstCanadian = tleInstCanadian,
-              tleInstType = tleInstType,
-              tleAcademicPlot = tleAcademicPlot,
-              tleARLRankTop = tleARLRankTop,
-              tleARLRankTopPerFaculty = tleARLRankTopPerFaculty,
-              tleARLRankTopPerStudent = tleARLRankTopPerStudent,
-              tleARLRankTopPerGradStudent = tleARLRankTopPerGradStudent,
-              tleARLRankTopPerDoctoral = tleARLRankTopPerDoctoral,
-              tleTop = tleTop,
-              tleTopPerFaculty = tleTopPerFaculty,
+  return(list(tleTopPerFaculty = tleTopPerFaculty,
               tleTopPerStudent = tleTopPerStudent,
               tleTopPerGradStudent = tleTopPerGradStudent,
               tleTopPerDoctoral = tleTopPerDoctoral))
