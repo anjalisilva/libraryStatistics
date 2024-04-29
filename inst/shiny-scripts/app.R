@@ -13,7 +13,7 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(width = 3,
 
-             tags$p("Read the first tab on the right side for instructions."),
+             tags$p("Read the first tab on the right side called 'Instructions' for instructions."),
 
                  # br() element to introduce extra vertical spacing ----
                  br(),
@@ -32,11 +32,13 @@ ui <- fluidPage(
                 from ARL Data Portal.",
                            accept = c(".csv")),
                  checkboxGroupInput(inputId = "instituteInput",
-                                    label = "2. ARL Member: Select upto 5 choices"),
+                                    label = "2. ARL Member Institute: Select upto 5 choices. If more
+                                    than 5 institutes are selected, then last 5 will be autoselected.
+                                    After, select choices for years below."),
                  br(),
                  checkboxGroupInput(inputId = "yearsInput",
                                     label = "3. Years: Select upto 5 choices and press 'Analyze'. If
-                         more than 5 values provided, most recent 5 years will be
+                         more than 5 choices are selected, most recent 5 years will be
                          autoselected."),
 
                  # br() element to introduce extra vertical spacing ----
@@ -97,14 +99,16 @@ ui <- fluidPage(
                                    h3("Total Library Expenditures (USD) Ratios", align = "center"),
                                    br(),
                                    h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
-                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Institutes
-                                       with highest ratios are shown on left. Ratios for institutes selected by the user are shown on right.
-                                       The ARL ranking is shown above each bar."),
+                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
+                                       institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
+                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
                                    br(),
                                    br(),
                                    fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerFaculty"), plotOutput("tleTopPerFacultyUser")),
-                                     #splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerStudent"), plotOutput("tleTopPerStudentUser")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerFacultyUser"), plotOutput("tleTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerStudentUser"), plotOutput("tleTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
                                    )),
               )
     )
