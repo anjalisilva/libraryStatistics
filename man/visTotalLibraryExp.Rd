@@ -49,7 +49,8 @@ Returns three bar plots showing title statistics
 \description{
 A function to visualize total library expenditures in United
 States Dollars (USD) as ratios in comparison to various statistics
-reported in the annual survey of Association of Research Libraries (ARL).
+reported in the annual survey of Association of Research Libraries (ARL)
+as bar plots.
 }
 \examples{
 visTotalLibraryExp(dataARL = ARLDataDownload,

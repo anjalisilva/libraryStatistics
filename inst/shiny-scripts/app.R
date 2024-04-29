@@ -13,17 +13,7 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(width = 3,
 
-             tags$p("Instructions: This is the Shiny application that is part of the libraryStatistics
-             R package. The libraryStatistics is an R package for
-             analyzing and visualizing library statistics published from the annual
-             survey of Association of Research Libraries (ARL). First upload a dataset
-             downloaded from ARL Data Portal. To download data from ARL Data Portal, it
-             is recommended that all variables are selected, with columns being 'Variables'
-             and data sorted by 'Institution Name' (default options). Once data is uploaded, the list of
-             choices for 'Institute' and 'Years' based on uploaded dataset
-             will appear here. Select one institute and upto 5 years, and press 'Analyze'.
-             Explore the results by navigating the tabs to the right. If choices are
-             later altered, press 'Analyze' again to update results."),
+             tags$p("Read the first tab on the right side for instructions."),
 
                  # br() element to introduce extra vertical spacing ----
                  br(),
@@ -31,10 +21,9 @@ ui <- fluidPage(
                  # input
                  shinyalert::useShinyalert(),  # Set up shinyalert
                  uiOutput("tab2"),
-                 actionButton(inputId = "data1",
-                              label = "Demo Dataset for Testing"),
                  fileInput(inputId = "file1",
-                           label = "Dataset: Upload a dataset below to analyze. File should be
+                           label = "1. Dataset:
+                Upload a dataset below to analyze. File should be
                 in comma-separated value (.csv) format with rows corresponding
                 to years and columns to ARL indicators (variables). The first column must
                 be 'Year', followed by other indicators in no particular order,
@@ -43,9 +32,10 @@ ui <- fluidPage(
                 from ARL Data Portal.",
                            accept = c(".csv")),
                  checkboxGroupInput(inputId = "instituteInput",
-                                    label = "ARL Member: Select upto 5 choices"),
+                                    label = "2. ARL Member: Select upto 5 choices"),
+                 br(),
                  checkboxGroupInput(inputId = "yearsInput",
-                                    label = "Years: Select upto 5 choices and press 'Analyze'. If
+                                    label = "3. Years: Select upto 5 choices and press 'Analyze'. If
                          more than 5 values provided, most recent 5 years will be
                          autoselected."),
 
@@ -67,12 +57,54 @@ ui <- fluidPage(
 
               # Output: Tabet
               tabsetPanel(type = "tabs",
+                          tabPanel("Instructions",
+                                   h2("Instructions", align = "center"),
+                                   br(),
+                                   h3("Welcome to libraryStatistics Shiny application (app). This app is part of the libraryStatistics
+                                   R package."),
+                                   br(),
+                                   h4("What is the libraryStatistics Shiny app?"),
+                                   h5("The libraryStatistics is an R package for analyzing and visualizing library statistics published
+                                   from the annual survey of Association of Research Libraries (ARL). Ratios are generated using various
+                                   statistics for comparison purposes. The Shiny app permit to visualize plots produced by the R package
+                                   in an interactive manner."),
+                                   br(),
+                                   h4("How to use the libraryStatistics Shiny app?"),
+                                   h5("First upload a dataset downloaded from
+                                   ARL Data Portal. To download data from ARL Data Portal, it is recommended that all variables are
+                                   selected, with columns being 'Variables' and data sorted by 'Institution Name' (default options).
+                                   Once data is uploaded, the list of choices for 'Institute' and 'Years' based on uploaded dataset
+                                   will appear here. Select up to 5 ARL member institutes and up to 5 years, and press 'Analyze'.
+                                   Explore the results by navigating the tabs on the right side of app on the top. The left panel will
+                                   remain intact, so if need user can alter their choices. If choices are later altered,
+                                   press 'Analyze' again to update results on the various tabs."),
+                                   br(),
+                                   h4("Not clear on what type of data to upload?"),
+                                   h5("Uploaded data would come from ARL Data Portal directly with no data cleaning involved. The file
+                                   should be in comma-separated value (.csv) format with rows corresponding to years and columns to
+                                   ARL indicators (variables). The first column must be 'Year', followed by other indicators in no particular
+                                   order, e.g., 'Institution Name', 'Institution type', etc. as directly downloaded from ARL Data Portal.
+                                   Following file could be used as a demo dataset to understand the format."),
+                                   actionButton(inputId = "data1",
+                                                label = "Demo Dataset for Testing"),
+                                   br(),
+                                   h4("How to cite this work?"),
+                                   h5(""),
+                                   br(),
+                                   br(),
+                                   ),
                           tabPanel("Library Expenditures",
-                                   h3("Total Library Expenditures as Overall Maximums vs User Selected Institutes", align = "center"),
+                                   h3("Total Library Expenditures (USD) Ratios", align = "center"),
+                                   br(),
+                                   h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
+                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Institutes
+                                       with highest ratios are shown on left. Ratios for institutes selected by the user are shown on right.
+                                       The ARL ranking is shown above each bar."),
+                                   br(),
                                    br(),
                                    fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerFaculty"), plotOutput(" ")),
-
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerFaculty"), plotOutput("tleTopPerFacultyUser")),
+                                     #splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerStudent"), plotOutput("tleTopPerStudentUser")),
                                    )),
               )
     )
@@ -111,7 +143,7 @@ server <- function(input, output, session) {
     updateCheckboxGroupInput(session,
                              "instituteInput",
                              label = NULL,
-                             choices = columns2,
+                             choices = columns2[-1], # remove median
                              selected = columns2[2])
   })
 
