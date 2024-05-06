@@ -110,6 +110,21 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
                                    )),
+                          tabPanel("Total Library Materials Expenditures",
+                                   h3("Total Library Materials Expenditures (USD) Ratios", align = "center"),
+                                   br(),
+                                   h4("Total library materials expenditures in United States Dollars (USD) as ratios in comparison to various statistics
+                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
+                                       institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
+                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                   br(),
+                                   br(),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
+                                   )),
                           tabPanel("Professional Staff Counts",
                                    h3("Professional Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
                                    br(),
@@ -232,6 +247,55 @@ server <- function(input, output, session) {
   })
 
 
+  # -- Total Library Materials Expenditures
+  expMaterialsVis <- eventReactive(eventExpr = input$button2, {
+    visTotalLibMaterialsExp(
+      dataARL = csvInput(),
+      members = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - tlmeTopPerFaculty
+  output$tlmeTopPerFaculty <- renderPlot({
+    expMaterialsVis()[[1]]
+  })
+
+  # plot - tlmeTopPerStudent
+  output$tlmeTopPerStudent <- renderPlot({
+    expMaterialsVis()[[2]]
+  })
+
+  # plot - tlmeTopPerGradStudent
+  output$tlmeTopPerGradStudent <- renderPlot({
+    expMaterialsVis()[[3]]
+  })
+
+  # plot - tlmeTopPerDoctoral
+  output$tlmeTopPerDoctoral <- renderPlot({
+    expMaterialsVis()[[4]]
+  })
+
+  # plot - tlmePerFacultyUserSelected
+  output$tlmePerFacultyUserSelected <- renderPlot({
+    expMaterialsVis()[[5]]
+  })
+
+  # plot - tlmePerStudentUserSelected
+  output$tlmePerStudentUserSelected <- renderPlot({
+    expMaterialsVis()[[6]]
+  })
+
+  # plot - tlmePerGradStudentUserSelected
+  output$tlmePerGradStudentUserSelected <- renderPlot({
+    expMaterialsVis()[[7]]
+  })
+
+  # plot - tlmeTopPerDoctoralUserSelected
+  output$tlmeTopPerDoctoralUserSelected <- renderPlot({
+    expMaterialsVis()[[8]]
+  })
+
+
   # -- Professional Staff Counts
   profStaffCountsVis <- eventReactive(eventExpr = input$button2, {
     visProfStaffCounts(
@@ -283,7 +347,7 @@ server <- function(input, output, session) {
 
   # -- Support Staff Counts
   supStaffCountsVis <- eventReactive(eventExpr = input$button2, {
-    visProfStaffCounts(
+    visSupStaffCounts(
       dataARL = csvInput(),
       members = as.character(input$instituteInput),
       years = as.vector(input$yearsInput, mode = "numeric"))
