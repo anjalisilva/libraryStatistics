@@ -79,7 +79,7 @@ ui <- fluidPage(
                                    will appear here. Select up to 5 ARL member institutes and up to 5 years, and press 'Analyze'.
                                    Explore the results by navigating the tabs on the right side of app on the top. The left panel will
                                    remain intact, so if need user can alter their choices. If choices are later altered,
-                                   press 'Analyze' again to update results on the various tabs."),
+                                   press 'Analyze' again to update results on the various tabs to the right."),
                                    br(),
                                    h4("Not clear on what type of data to upload?"),
                                    h5("Uploaded data would come from ARL Data Portal directly with no data cleaning involved. The file
@@ -89,6 +89,7 @@ ui <- fluidPage(
                                    Following file could be used as a demo dataset to understand the format."),
                                    actionButton(inputId = "data1",
                                                 label = "Demo Dataset for Testing"),
+                                   br(),
                                    br(),
                                    h4("How to cite this work?"),
                                    h5(""),
@@ -125,23 +126,8 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
                                    )),
-                          tabPanel("Total Library Expenditures",
-                                   h3("Total Library Expenditures (USD) Ratios", align = "center"),
-                                   br(),
-                                   h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
-                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
-                                       institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
-                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
-                                   br(),
-                                   br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerFacultyUser"), plotOutput("tleTopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerStudentUser"), plotOutput("tleTopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
-                                   )),
                           tabPanel("Professional Staff Salaries",
-                                   h3("Professional Staff Salaries Ratios", align = "center"),
+                                   h3("Professional Staff Salaries (USD) Ratios", align = "center"),
                                    br(),
                                    h4("Professional staff salaries in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
@@ -177,6 +163,19 @@ ui <- fluidPage(
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
                                        with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                   br(),
+                                   br(),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerFacultyUserSelected"), plotOutput("supFTETopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerStudentUserSelected"), plotOutput("supFTETopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
+                                   )),
+                          tabPanel("Calculate Ratio",
+                                   h3("Calculate Your Own Ratio For Selected Members", align = "center"),
+                                   br(),
+                                   h4("Select two statistics from the annual survey of ARL to be compared as
+                                       ratios across members selected. The ARL ranking is shown above each bar."),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -373,9 +372,6 @@ server <- function(input, output, session) {
   output$proSalPerDoctoralUserSelected <- renderPlot({
     profStaffSalariesVis()[[8]]
   })
-
-
-
 
 
   # -- Professional Staff Counts
