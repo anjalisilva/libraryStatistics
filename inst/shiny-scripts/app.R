@@ -125,6 +125,36 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
                                    )),
+                          tabPanel("Total Library Expenditures",
+                                   h3("Total Library Expenditures (USD) Ratios", align = "center"),
+                                   br(),
+                                   h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
+                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
+                                       institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
+                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                   br(),
+                                   br(),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerFacultyUser"), plotOutput("tleTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerStudentUser"), plotOutput("tleTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
+                                   )),
+                          tabPanel("Professional Staff Salaries",
+                                   h3("Professional Staff Salaries Ratios", align = "center"),
+                                   br(),
+                                   h4("Professional staff salaries in United States Dollars (USD) as ratios in comparison to various statistics
+                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
+                                       institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
+                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                   br(),
+                                   br(),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalFacultyUserSelected"), plotOutput("proSalTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerStudentUserSelected"), plotOutput("proSalTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerGradStudentUserSelected"), plotOutput("proSalTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerDoctoralUserSelected"), plotOutput("proSalTopPerDoctoral")),
+                                   )),
                           tabPanel("Professional Staff Counts",
                                    h3("Professional Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
                                    br(),
@@ -294,6 +324,58 @@ server <- function(input, output, session) {
   output$tlmeTopPerDoctoralUserSelected <- renderPlot({
     expMaterialsVis()[[8]]
   })
+
+
+  # -- Professional Staff Salaries
+  profStaffSalariesVis <- eventReactive(eventExpr = input$button2, {
+    visProfStaffSalaries(
+      dataARL = csvInput(),
+      members = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - proSalTopPerFaculty
+  output$proSalTopPerFaculty <- renderPlot({
+    profStaffSalariesVis()[[1]]
+  })
+
+  # plot - proSalTopPerStudent
+  output$proSalTopPerStudent <- renderPlot({
+    profStaffSalariesVis()[[2]]
+  })
+
+  # plot - proSalTopPerGradStudent
+  output$proSalTopPerGradStudent <- renderPlot({
+    profStaffSalariesVis()[[3]]
+  })
+
+  # plot - proSalTopPerDoctoral
+  output$proSalTopPerDoctoral <- renderPlot({
+    profStaffSalariesVis()[[4]]
+  })
+
+  # plot - proSalFacultyUserSelected
+  output$proSalFacultyUserSelected <- renderPlot({
+    profStaffSalariesVis()[[5]]
+  })
+
+  # plot - proSalPerStudentUserSelected
+  output$proSalPerStudentUserSelected <- renderPlot({
+    profStaffSalariesVis()[[6]]
+  })
+
+  # plot - proSalPerGradStudentUserSelected
+  output$proSalPerGradStudentUserSelected <- renderPlot({
+    profStaffSalariesVis()[[7]]
+  })
+
+  # plot - proSalPerDoctoralUserSelected
+  output$proSalPerDoctoralUserSelected <- renderPlot({
+    profStaffSalariesVis()[[8]]
+  })
+
+
+
 
 
   # -- Professional Staff Counts

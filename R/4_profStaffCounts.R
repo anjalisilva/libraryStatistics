@@ -57,8 +57,8 @@
 #'
 #' @examples
 #' visProfStaffCounts(dataARL = ARLDataDownload,
-#'                members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
-#'                years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#'                    members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
+#'                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
@@ -409,8 +409,6 @@ visProfStaffCounts <- function(dataARL, members, years = NA) {
               proPerStudentUserSelected = proPerStudentUserSelected,
               proPerGradStudentUserSelected = proPerGradStudentUserSelected,
               proPerDoctoralUserSelected = proPerDoctoralUserSelected))
-
-
 
 }
 # [END]
