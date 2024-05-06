@@ -3,8 +3,8 @@
 
 # libraryStatistics
 
-An R Package with a Shiny Dashboard for Visualizing Library Statistics
-Data from Association of Research Libraries
+An R Package with a Shiny Dashboard for Visualizing and Comparing
+Library Statistics Data from Association of Research Libraries
 
 <!-- badges: start -->
 
@@ -22,8 +22,10 @@ count](https://img.shields.io/github/languages/count/anjalisilva/MPLNClust)
 ## Description
 
 `libraryStatistics` is an R package and a Shiny dashboard that permit to
-visualize, track trends, and compare up to five years of data from the
-annual survey of Association of Research Libraries (ARL).
+visualize and compare up to five years of data from the annual survey of
+Association of Research Libraries (ARL). ARL data describes the
+collections, staffing, expenditures, and service activities of the ARL
+member libraries in the United States and Canada.
 
 ## Installation
 
@@ -147,14 +149,14 @@ citation("libraryStatistics")
 ```
 
 Silva, A. and K. Maidenberg (2024). libraryStatistics: An R Package with
-a Shiny Dashboard for Visualizing Library Statistics Data from
-Association of Research Libraries. Unpublished.
+a Shiny Dashboard for Visualizing and Comparing Library Statistics Data
+from Association of Research Libraries. Unpublished.
 
 ``` r
 A BibTeX entry for LaTeX users is
 
   @misc{,
-    title = {libraryStatistics: An R Package with a Shiny Dashboard for Visualizing Library Statistics Data from Association of Research Libraries},
+    title = {libraryStatistics: An R Package with a Shiny Dashboard for Visualizing and Comparing Library Statistics Data from Association of Research Libraries},
     author = {A. Silva and K. Maidenberg},
     year = {2024},
     url = {https://github.com/anjalisilva/libraryStatistics},
