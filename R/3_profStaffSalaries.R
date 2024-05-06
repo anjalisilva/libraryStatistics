@@ -63,7 +63,7 @@
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-visProfStaffSalaries <- function(dataARL, institute, years = NA) {
+visProfStaffSalaries <- function(dataARL, members, years = NA) {
 
   selectedData <- dataAdjustment(dataARL = dataARL)
 

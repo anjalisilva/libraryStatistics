@@ -4,7 +4,7 @@
 \alias{visProfStaffSalaries}
 \title{Plots to Compare Salaries Professional Library Staff Over Years}
 \usage{
-visProfStaffSalaries(dataARL, institute, years = NA)
+visProfStaffSalaries(dataARL, members, years = NA)
 }
 \arguments{
 \item{dataARL}{A dataframe containing ARL survey data directly
@@ -15,16 +15,16 @@ etc. To download data from ARL Data Portal, it is recommended that
 all variables are selected, with columns being 'Variables' and data
 sorted by 'Institution Name' (default options).}
 
+\item{members}{A character vector specifying up to five ARL member
+institutes of interest, as identified in the dataset. E.g.,
+c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").}
+
 \item{years}{A numeric vector specifying up to 5 calendar years
 for which data should be plotted, e.g., c(2015, 2016, 2017,
 2018, 2019). If no value is provided (i.e., NA), then most
 recent five years available in the uploaded data will be used.
 If more than 5 values provided, last 5 values will be selected.
 Default is NA.}
-
-\item{members}{A character vector specifying up to five ARL member
-institutes of interest, as identified in the dataset. E.g.,
-c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").}
 }
 \value{
 Returns bar plots showing varying ratios specified below:
