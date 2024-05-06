@@ -4,24 +4,27 @@
 \alias{visStaffCounts}
 \title{Plots to Compare Library Staff Counts Over Years}
 \usage{
-visStaffCounts(dataARL, institute, years = NA)
+visStaffCounts(dataARL, members, years = NA)
 }
 \arguments{
-\item{dataARL}{A data frame containing data downloaded from
-ARL. The years should be placed along rows. The first column must
-be 'Year', followed by other variables in no particular order,
-e.g., 'Institution Name', 'Institution type', etc.}
+\item{dataARL}{A dataframe containing ARL survey data directly
+downloaded from ARL platform. The years should be placed along
+rows. The first column must be 'Year', followed by other variables
+in no particular order, e.g., 'Institution Name', 'Institution type',
+etc. To download data from ARL Data Portal, it is recommended that
+all variables are selected, with columns being 'Variables' and data
+sorted by 'Institution Name' (default options).}
 
-\item{institute}{A character vector specifying the institute of
-interest, as identified in the dataset. E.g., "TORONTO" for
-University of Toronto Libraries.}
+\item{members}{A character vector specifying up to five ARL member
+institutes of interest, as identified in the dataset. E.g.,
+c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").}
 
 \item{years}{A numeric vector specifying up to 5 calendar years
 for which data should be plotted, e.g., c(2015, 2016, 2017,
 2018, 2019). If no value is provided (i.e., NA), then most
-recent five years available in the data will be used. If more
-than 5 values provided, last 5 values will be selected. Default
-is NA.}
+recent five years available in the uploaded data will be used.
+If more than 5 values provided, last 5 values will be selected.
+Default is NA.}
 }
 \value{
 Returns three bar plots showing staff count statistics
@@ -29,78 +32,16 @@ Returns three bar plots showing staff count statistics
   \item staffFTEUserInstitute - A lineplot comparing user selected
         institute over user selected number of years for staff counts.
         The median line is provided for comparison.
-  \item staffFTEInstCanadian - A barplot comparing Canadian institutes
-        based on staff counts, along with user selected institute over
-        user selected number of years. The median is provided for
-        comparison.
-  \item staffFTEInstType - A barplot comparing maximum staff counts by
-        institute type over user selected number of years. The user
-        selected institute is provided for comparison. Institute
-        types include: "Canadian", "Private", "State", and "Nonacademic".
-        The median is provided for comparison.
-  \item staffFTEAcademicPlot - A barplot comparing maximum staff counts by
-        academic institute type over user selected number of years.
-        The user selected institute is provided for comparison.
-        Institute types include: "Canadian" and "State".
-        The median is provided for comparison.
-  \item staffFTEARLRankTop - A barplot comparing staff counts by
-        top 5 ARL investment ranks over user selected number of years.
-        The user selected institute is provided for comparison.
-        The median is provided for comparison.
-   \item staffFTEComp - A barplot showing proportion of professional,
-        support and student assitant staff, making up the total
-        staff (FTE) counts in the selected institute over the
-        user provided period.
-   \item staffFTEperFaculty - A barplot showing the proportion of
-        professional staff (FTE) per full-time instructional faculty.
-   \item staffFTEperStudent - A barplot showing the proportion of
-        professional staff (FTE) per students of status full-time
-        and part-time, both graduate and undergraduate.
-   \item staffFTEperGradStudent - A barplot showing the proportion of
-        professional staff (FTE) per graduate students of status full-time
-        and part-time.
-   \item staffFTEperDoctoral - A barplot showing the proportion of
-        professional staff (FTE) per doctoral degree awarded.
-   \item profStaffPercentage - A barplot showing the proportion of
-        professional staff (FTE) as a percentage of total staff.
-   \item profStaffAllData - A violin plot showing the distribution
-        of professional staff counts per years selected by user, for the
-        entire dataset uploaded.
-   \item staffAllData - A violin plot showing the distribution
-        of all (professional, support and casual) staff counts per
-        years selected by user, for the all institutes in dataset
-        uploaded.
-   \item staffTopPerFaculty - A barplot comparing user selected institute
-        with institutes with highest value for count of professional staff (FTE)
-        per teaching faculty, over user selected number of years.
-   \item staffTopPerStudent - A barplot comparing user selected institute
-        with institutes with highest value for count of professional staff (FTE)
-        per total students reported that are either part-time (PT)
-        or full-time (FT), over user selected number of years.
-   \item staffTopPerGradStudent - A barplot comparing user selected institute
-        with institutes with highest value for count of professional staff (FTE)
-        expenditures per total graduate students reported that are either
-        part-time (PT) or full-time (FT), over user selected number of years.
-   \item staffTopPerDoctoral - A barplot comparing user selected institute
-        with institutes with highest value for count of professional staff (FTE)
-        expenditures per doctoral degrees awarded, over user selected number
-        of years.
 }
 }
 \description{
-A function to visualize library staff counts, full time equivalent (FTE)
-using multiple plot types as described below. Institution types in the
-input data are assumed to be of the categories: "Canadian",
-"Canadian Nonacademic", "Private", "State", and "Nonacademic". For
-staff count visualization, the following variables (or columns) are
-required in the dataset: "Year", "Institution Name", "Institution type",
-"Region", "Rank in ARL investment index", "ARL investment index value",
-"Professional staff", "Support staff", "Student assistants", and
-"Total prof. + support + student staff".
+A function to visualize library professional staff counts, full-time
+equivalent (FTE), as ratios in comparison to various statistics reported
+in the annual survey of Association of Research Libraries (ARL) as bar plots.
 }
 \examples{
 visStaffCounts(dataARL = ARLDataDownload,
-               institute = "TEXAS STATE",
+               members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
                years = c(2015, 2016, 2017, 2022, 2018, 2019))
 
 }
