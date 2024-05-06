@@ -1,10 +1,10 @@
 # staffCounts
-#' Plots to Compare Library Staff Counts Over Years
+#' Plots to Compare Professional Library Staff Counts Over Years
 #'
 #' A function to visualize library professional staff counts, full-time
 #' equivalent (FTE), as ratios in comparison to various statistics reported
-#' in the annual survey of Association of Research Libraries (ARL) as bar plots.
-#'
+#' in the annual survey of Association of Research Libraries (ARL) as bar
+#' plots. This is question 13a on ARL survey.
 #'
 #'@param dataARL A dataframe containing ARL survey data directly
 #'   downloaded from ARL platform. The years should be placed along
@@ -23,22 +23,47 @@
 #'   If more than 5 values provided, last 5 values will be selected.
 #'   Default is NA.
 #'
-#' @return Returns three bar plots showing staff count statistics
+#' @return Returns bar plots showing varying ratios specified below:
 #' \itemize{
-#'   \item staffFTEUserInstitute - A lineplot comparing user selected
-#'         institute over user selected number of years for staff counts.
-#'         The median line is provided for comparison.
+#'   \item proFTETopPerFaculty - A barplot showing members with highest
+#'         ratio of total library professional staff counts (FTE) per
+#'         teaching faculty, over user selected number of years.
+#'   \item proFTETopPerStudent - A barplot showing members with highest
+#'         ratio of total library professional staff counts (FTE) per
+#'         student (full-time, FT, and part-time, PT), over user selected
+#'         number of years.
+#'   \item proFTETopPerGradStudent - A barplot showing members with highest
+#'         ratio of total library professional staff counts (FTE) per graduate
+#'         student (full-time, FT, and part-time, PT), over user selected
+#'         number of years.
+#'   \item proFTETopPerDoctoral - A barplot showing members with highest
+#'         ratio of total library professional staff counts (FTE) per doctoral
+#'         degree awarded, over user selected number of years.
+#'   \item proPerFacultyUserSelected - A barplot showing ratio of library
+#'         professional staff counts (FTE) per teaching faculty for user
+#'         selected ARL members, over user selected number of years.
+#'   \item proPerStudentUserSelected - A barplot showing ratio of library
+#'         professional staff counts (FTE) per student (full-time, FT, and
+#'         part-time, PT) for user selected ARL members, over user selected
+#'         number of years.
+#'   \item proPerGradStudentUserSelected - A barplot showing ratio of total
+#'         library professional staff counts (FTE) per graduate student
+#'         (full-time, FT, and part-time, PT) for user selected ARL members,
+#'         over user selected number of years.
+#'   \item proPerDoctoralUserSelected - A barplot showing ratio of total
+#'         library expenditures per per doctoral degree awarded for user
+#'         selected ARL members, over user selected number of years.
 #' }
 #'
 #' @examples
-#' visStaffCounts(dataARL = ARLDataDownload,
+#' visProfStaffCounts(dataARL = ARLDataDownload,
 #'                members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
 #'                years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
 #' @import magrittr
-visStaffCounts <- function(dataARL, members, years = NA) {
+visProfStaffCounts <- function(dataARL, members, years = NA) {
 
   selectedData <- dataAdjustment(dataARL = dataARL)
 
@@ -50,7 +75,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
 
 
   # Using professional staff count per faculty by top contributors
-  proFTEPerFaculty <- selectedData %>%
+  proFTETopPerFaculty <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
@@ -59,9 +84,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(proPerFaculty = na_if(proPerFaculty, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(proPerFaculty))
-
-  proTopPerFaculty <- proFTEPerFaculty %>%
+    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `proPerFaculty`,
@@ -72,7 +95,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\n Count (FTE) Per Teaching Faculty") +
+    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\nCount (FTE) Per Teaching Faculty") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -92,7 +115,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
 
   # ---
   # Using professional staff count per student by top contributors
-  proFTEPerStudent <- selectedData %>%
+  proFTETopPerStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
@@ -102,9 +125,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(proPerStudent = na_if(proPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerStudent) %>%
-    dplyr::arrange(`Year`, desc(proPerStudent))
-
-  proTopPerStudent <- proFTEPerStudent %>%
+    dplyr::arrange(`Year`, desc(proPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `proPerStudent`,
@@ -115,7 +136,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\n Count (FTE) Per Student (FT + PT)") +
+    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\nCount (FTE) Per Student (FT + PT)") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -135,22 +156,20 @@ visStaffCounts <- function(dataARL, members, years = NA) {
 
   # ---
   # Using professional staff count per graduate student by top contributors
-  proFTEPerGradStudent <- selectedData %>%
+  proFTETopPerGradStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(profPerStudent = `Professional staff`/
+    dplyr::mutate(profPerGradStudent = `Professional staff`/
                     (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
     # Replace INF values with NA
-    dplyr::mutate(profPerStudent = na_if(profPerStudent, Inf)) %>%
+    dplyr::mutate(profPerGradStudent = na_if(profPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, profPerStudent) %>%
-    dplyr::arrange(`Year`, desc(profPerStudent))
-
-  proTopPerGradStudent <- proFTEPerGradStudent %>%
+    dplyr::top_n(5, profPerGradStudent) %>%
+    dplyr::arrange(`Year`, desc(profPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `profPerStudent`,
+                        y = `profPerGradStudent`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
@@ -158,7 +177,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\n Count (FTE) Per Grad Student (FT + PT)") +
+    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\nCount (FTE) Per Grad Student (FT + PT)") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -182,27 +201,24 @@ visStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(proPerStudent = `Professional staff`/ `Doctor's degrees awarded`) %>%
+    dplyr::mutate(proPerDoctoral = `Professional staff`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
-    dplyr::mutate(proPerStudent = na_if(proPerStudent, Inf)) %>%
+    dplyr::mutate(proPerDoctoral = na_if(proPerDoctoral, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, proPerStudent) %>%
-    dplyr::arrange(`Year`, desc(proPerStudent))
-
-
-  proTopPerDoctoral <- proFTETopPerDoctoral %>%
+    dplyr::top_n(5, proPerDoctoral) %>%
+    dplyr::arrange(`Year`, desc(proPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `proPerStudent`,
+                        y = `proPerDoctoral`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures\nPer Doctoral Degree",
+    ggplot2::labs(y = "Professional Staff Count (FTE) \nPer Doctoral Degree",
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\n Count (FTE) Per Doctoral Degree") +
+    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\nCount (FTE) Per Doctoral Degree") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -232,20 +248,18 @@ visStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(proPerFaculty = na_if(proPerFaculty, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(proPerFaculty))
-
-  proTopPerFacultyUser <- proPerFacultyUserSelected %>%
+    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `proPerFaculty`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures\nPer Teaching Faculty",
+    ggplot2::labs(y = "Professional Staff Count (FTE) Per\nTeaching Faculty",
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Teaching Faculty\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Professional Staff Count (FTE) Per\nTeaching Faculty For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -254,7 +268,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
@@ -264,32 +278,30 @@ visStaffCounts <- function(dataARL, members, years = NA) {
 
 
   # ---
-  # Using total lib stats per student by user selection
+  # Using prof staff stats per student by user selection
   proPerStudentUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/
+    dplyr::mutate(proPerStudent = `Professional staff`/
                     (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
     # Replace INF values with NA
-    dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
+    dplyr::mutate(proPerStudent = na_if(proPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent))
-
-  tleTopPerStudentUser <- tlePerStudentUserSelected %>%
+    dplyr::top_n(5, proPerStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerStudent))  %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `expPerStudent`,
+                        y = `proPerStudent`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures\nPer Student",
+    ggplot2::labs(y = "Professional Staff Count (FTE)\nPer Student",
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Student (FT + PT)\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Professional Staff Count (FTE) Per Student\n(FT + PT) For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -298,7 +310,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
@@ -308,32 +320,30 @@ visStaffCounts <- function(dataARL, members, years = NA) {
 
 
   # ---
-  # Using total lib stats per graduate student by user selection
-  tlePerGradStudentUserSelected <- selectedData %>%
+  # Using prof staff stats per graduate student by user selection
+  proPerGradStudentUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerGradStudent = `Total library expenditures`/
+    dplyr::mutate(proPerGradStudent = `Professional staff`/
                     (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
     # Replace INF values with NA
-    dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
+    dplyr::mutate(proPerGradStudent = na_if(proPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent))
-
-  tleTopPerGradStudentUser <- tlePerGradStudentUserSelected %>%
+    dplyr::top_n(5, proPerGradStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `expPerGradStudent`,
+                        y = `proPerGradStudent`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures\nPer Grad Student",
+    ggplot2::labs(y = "Professional Staff Count (FTE)\nPer Grad Student",
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Grad Student (FT + PT)\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Professional Staff Count (FTE) Per Grad Student\n(FT + PT) For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -342,7 +352,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
@@ -352,34 +362,29 @@ visStaffCounts <- function(dataARL, members, years = NA) {
 
 
   # ---
-  # Using total lib stats per doctoral degree by top contributors (not ARL)
-  tleTopPerDoctoralUserSelected <- selectedData %>%
+  # Using prof staff stats per doctoral degree by top contributors (not ARL)
+  proPerDoctoralUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerDoctoral = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
+    dplyr::mutate(proPerDoctoral = `Professional staff`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
-    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
+    dplyr::mutate(proPerDoctoral = na_if(proPerDoctoral, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral))
-
-
-  tleTopPerDoctoralUser <- tleTopPerDoctoralUserSelected %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
+    dplyr::top_n(5, proPerDoctoral) %>%
+    dplyr::arrange(`Year`, desc(proPerDoctoral))  %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `expPerDoctoral`,
+                        y = `proPerDoctoral`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Total Library Expenditures\nPer Doctoral Degree",
+    ggplot2::labs(y = "Professional Staff Count (FTE)\nPer Doctoral Degree",
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Doctoral Degree\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Professional Staff Count (FTE) Per\nDoctoral Degree For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -388,7 +393,7 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
-    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+    ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
@@ -396,6 +401,14 @@ visStaffCounts <- function(dataARL, members, years = NA) {
                        vjust = 0,
                        size = 6)
 
+  return(list(proFTETopPerFaculty = proFTETopPerFaculty,
+              proFTETopPerStudent = proFTETopPerStudent,
+              proFTETopPerGradStudent = proFTETopPerGradStudent,
+              proFTETopPerDoctoral = proFTETopPerDoctoral,
+              proPerFacultyUserSelected = proPerFacultyUserSelected,
+              proPerStudentUserSelected = proPerStudentUserSelected,
+              proPerGradStudentUserSelected = proPerGradStudentUserSelected,
+              proPerDoctoralUserSelected = proPerDoctoralUserSelected))
 
 
 

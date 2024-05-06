@@ -4,7 +4,7 @@
 #' A function to visualize total library expenditures in United
 #' States Dollars (USD) as ratios in comparison to various statistics
 #' reported in the annual survey of Association of Research Libraries (ARL)
-#' as bar plots.
+#' as bar plots. This is question 6 on ARL survey.
 #'
 #'@param dataARL A dataframe containing ARL survey data directly
 #'   downloaded from ARL platform. The years should be placed along
@@ -23,28 +23,28 @@
 #'   If more than 5 values provided, last 5 values will be selected.
 #'   Default is NA.
 #'
-#' @return Returns three bar plots showing title statistics
+#' @return Returns bar plots showing varying ratios specified below:
 #' \itemize{
 #'   \item tleTopPerFaculty - A barplot showing members with highest ratio of total
 #'         library expenditures per teaching faculty, over user selected number of years.
 #'   \item tleTopPerStudent - A barplot showing members with highest ratio of total
-#'         library expenditures per student (full-time and part-time), over user selected
-#'         number of years.
+#'         library expenditures per student (full-time, FT, and part-time, PT), over
+#'          user selected number of years.
 #'   \item tleTopPerGradStudent - A barplot showing members with highest ratio of total
-#'         library expenditures per graduate student (full-time and part-time),
+#'         library expenditures per graduate student (full-time, FT, and part-time, PT),
 #'         over user selected number of years.
 #'   \item tleTopPerDoctoral - A barplot showing members with highest ratio of total
 #'         library expenditures per doctoral degree awarded, over user selected number
 #'         of years.
-#'   \item tlePerFacultyUser - A barplot showing ratio of total library expenditures per
+#'   \item tlePerFacultyUserSelected - A barplot showing ratio of total library expenditures per
 #'         teaching faculty for user selected ARL members, over user selected number of years.
-#'   \item tlePerStudentUser - A barplot showing ratio of total library expenditures per
-#'         student (full-time and part-time) for user selected ARL members, over user
+#'   \item tlePerStudentUserSelected - A barplot showing ratio of total library expenditures per
+#'         student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
-#'   \item tlePerGradStudentUser - A barplot showing ratio of total library expenditures per
-#'         graduate student (full-time and part-time) for user selected ARL members, over user
+#'   \item tlePerGradStudentUserSelected - A barplot showing ratio of total library expenditures per
+#'         graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
-#'   \item tlePerDoctoralUser - A barplot showing ratio of total library expenditures per
+#'   \item tleTopPerDoctoralUserSelected - A barplot showing ratio of total library expenditures per
 #'         per doctoral degree awarded for user selected ARL members, over user
 #'         selected number of years.
 #' }
@@ -69,7 +69,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
   # ---
   # Using total lib stats per faculty by top contributors over 5 years ####
-  tlePerFaculty <- selectedData %>%
+  tleTopPerFaculty <- selectedData %>%
    dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
@@ -78,9 +78,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty))
-
-  tleTopPerFaculty <- tlePerFaculty %>%
+    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerFaculty`,
@@ -111,7 +109,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
   # ---
   # Using total lib stats per student by top contributors (not ARL)
-  tlePerStudent <- selectedData %>%
+  tleTopPerStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
@@ -121,9 +119,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent))
-
-  tleTopPerStudent <- tlePerStudent %>%
+    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
@@ -154,7 +150,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
   # ---
   # Using total lib stats per graduate student by top contributors (not ARL)
-  tlePerGradStudent <- selectedData %>%
+  tleTopPerGradStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
@@ -164,9 +160,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent))
-
-  tleTopPerGradStudent <- tlePerGradStudent %>%
+    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerGradStudent`,
@@ -197,7 +191,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
   # ---
   # Using total lib stats per doctoral degree by top contributors (not ARL)
-  tlePerDoctoral <- selectedData %>%
+  tleTopPerDoctoral <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
@@ -206,10 +200,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral))
-
-
-  tleTopPerDoctoral <- tlePerDoctoral %>%
+    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
@@ -239,8 +230,6 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                        size = 6)
 
 
-# Using total lib stats per faculty by user selected members ####
-
   # ---
   # Using total lib stats per faculty by user selection
   tlePerFacultyUserSelected <- selectedData %>%
@@ -253,9 +242,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty))
-
-  tlePerFacultyUser <- tlePerFacultyUserSelected %>%
+    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerFaculty`,
@@ -266,7 +253,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Teaching Faculty\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Teaching\nFaculty For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -297,9 +284,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent))
-
-  tlePerStudentUser <- tlePerStudentUserSelected %>%
+    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
@@ -310,7 +295,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Student (FT + PT)\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Student\n(FT + PT) For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -341,9 +326,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent))
-
-  tlePerGradStudentUser <- tlePerGradStudentUserSelected %>%
+    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerGradStudent`,
@@ -354,7 +337,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Grad Student (FT + PT)\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Grad Student\n(FT + PT) For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -384,13 +367,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral))
-
-
-  tlePerDoctoralUser <- tleTopPerDoctoralUserSelected %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
+    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerDoctoral`,
                         fill = factor(`Institution Name`),
@@ -400,7 +378,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Doctoral Degree\nFor User Selected Members") +
+    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Doctoral\nDegree For User Selected Members") +
                     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -422,10 +400,10 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
               tleTopPerStudent = tleTopPerStudent,
               tleTopPerGradStudent = tleTopPerGradStudent,
               tleTopPerDoctoral = tleTopPerDoctoral,
-              tlePerFacultyUser = tlePerFacultyUser,
-              tlePerStudentUser = tlePerStudentUser,
-              tlePerGradStudentUser = tlePerGradStudentUser,
-              tlePerDoctoralUser = tlePerDoctoralUser))
+              tlePerFacultyUserSelected = tlePerFacultyUserSelected,
+              tlePerStudentUserSelected = tlePerStudentUserSelected,
+              tlePerGradStudentUserSelected = tlePerGradStudentUserSelected,
+              tleTopPerDoctoralUserSelected = tleTopPerDoctoralUserSelected))
 }
 
 # [END]

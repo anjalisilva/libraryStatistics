@@ -27,28 +27,28 @@ If more than 5 values provided, last 5 values will be selected.
 Default is NA.}
 }
 \value{
-Returns three bar plots showing title statistics
+Returns bar plots showing varying ratios specified below:
 \itemize{
   \item tleTopPerFaculty - A barplot showing members with highest ratio of total
         library expenditures per teaching faculty, over user selected number of years.
   \item tleTopPerStudent - A barplot showing members with highest ratio of total
-        library expenditures per student (full-time and part-time), over user selected
-        number of years.
+        library expenditures per student (full-time, FT, and part-time, PT), over
+         user selected number of years.
   \item tleTopPerGradStudent - A barplot showing members with highest ratio of total
-        library expenditures per graduate student (full-time and part-time),
+        library expenditures per graduate student (full-time, FT, and part-time, PT),
         over user selected number of years.
   \item tleTopPerDoctoral - A barplot showing members with highest ratio of total
         library expenditures per doctoral degree awarded, over user selected number
         of years.
-  \item tlePerFacultyUser - A barplot showing ratio of total library expenditures per
+  \item tlePerFacultyUserSelected - A barplot showing ratio of total library expenditures per
         teaching faculty for user selected ARL members, over user selected number of years.
-  \item tlePerStudentUser - A barplot showing ratio of total library expenditures per
-        student (full-time and part-time) for user selected ARL members, over user
+  \item tlePerStudentUserSelected - A barplot showing ratio of total library expenditures per
+        student (full-time, FT, and part-time, PT) for user selected ARL members, over user
         selected number of years.
-  \item tlePerGradStudentUser - A barplot showing ratio of total library expenditures per
-        graduate student (full-time and part-time) for user selected ARL members, over user
+  \item tlePerGradStudentUserSelected - A barplot showing ratio of total library expenditures per
+        graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
         selected number of years.
-  \item tlePerDoctoralUser - A barplot showing ratio of total library expenditures per
+  \item tleTopPerDoctoralUserSelected - A barplot showing ratio of total library expenditures per
         per doctoral degree awarded for user selected ARL members, over user
         selected number of years.
 }
@@ -57,7 +57,7 @@ Returns three bar plots showing title statistics
 A function to visualize total library expenditures in United
 States Dollars (USD) as ratios in comparison to various statistics
 reported in the annual survey of Association of Research Libraries (ARL)
-as bar plots.
+as bar plots. This is question 6 on ARL survey.
 }
 \examples{
 visTotalLibraryExp(dataARL = ARLDataDownload,

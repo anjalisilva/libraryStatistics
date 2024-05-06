@@ -95,7 +95,7 @@ ui <- fluidPage(
                                    br(),
                                    br(),
                                    ),
-                          tabPanel("Library Expenditures",
+                          tabPanel("Total Library Expenditures",
                                    h3("Total Library Expenditures (USD) Ratios", align = "center"),
                                    br(),
                                    h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
@@ -110,6 +110,38 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
                                    )),
+                          tabPanel("Professional Staff Counts",
+                                   h3("Professional Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
+                                   br(),
+                                   h4("Professional Library Staff Counts FTE as ratios in comparison to various statistics
+                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
+                                       institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
+                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                   br(),
+                                   br(),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerFacultyUserSelected"), plotOutput("proFTETopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerStudentUserSelected"), plotOutput("proFTETopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerGradStudentUserSelected"), plotOutput("proFTETopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerDoctoralUserSelected"), plotOutput("proFTETopPerDoctoral")),
+                                   )),
+                          tabPanel("Support Staff Counts",
+                                   h3("Support Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
+                                   br(),
+                                   h4("Support Library Staff Counts FTE as ratios in comparison to various statistics
+                                       reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
+                                       institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
+                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                   br(),
+                                   br(),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerFacultyUserSelected"), plotOutput("supFTETopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerStudentUserSelected"), plotOutput("supFTETopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
+                                   )),
+
+
               )
     )
   )
@@ -198,6 +230,106 @@ server <- function(input, output, session) {
   output$tleTopPerDoctoralUser <- renderPlot({
     expVisualization()[[8]]
   })
+
+
+  # -- Professional Staff Counts
+  profStaffCountsVis <- eventReactive(eventExpr = input$button2, {
+    visProfStaffCounts(
+      dataARL = csvInput(),
+      members = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - proFTETopPerFaculty
+  output$proFTETopPerFaculty <- renderPlot({
+    profStaffCountsVis()[[1]]
+  })
+
+  # plot - proFTETopPerStudent
+  output$proFTETopPerStudent <- renderPlot({
+    profStaffCountsVis()[[2]]
+  })
+
+  # plot - proFTETopPerGradStudent
+  output$proFTETopPerGradStudent <- renderPlot({
+    profStaffCountsVis()[[3]]
+  })
+
+  # plot - proFTETopPerDoctoral
+  output$proFTETopPerDoctoral <- renderPlot({
+    profStaffCountsVis()[[4]]
+  })
+
+  # plot - proPerFacultyUserSelected
+  output$proPerFacultyUserSelected <- renderPlot({
+    profStaffCountsVis()[[5]]
+  })
+
+  # plot - proPerStudentUserSelected
+  output$proPerStudentUserSelected <- renderPlot({
+    profStaffCountsVis()[[6]]
+  })
+
+  # plot - proPerGradStudentUserSelected
+  output$proPerGradStudentUserSelected <- renderPlot({
+    profStaffCountsVis()[[7]]
+  })
+
+  # plot - proPerDoctoralUserSelected
+  output$proPerDoctoralUserSelected <- renderPlot({
+    profStaffCountsVis()[[8]]
+  })
+
+
+  # -- Support Staff Counts
+  supStaffCountsVis <- eventReactive(eventExpr = input$button2, {
+    visProfStaffCounts(
+      dataARL = csvInput(),
+      members = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - supFTETopPerFaculty
+  output$supFTETopPerFaculty <- renderPlot({
+    supStaffCountsVis()[[1]]
+  })
+
+  # plot - supFTETopPerStudent
+  output$supFTETopPerStudent <- renderPlot({
+    supStaffCountsVis()[[2]]
+  })
+
+  # plot - supFTETopPerGradStudent
+  output$supFTETopPerGradStudent <- renderPlot({
+    supStaffCountsVis()[[3]]
+  })
+
+  # plot - supFTETopPerDoctoral
+  output$supFTETopPerDoctoral <- renderPlot({
+    supStaffCountsVis()[[4]]
+  })
+
+  # plot - supPerFacultyUserSelected
+  output$supPerFacultyUserSelected <- renderPlot({
+    supStaffCountsVis()[[5]]
+  })
+
+  # plot - supPerStudentUserSelected
+  output$supPerStudentUserSelected <- renderPlot({
+    supStaffCountsVis()[[6]]
+  })
+
+  # plot - supPerGradStudentUserSelected
+  output$supPerGradStudentUserSelected <- renderPlot({
+    supStaffCountsVis()[[7]]
+  })
+
+  # plot - supPerDoctoralUserSelected
+  output$supPerDoctoralUserSelected <- renderPlot({
+    supStaffCountsVis()[[8]]
+  })
+
+
 
 
   # URLs for downloading data
