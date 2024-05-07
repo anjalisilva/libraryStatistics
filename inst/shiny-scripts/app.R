@@ -171,19 +171,21 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
                                    )),
-                          tabPanel("Calculate Ratio",
+                          tabPanel("Calculate Custom Ratio",
                                    h3("Calculate Your Own Ratio For Selected Members", align = "center"),
                                    br(),
                                    h4("Select two statistics from the annual survey of ARL to be compared as
                                        ratios across members selected. The ARL ranking is shown above each bar."),
                                    br(),
                                    br(),
+
+                                   splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
+                                               checkboxGroupInput("numeratorChoice", label = h3("Select Numerator"), choices = ""),
+                                               checkboxGroupInput("denominatorChoice", label = h3("Select Denominator"), choices = "")),
+
                                    fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerFacultyUserSelected"), plotOutput("supFTETopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerStudentUserSelected"), plotOutput("supFTETopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
-                                   )),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput(""), plotOutput(""))),
+                                   ),
 
 
               )
@@ -199,7 +201,7 @@ server <- function(input, output, session) {
   # defined below then use the value computed from this expression
 
 
-  # Step I: save input csv as a reactive
+  # Step I: Save Input csv As a Reactive
   csvInput <- reactive({
     if (is.null(input$file1)) {
       return(NULL)
@@ -208,6 +210,7 @@ server <- function(input, output, session) {
     }
   })
 
+  # Update Choices for Year for User
   observe({
     columns <- unique(csvInput()$Year)
     updateCheckboxGroupInput(session,
@@ -217,7 +220,7 @@ server <- function(input, output, session) {
                              selected = columns[1])
   })
 
-
+  # Update Choices for Institution Name for User
   observe({
     columns2 <- unique(csvInput()$`Institution Name`)
     updateCheckboxGroupInput(session,
@@ -225,6 +228,26 @@ server <- function(input, output, session) {
                              label = NULL,
                              choices = columns2[-1], # remove median
                              selected = columns2[2])
+  })
+
+  # Update Create Own Ratio Choices for Numerator (top part)
+  observe({
+    columns3 <- unique(colnames(csvInput())[12:80])
+    updateCheckboxGroupInput(session,
+                      "numeratorChoice",
+                      label = NULL,
+                      choices = columns3, # remove median
+                      selected = columns3[5])
+  })
+
+  # Update Create Own Ratio Choices for Denominator (bottom part)
+  observe({
+    columns4 <- unique(colnames(csvInput())[12:80])
+    updateCheckboxGroupInput(session,
+                      "denominatorChoice",
+                      label = NULL,
+                      choices = columns4, # remove median
+                      selected = columns4[53])
   })
 
   # -- Total Library Expenditures

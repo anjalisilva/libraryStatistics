@@ -157,73 +157,13 @@ dataAdjustment <- function(dataARL) {
   # Purpose: A function that takes all data supplied by the user
   # and ensure that numeric values be displayed as numeric
 
-  selectedData <- dataARL %>%
-    dplyr::select(
-      "Year",
-      "Institution Name",
-      "Institution type",
-      "Region",
-      "Rank in ARL investment index",
-      "ARL investment index value",
-      "Titles held",
-      "Volumes held",
-      "Electronic books",
-      "Total library expenditures",
-      "Total materials expenditures",
-      "Total salaries & wages",
-      "Other operating expenditures",
-      "Canadian dollar exchange rate",
-      "Professional staff",
-      "Support staff",
-      "Student assistants",
-      "Total prof. + support + student staff",
-      "Total salaries & wages",
-      "Professional salaries & wages",
-      "Support staff salaries & wages",
-      "Student assistant wages",
-      "Number of successful full-text article requests (journals)",
-      "Total teaching faculty",
-      "Total fulltime students",
-      "Part-time students, undergraduate and graduate",
-      "Total fulltime graduate students",
-      "Part-time graduate students",
-      "Doctor's degree fields",
-      "Doctor's degrees awarded",
-      "Group presentations",
-      "Presentation participants") %>%
+  formattedData <- dataARL %>%
     dplyr::mutate_at(
-      c('Titles held',
-        'Volumes held',
-        'Electronic books',
-        'Total library expenditures',
-        'Total materials expenditures',
-        'Total salaries & wages',
-        'Other operating expenditures',
-        'Canadian dollar exchange rate',
-        "Professional staff",
-        "Support staff",
-        "Student assistants",
-        "Total prof. + support + student staff",
-        "Total salaries & wages",
-        "Professional salaries & wages",
-        "Support staff salaries & wages",
-        "Student assistant wages",
-        "Number of successful full-text article requests (journals)",
-        "Total teaching faculty",
-        "Total fulltime students",
-        "Part-time students, undergraduate and graduate",
-        "Total fulltime graduate students",
-        "Part-time graduate students",
-        "Doctor's degree fields",
-        "Doctor's degrees awarded",
-        "Group presentations",
-        "Presentation participants"), as.numeric) %>%
+      c(colnames(dataARL)[12:80]), as.numeric) %>%
     dplyr::mutate('Total library expenditures (CAD)' = `Total library expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total materials expenditures (CAD)' = `Total materials expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total salaries & wages (CAD)' = `Total salaries & wages` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Other operating expenditures (CAD)' = `Other operating expenditures` * `Canadian dollar exchange rate`)
 
-
-  return(selectedData)
-
+  return(formattedData)
 }
