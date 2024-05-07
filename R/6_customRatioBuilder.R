@@ -5,7 +5,7 @@
 #' selected numerator and denominator from various statistics reported
 #' in the annual survey of Association of Research Libraries (ARL). The
 #' ratio can be visualized for user selected ARL members over user selected
-#' years as bar plots.
+#' years, as bar plots.
 #'
 #'@param dataARL A dataframe containing ARL survey data directly
 #'   downloaded from ARL platform. The years should be placed along
@@ -34,34 +34,12 @@
 #'
 #' @return Returns bar plots showing varying ratios specified below:
 #' \itemize{
-#'   \item proFTETopPerFaculty - A barplot showing members with highest
-#'         ratio of total library support staff counts (FTE) per
-#'         teaching faculty, over user selected number of years.
-#'   \item proFTETopPerStudent - A barplot showing members with highest
-#'         ratio of total library support staff counts (FTE) per
-#'         student (full-time, FT, and part-time, PT), over user selected
-#'         number of years.
-#'   \item proFTETopPerGradStudent - A barplot showing members with highest
-#'         ratio of total library support staff counts (FTE) per graduate
-#'         student (full-time, FT, and part-time, PT), over user selected
-#'         number of years.
-#'   \item proFTETopPerDoctoral - A barplot showing members with highest
-#'         ratio of total library support staff counts (FTE) per doctoral
-#'         degree awarded, over user selected number of years.
-#'   \item proPerFacultyUserSelected - A barplot showing ratio of library
-#'         support staff counts (FTE) per teaching faculty for user
-#'         selected ARL members, over user selected number of years.
-#'   \item proPerStudentUserSelected - A barplot showing ratio of library
-#'         support staff counts (FTE) per student (full-time, FT, and
-#'         part-time, PT) for user selected ARL members, over user selected
-#'         number of years.
-#'   \item proPerGradStudentUserSelected - A barplot showing ratio of total
-#'         library support staff counts (FTE) per graduate student
-#'         (full-time, FT, and part-time, PT) for user selected ARL members,
-#'         over user selected number of years.
-#'   \item proPerDoctoralUserSelected - A barplot showing ratio of total
-#'         library expenditures per per doctoral degree awarded for user
-#'         selected ARL members, over user selected number of years.
+#'   \item customRatioTop - A barplot showing members with highest
+#'         ratio of custom ratio based on user selected numerator
+#'         and denominator, over user selected years.
+#'   \item customRatioUser - A barplot showing ratio based on user
+#'         selected numerator and denominator, for user selected
+#'         ARL members, over user selected number of years.
 #' }
 #'
 #' @examples
@@ -112,7 +90,7 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = paste("Members with highest ratio of", combinedString)) +
+    ggplot2::ggtitle(label = paste("Members with highest ratio of", tolower(combinedString))) +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -133,29 +111,28 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
 
   # ---
   # Using support staff count per faculty by user selection
-  customRatioTopUser <- selectedData %>%
+  customRatioUser <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(supPerFaculty = `Support staff`/`Total teaching faculty`) %>%
+    # sym() convert column names to symbols and !! unquote them
+    dplyr::mutate(customRatio = !!sym(numerator) / !!sym(denominator)) %>%
     # Replace INF values with NA
-    dplyr::mutate(supPerFaculty = na_if(supPerFaculty, Inf)) %>%
+    dplyr::mutate(customRatio = na_if(customRatio, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, supPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(supPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
-                        y = `supPerFaculty`,
+                        y = `customRatio`,
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Support Staff Count (FTE) Per\nTeaching Faculty",
+    ggplot2::labs(y = combinedString,
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Ratio of Support Staff Count (FTE) Per\nTeaching Faculty For User Selected Members") +
-                    # subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::ggtitle(label = paste("Ratio of ", tolower(combinedString), "for user selected members")) +
+    # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
                                               hjust = 1,
@@ -171,12 +148,8 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                        vjust = 0,
                        size = 6)
 
-
-
-  return(list(supFTETopPerFaculty = supFTETopPerFaculty,
-              supPerFacultyUserSelected = supPerFacultyUserSelected))
-
-
+  return(list(customRatioTop = customRatioTop,
+              customRatioUser = customRatioUser))
 
 }
 # [END]
