@@ -159,7 +159,7 @@ dataAdjustment <- function(dataARL) {
 
   formattedData <- dataARL %>%
     dplyr::mutate_at(
-      c(colnames(dataARL)[12:80]), as.numeric) %>%
+      c(colnames(dataARL)[6:80]), as.numeric) %>%
     dplyr::mutate('Total library expenditures (CAD)' = `Total library expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total materials expenditures (CAD)' = `Total materials expenditures` * `Canadian dollar exchange rate`)  %>%
     dplyr::mutate('Total salaries & wages (CAD)' = `Total salaries & wages` * `Canadian dollar exchange rate`)  %>%
