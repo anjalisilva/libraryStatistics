@@ -45,8 +45,8 @@ ui <- fluidPage(
                  br(),
 
                  # actionButton
-                 actionButton(inputId = "button2",
-                              label = "Analyze"),
+                 # actionButton(inputId = "button2",
+                 #             label = "Analyze"),
 
                  # br() element to introduce extra vertical spacing -
                  br(),
@@ -76,10 +76,10 @@ ui <- fluidPage(
                                    ARL Data Portal. To download data from ARL Data Portal, it is recommended that all variables are
                                    selected, with columns being 'Variables' and data sorted by 'Institution Name' (default options).
                                    Once data is uploaded, the list of choices for 'Institute' and 'Years' based on uploaded dataset
-                                   will appear here. Select up to 5 ARL member institutes and up to 5 years, and press 'Analyze'.
+                                   will appear here. Select up to 5 ARL member institutes and up to 5 years.
                                    Explore the results by navigating the tabs on the right side of app on the top. The left panel will
-                                   remain intact, so if need user can alter their choices. If choices are later altered,
-                                   press 'Analyze' again to update results on the various tabs to the right."),
+                                   remain intact, so if need user can alter their choices. Choices can be altered and
+                                   results on the various tabs to the right will be updated as applicable."),
                                    br(),
                                    h4("Not clear on what type of data to upload?"),
                                    h5("Uploaded data would come from ARL Data Portal directly with no data cleaning involved. The file
@@ -172,19 +172,21 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
                                    )),
                           tabPanel("Calculate Custom Ratio",
-                                   h3("Calculate Your Own Ratio For Selected Members", align = "center"),
+                                   h3("Calculate Custom Ratio For Selected Members", align = "center"),
                                    br(),
-                                   h4("Select two statistics from the annual survey of ARL to be compared as
-                                       ratios across members selected. The ARL ranking is shown above each bar."),
+                                   h4("Select two statistics from the annual survey of ARL to be computed into
+                                       a ratio, across user selected ARL members and years. The plot will be
+                                       produced at the bottom with ARL rankings shown above each bar. If no plot
+                                       is produced, no data maybe avilable for selected statistics."),
                                    br(),
                                    br(),
-
                                    splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
-                                               checkboxGroupInput("numeratorChoice", label = h3("Select Numerator"), choices = ""),
-                                               checkboxGroupInput("denominatorChoice", label = h3("Select Denominator"), choices = "")),
-
+                                               radioButtons("numeratorChoice", label = h3("Select Numerator"), choices = "",  selected = 1),
+                                               radioButtons("denominatorChoice", label = h3("Select Denominator"), choices = ""),  selected = 1),
+                                   br(),
+                                   br(),
                                    fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput(""), plotOutput(""))),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("customRatioUser"), plotOutput("customRatioTop"))),
                                    ),
 
 
@@ -213,8 +215,8 @@ server <- function(input, output, session) {
   # Update Choices for Year for User
   observe({
     columns <- unique(csvInput()$Year)
-    updateCheckboxGroupInput(session,
-                             "yearsInput",
+    updateCheckboxGroupInput(session = session,
+                             inputId = "yearsInput",
                              label = NULL,
                              choices = columns,
                              selected = columns[1])
@@ -223,35 +225,37 @@ server <- function(input, output, session) {
   # Update Choices for Institution Name for User
   observe({
     columns2 <- unique(csvInput()$`Institution Name`)
-    updateCheckboxGroupInput(session,
-                             "instituteInput",
-                             label = NULL,
-                             choices = columns2[-1], # remove median
-                             selected = columns2[2])
+    updateCheckboxGroupInput(session = session,
+                       inputId = "instituteInput",
+                       label = NULL,
+                       choices = columns2[-1], # remove median
+                       selected = columns2[2])
   })
 
   # Update Create Own Ratio Choices for Numerator (top part)
   observe({
     columns3 <- unique(colnames(csvInput())[12:80])
-    updateCheckboxGroupInput(session,
-                      "numeratorChoice",
-                      label = NULL,
-                      choices = columns3, # remove median
-                      selected = columns3[5])
+    updateRadioButtons(session = session,
+                       inputId = "numeratorChoice",
+                       label = NULL,
+                       choices = columns3, # remove median
+                       selected = columns3[61])
   })
 
   # Update Create Own Ratio Choices for Denominator (bottom part)
   observe({
     columns4 <- unique(colnames(csvInput())[12:80])
-    updateCheckboxGroupInput(session,
-                      "denominatorChoice",
-                      label = NULL,
-                      choices = columns4, # remove median
-                      selected = columns4[53])
+    updateRadioButtons(session = session,
+                             inputId = "denominatorChoice",
+                             label = NULL,
+                             choices = columns4, # remove median
+                             selected = columns4[43])
   })
 
   # -- Total Library Expenditures
-  expVisualization <- eventReactive(eventExpr = input$button2, {
+  expVisualization <- eventReactive(eventExpr = c(input$file1,
+                                                  input$instituteInput,
+                                                  input$yearsInput), {
     visTotalLibraryExp(
       dataARL = csvInput(),
       members = as.character(input$instituteInput),
@@ -300,7 +304,9 @@ server <- function(input, output, session) {
 
 
   # -- Total Library Materials Expenditures
-  expMaterialsVis <- eventReactive(eventExpr = input$button2, {
+  expMaterialsVis <- eventReactive(eventExpr = c(input$file1,
+                                                 input$instituteInput,
+                                                 input$yearsInput), {
     visTotalLibMaterialsExp(
       dataARL = csvInput(),
       members = as.character(input$instituteInput),
@@ -349,7 +355,9 @@ server <- function(input, output, session) {
 
 
   # -- Professional Staff Salaries
-  profStaffSalariesVis <- eventReactive(eventExpr = input$button2, {
+  profStaffSalariesVis <- eventReactive(eventExpr = c(input$file1,
+                                                      input$instituteInput,
+                                                      input$yearsInput), {
     visProfStaffSalaries(
       dataARL = csvInput(),
       members = as.character(input$instituteInput),
@@ -398,7 +406,9 @@ server <- function(input, output, session) {
 
 
   # -- Professional Staff Counts
-  profStaffCountsVis <- eventReactive(eventExpr = input$button2, {
+  profStaffCountsVis <- eventReactive(eventExpr = c(input$file1,
+                                                    input$instituteInput,
+                                                    input$yearsInput), {
     visProfStaffCounts(
       dataARL = csvInput(),
       members = as.character(input$instituteInput),
@@ -447,7 +457,9 @@ server <- function(input, output, session) {
 
 
   # -- Support Staff Counts
-  supStaffCountsVis <- eventReactive(eventExpr = input$button2, {
+  supStaffCountsVis <- eventReactive(eventExpr = c(input$file1,
+                                                   input$instituteInput,
+                                                   input$yearsInput), {
     visSupStaffCounts(
       dataARL = csvInput(),
       members = as.character(input$instituteInput),
@@ -493,6 +505,32 @@ server <- function(input, output, session) {
   output$supPerDoctoralUserSelected <- renderPlot({
     supStaffCountsVis()[[8]]
   })
+
+
+  # -- Custom Ratio
+  customRatioShiny <- eventReactive(eventExpr = c(input$file1,
+                                                  input$instituteInput,
+                                                  input$yearsInput,
+                                                  input$numeratorChoice,
+                                                  input$denominatorChoice), {
+    customRatioBuilder(
+      dataARL = csvInput(),
+      numerator = as.character(input$numeratorChoice),
+      denominator = as.character(input$denominatorChoice),
+      members = as.character(input$instituteInput),
+      years = as.vector(input$yearsInput, mode = "numeric"))
+  })
+
+  # plot - customRatioTop
+  output$customRatioTop <- renderPlot({
+    customRatioShiny()[[1]]
+  })
+
+  # plot - customRatioUser
+  output$customRatioUser <- renderPlot({
+    customRatioShiny()[[2]]
+  })
+
 
 
 
