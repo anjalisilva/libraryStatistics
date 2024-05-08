@@ -62,8 +62,8 @@ ui <- fluidPage(
                           tabPanel("Instructions",
                                    h2("Instructions", align = "center"),
                                    br(),
-                                   h3("Welcome to libraryStatistics Shiny application (app). This app is part of the libraryStatistics
-                                   R package."),
+                                   h3("Welcome to libraryStatistics Shiny application (app).", align = "center"),
+                                   h3("This app is part of the libraryStatistics R package.", align = "center"),
                                    br(),
                                    h4("What is the libraryStatistics Shiny app?"),
                                    h5("The libraryStatistics is an R package for analyzing and visualizing library statistics published
@@ -92,7 +92,15 @@ ui <- fluidPage(
                                    br(),
                                    br(),
                                    h4("How to cite this work?"),
-                                   h5(""),
+                                   h5("Silva, A. and K. Maidenberg (2024). libraryStatistics: An R Package with a Shiny Dashboard for Visualizing
+                                   and Comparing Library Statistics Data from Association of Research Libraries. Unpublished."),
+                                   h5("A BibTeX entry for LaTeX users is: "),
+                                   h5("
+                                     @misc{,
+                                       title = {libraryStatistics: An R Package with a Shiny Dashboard for Visualizing and Comparing Library Statistics Data from Association of Research Libraries},
+                                       author = {A. Silva and K. Maidenberg},
+                                       year = {2024},
+                                       url = {https://github.com/anjalisilva/libraryStatistics},}"),
                                    br(),
                                    br(),
                                    ),

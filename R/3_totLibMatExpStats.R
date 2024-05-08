@@ -4,7 +4,7 @@
 #' A function to visualize total library materials expenditures in United
 #' States Dollars (USD) as ratios in comparison to various statistics
 #' reported in the annual survey of Association of Research Libraries (ARL)
-#' as bar plots. This is question 7 on ARL survey.
+#' as bar plots. This is question 7 on ARL survey as the numerator.
 #'
 #'@param dataARL A dataframe containing ARL survey data directly
 #'   downloaded from ARL platform. The years should be placed along
@@ -53,6 +53,16 @@
 #' visTotalLibMaterialsExp(dataARL = ARLDataDownload,
 #'                    members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
 #'                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#'
+#' @author {Anjali Silva, \email{a.silva@utoronto.ca}, Klara Maidenberg, \email{klara.maidenberg@utoronto.ca}}
+#'
+#' @references
+#' Mian, A., & Gross, H. (2023). ARL Statistics 2022. Washington, DC:
+#' Association of Research Libraries.
+#' \href{https://publications.arl.org/ARL-Statistics-2022/}{Link}
+#'
+#' Association of Research Libraries. (2023). ARL Statistics 2023
+#' Instructions. \href{https://www.arlstatistics.org/resources/stats_instructions}{Link}
 #'
 #' @export
 #' @importFrom ggplot2 ggplot
