@@ -103,26 +103,16 @@ An overview of the package is illustrated below:
 The R package and Shiny dashboard that permit to visualize, track
 trends, and compare up to five years of data downloaded directly from
 ARL data portal, with no data cleaning involved. Upon uploading of data,
-the user is directed to select an institute of choice and up to five
-years of choice. The user can then see the summary of dataset by each
-year, and visually compare the selected institute against other
-libraries for indicators defined by ARL. Additionally, useful ratios and
-percentages, such as library expenditures per faculty, per student, and
-per doctoral degree awarded, can be visualized and compared.
-
-Overall, the tool enhances the utilization of ARL collected data in
-making evidence-based decisions within UTL and other libraries, to gain
-insights into the multifaceted ways in which library resources
+the user is directed to select up to five ARL members of choice and up
+to five years of choice. The user can visually compare the selected
+institute against other members for indicators defined by ARL as ratios.
+An example of an ratio is library expenditures per faculty, per student,
+and per doctoral degree awarded, can be visualized and compared across
+members. Overall, the tool enhances the utilization of ARL collected
+data in making evidence-based decisions within UTL and other libraries,
+to gain insights into the multifaceted ways in which library resources
 contribute to its community, to support research and scholarship
-endeavors. To the best of our knowledge, no similar work has been done
-in open-source framework to date. I am interested in submitting this
-work to be presented as an oral presentation at the useR!2024 conference
-to take place in Salzburg, Austria in July 2024. The useR! is the most
-recognized, international conference dedicated to open-source
-statistical software development using R. The useR! 2022 conference had
-1,227 participants from 96 countries. My work will fall under the
-category of ‘open-source software development for
-understanding/analytics of library statistics’
+endeavors.
 
 ## Shiny App
 
