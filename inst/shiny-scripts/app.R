@@ -57,7 +57,7 @@ ui <- fluidPage(
     # Main panel for displaying outputs
     mainPanel(width = 9,
 
-              # Output: Tabet
+              # Output: Tabset
               tabsetPanel(type = "tabs",
                           tabPanel("Instructions",
                                    h2("Instructions", align = "center"),
@@ -80,6 +80,10 @@ ui <- fluidPage(
                                    Explore the results by navigating the tabs on the right side of app on the top. The left panel will
                                    remain intact, so if need user can alter their choices. Choices can be altered and
                                    results on the various tabs to the right will be updated as applicable."),
+                                   h5(" The file
+                                   should be in comma-separated value (.csv) format with rows corresponding to years and columns to
+                                   ARL indicators (variables). The first column must be 'Year', followed by other indicators in no particular
+                                   order, e.g., 'Institution Name', 'Institution type', etc. as directly downloaded from ARL Data Portal."),
                                    br(),
                                    h4("Not clear on what type of data to upload?"),
                                    h5("Uploaded data would come from ARL Data Portal directly with no data cleaning involved. The file
