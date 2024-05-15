@@ -22,6 +22,7 @@ degree awarded, can be visualized and compared.
 }
 \examples{
 \dontrun{
+# To open up the shiny page
 libraryStatistics::shinyLibStats()
 }
 

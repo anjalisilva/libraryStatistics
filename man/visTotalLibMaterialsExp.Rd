@@ -57,7 +57,8 @@ Returns bar plots showing varying ratios specified below:
 A function to visualize total library materials expenditures in United
 States Dollars (USD) as ratios in comparison to various statistics
 reported in the annual survey of Association of Research Libraries (ARL)
-as bar plots. This is question 7 on ARL survey as the numerator.
+as bar plots. Note, this function provides question 7 of ARL survey
+as the numerator of the ratio.
 }
 \examples{
 visTotalLibMaterialsExp(dataARL = ARLDataDownload,

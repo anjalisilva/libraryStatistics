@@ -63,7 +63,8 @@ Returns bar plots showing varying ratios specified below:
 A function to visualize library support staff counts, full-time
 equivalent (FTE), as ratios in comparison to various statistics reported
 in the annual survey of Association of Research Libraries (ARL) as bar
-plots. This is question 13b on ARL survey as the numerator.
+plots. Note, this function provides question 13b of ARL survey as the
+numerator of the ratio.
 }
 \examples{
 visSupStaffCounts(dataARL = ARLDataDownload,

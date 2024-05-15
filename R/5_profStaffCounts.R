@@ -4,7 +4,8 @@
 #' A function to visualize library professional staff counts, full-time
 #' equivalent (FTE), as ratios in comparison to various statistics reported
 #' in the annual survey of Association of Research Libraries (ARL) as bar
-#' plots. This is question 13a on ARL survey as the numerator.
+#' plots. Note, this function provides question 13a of ARL survey as the
+#' numerator of the ratio.
 #'
 #'@param dataARL A dataframe containing ARL survey data directly
 #'   downloaded from ARL platform. The years should be placed along
@@ -71,8 +72,9 @@
 #' Instructions. \href{https://www.arlstatistics.org/resources/stats_instructions}{Link}
 #'
 #' @export
-#' @importFrom ggplot2 ggplot
+#' @import ggplot2
 #' @import magrittr
+#' @import dplyr
 visProfStaffCounts <- function(dataARL, members, years = NA) {
 
   selectedData <- dataAdjustment(dataARL = dataARL)

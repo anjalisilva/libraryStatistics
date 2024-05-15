@@ -60,8 +60,9 @@
 #' Instructions. \href{https://www.arlstatistics.org/resources/stats_instructions}{Link}
 #'
 #' @export
-#' @importFrom ggplot2 ggplot
+#' @import ggplot2
 #' @import magrittr
+#' @import dplyr
 customRatioBuilder <- function(dataARL, numerator, denominator, members, years = NA) {
 
   selectedData <- dataAdjustment(dataARL = dataARL)

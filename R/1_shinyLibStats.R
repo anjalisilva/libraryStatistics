@@ -14,6 +14,7 @@
 #'
 #' @examples
 #' \dontrun{
+#' # To open up the shiny page
 #' libraryStatistics::shinyLibStats()
 #' }
 #'

@@ -57,7 +57,8 @@ Returns bar plots showing varying ratios specified below:
 A function to visualize total library expenditures in United
 States Dollars (USD) as ratios in comparison to various statistics
 reported in the annual survey of Association of Research Libraries (ARL)
-as bar plots. This is question 6 on ARL survey as the numerator.
+as bar plots. Note, this function provides question 6 of ARL survey
+as the numerator of the ratio.
 }
 \examples{
 visTotalLibraryExp(dataARL = ARLDataDownload,

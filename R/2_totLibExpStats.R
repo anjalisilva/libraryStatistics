@@ -4,7 +4,8 @@
 #' A function to visualize total library expenditures in United
 #' States Dollars (USD) as ratios in comparison to various statistics
 #' reported in the annual survey of Association of Research Libraries (ARL)
-#' as bar plots. This is question 6 on ARL survey as the numerator.
+#' as bar plots. Note, this function provides question 6 of ARL survey
+#' as the numerator of the ratio.
 #'
 #'@param dataARL A dataframe containing ARL survey data directly
 #'   downloaded from ARL platform. The years should be placed along
@@ -65,8 +66,9 @@
 #' Instructions. \href{https://www.arlstatistics.org/resources/stats_instructions}{Link}
 #'
 #' @export
-#' @importFrom ggplot2 ggplot
+#' @import ggplot2
 #' @import magrittr
+#' @import dplyr
 visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
   selectedData <- dataAdjustment(dataARL = dataARL)

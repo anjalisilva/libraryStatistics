@@ -63,8 +63,8 @@ Returns bar plots showing varying ratios specified below:
 A function to visualize salaries of professional library staff
 in United States Dollars (USD), as ratios in comparison to various
 statistics reported in the annual survey of Association of Research
-Libraries (ARL) as bar plots. This is question 8a on ARL survey as
-the numerator.
+Libraries (ARL) as bar plots. Note, this function provides question
+8a of ARL survey as the numerator of the ratio.
 }
 \examples{
 visProfStaffSalaries(dataARL = ARLDataDownload,
