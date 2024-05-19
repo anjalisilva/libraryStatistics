@@ -62,7 +62,7 @@ ui <- fluidPage(
                           tabPanel("Instructions",
                                    h2("Instructions", align = "center"),
                                    br(),
-                                   h3("Welcome to libraryStatistics Shiny application (app).", align = "center"),
+                                   h3("Welcome to libraryStatistics Shiny application.", align = "center"),
                                    h3("This app is part of the libraryStatistics R package.", align = "center"),
                                    br(),
                                    h4("What is the libraryStatistics Shiny app?"),
