@@ -66,33 +66,43 @@ ui <- fluidPage(
                                    h3("This app is part of the libraryStatistics R package.", align = "center"),
                                    br(),
                                    h4("What is the libraryStatistics Shiny app?"),
-                                   h5("The libraryStatistics is an R package for analyzing and visualizing library statistics published
-                                   from the annual survey of Association of Research Libraries (ARL). Ratios are generated using various
-                                   statistics for comparison purposes. The Shiny app permit to visualize plots produced by the R package
-                                   in an interactive manner."),
+                                   h5("The libraryStatistics Shiny application is a tool developed as part of the
+                                      libraryStatistics R package. This R package is designed for the analysis and
+                                      visualization of library statistics published from the annual survey conducted
+                                      by the Association of Research Libraries (ARL). The Shiny application enables the
+                                      generation of various statistical ratios for comparative analysis. Through the
+                                      interactive interface of the application, users can dynamically visualize ratios
+                                      by altering ARL members, years, and also by creating custom ratios, which
+                                      enhances the accessibility and usability of the published data."),
                                    br(),
                                    h4("How to use the libraryStatistics Shiny app?"),
-                                   h5("First upload a dataset downloaded from
-                                   ARL Data Portal. To download data from ARL Data Portal, it is recommended that all variables are
-                                   selected, with columns being 'Variables' and data sorted by 'Institution Name' (default options).
-                                   Once data is uploaded, the list of choices for 'Institute' and 'Years' based on uploaded dataset
-                                   will appear here. Select up to 5 ARL member institutes and up to 5 years.
-                                   Explore the results by navigating the tabs on the right side of app on the top. The left panel will
-                                   remain intact, so if need user can alter their choices. Choices can be altered and
-                                   results on the various tabs to the right will be updated as applicable."),
-                                   h5(" The file
-                                   should be in comma-separated value (.csv) format with rows corresponding to years and columns to
-                                   ARL indicators (variables). The first column must be 'Year', followed by other indicators in no particular
-                                   order, e.g., 'Institution Name', 'Institution type', etc. as directly downloaded from ARL Data Portal."),
+                                   h5("1. Data Preparation: Begin by downloading the dataset from the ARL Data
+                                      Portal. Ensure that all variables are selected, with columns set to 'Variables'
+                                      and the data sorted by 'Institution Name' (default options). Data should be
+                                      downloaded in comma-separated value (.csv) format."),
+                                   h5("2. Check Data: The downloaded dataset should have rows corresponding to years
+                                      and columns to ARL indicators (variables). The first column must be 'Year',
+                                      followed by other indicators in any order, such as 'Institution Name',
+                                      'Institution type', etc., as downloaded directly from the ARL Data Portal."),
+                                   h5("3. Uploading Data and Parameter Selection: Upload the dataset (.csv format)
+                                      to Shiny application. After uploading the dataset, a list of choices for
+                                      'Institute' and 'Years' based on the uploaded dataset will appear. You may
+                                      select up to five ARL member institutes and up to five years for analysis."),
+                                   h5("4. Exploring Results: Navigate the tabs on the right side at the top of the
+                                      application to explore the results. The left panel will remain static, allowing
+                                      user to modify the selections if needed. Changes to selections will
+                                      automatically update the results displayed in the various tabs on the right."),
                                    br(),
-                                   h4("Not clear on what type of data to upload?"),
-                                   h5("Uploaded data would come from ARL Data Portal directly with no data cleaning involved. The file
-                                   should be in comma-separated value (.csv) format with rows corresponding to years and columns to
-                                   ARL indicators (variables). The first column must be 'Year', followed by other indicators in no particular
-                                   order, e.g., 'Institution Name', 'Institution type', etc. as directly downloaded from ARL Data Portal.
-                                   Following file could be used as a demo dataset to understand the format."),
+                                   h4("Uncertain about what type of data to upload?"),
+                                   h5("Data should be sourced directly from the ARL Data Portal without any preprocessing.
+                                      The file must be in a comma-separated value (.csv) format, where rows represent
+                                      years and columns correspond to ARL indicators (variables). The first column
+                                      should be labeled 'Year', followed by other indicators in any order, such as
+                                      'Institution Name', 'Institution type', etc., as provided by the ARL Data
+                                      Portal. The following file can be used as a demonstration dataset to
+                                      understand the required format."),
                                    actionButton(inputId = "data1",
-                                                label = "Demo Dataset for Testing"),
+                                                label = "Demonstration Dataset for Testing"),
                                    br(),
                                    br(),
                                    h4("How to cite this work?"),
