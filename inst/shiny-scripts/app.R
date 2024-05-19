@@ -22,12 +22,12 @@ ui <- fluidPage(
                  shinyalert::useShinyalert(),  # Set up shinyalert
                  uiOutput("tab2"),
                  fileInput(inputId = "file1",
-                           label = "1. Dataset:
-                           Upload a dataset for analysis. The file should be in comma-separated value
-                           (.csv) format, with rows corresponding to years and columns representing
-                           ARL indicators (variables). The first column must be labeled 'Year',
-                           followed by other indicators in any order, such as 'Institution Name',
-                           'Institution type', etc., as directly downloaded from the ARL Data Portal.",
+                           label = "1. Dataset: upload a dataset for analysis. The file should be
+                           in comma-separated value (.csv) format, with rows corresponding to
+                           years and columns representing ARL indicators (variables). The first
+                           column must be labeled 'Year', followed by other indicators in any
+                           order, such as 'Institution Name', 'Institution type', etc., as
+                           directly downloaded from the ARL Data Portal.",
                            accept = c(".csv")),
                  checkboxGroupInput(inputId = "instituteInput",
                                     label = "2. ARL Member Institute: select up to five options. If
