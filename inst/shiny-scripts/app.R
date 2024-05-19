@@ -13,7 +13,7 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(width = 3,
 
-             tags$p("Read the first tab on the right side called 'Instructions' for instructions."),
+             tags$p("Refer to the 'Instructions' tab located on the right side for detailed guidance."),
 
                  # br() element to introduce extra vertical spacing ----
                  br(),
@@ -23,23 +23,22 @@ ui <- fluidPage(
                  uiOutput("tab2"),
                  fileInput(inputId = "file1",
                            label = "1. Dataset:
-                Upload a dataset below to analyze. File should be
-                in comma-separated value (.csv) format with rows corresponding
-                to years and columns to ARL indicators (variables). The first column must
-                be 'Year', followed by other indicators in no particular order,
-                e.g., 'Institution Name', 'Institution type', etc. as directly
-                downloaded
-                from ARL Data Portal.",
+                           Upload a dataset for analysis. The file should be in comma-separated value
+                           (.csv) format, with rows corresponding to years and columns representing
+                           ARL indicators (variables). The first column must be labeled 'Year',
+                           followed by other indicators in any order, such as 'Institution Name',
+                           'Institution type', etc., as directly downloaded from the ARL Data Portal.",
                            accept = c(".csv")),
                  checkboxGroupInput(inputId = "instituteInput",
-                                    label = "2. ARL Member Institute: Select upto 5 choices. If more
-                                    than 5 institutes are selected, then last 5 will be autoselected.
-                                    After, select choices for years below."),
+                                    label = "2. ARL Member Institute: select up to five options. If
+                                    more than five institutions are chosen, only the last five
+                                    selected will be retained. Subsequently, make the selections for
+                                    the desired years from the option below."),
                  br(),
                  checkboxGroupInput(inputId = "yearsInput",
-                                    label = "3. Years: Select upto 5 choices and press 'Analyze'. If
-                         more than 5 choices are selected, most recent 5 years will be
-                         autoselected."),
+                                    label = "3. Years: select up to five choices. If more than five
+                                    choices are selected, the most recent five years will be
+                                    automatically selected."),
 
                  # br() element to introduce extra vertical spacing ----
                  br(),
