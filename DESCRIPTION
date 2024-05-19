@@ -7,11 +7,12 @@ Author: Authors@R: c(
     person("Klara", "Maidenberg", role = "aut")
     )
 Maintainer: Anjali Silva <a.silva@utoronto.ca>
-Description: R package with a Shiny dashboard that permit to visualize 
-    and compare up to five years of data, at one time, from the annual 
-    survey of Association of Research Libraries (ARL). ARL data describes
-    the collections, staffing, expenditures, and service activities of the
-    ARL member libraries in the United States and Canada. 
+Description: The R package, complemented by a Shiny dashboard, enables the 
+  visualization and comparison of up to five years of data from the annual 
+  survey conducted by the Association of Research Libraries (ARL).  
+  ARL data encompasses comprehensive metrics on collections, staffing, 
+  expenditures, and service activities of ARL member libraries in the 
+  United States and Canada.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
