@@ -127,14 +127,15 @@ ui <- fluidPage(
                                    h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
-                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                       with highest corresponding ratio."),
                                    br(),
                                    br(),
                                    fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerFacultyUser"), plotOutput("tleTopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerStudentUser"), plotOutput("tleTopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tleTopPerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerFacultyUser"), plotOutput("tleTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudent"), plotOutput("tleTopPerUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
                                    )),
                           tabPanel("Total Library Materials Expenditures",
                                    h3("Total Library Materials Expenditures (USD) Ratios", align = "center"),
@@ -142,13 +143,14 @@ ui <- fluidPage(
                                    h4("Total library materials expenditures in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
-                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                       with highest corresponding ratio."),
                                    br(),
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerUndergradStudentUserSelected"), plotOutput("tlmeTopPerUndergradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
                                    )),
                           tabPanel("Professional Staff Salaries",
@@ -157,7 +159,7 @@ ui <- fluidPage(
                                    h4("Professional staff salaries in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
-                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                       with highest corresponding ratio. "),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -172,7 +174,7 @@ ui <- fluidPage(
                                    h4("Professional Library Staff Counts FTE as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
-                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                       with highest corresponding ratio. "),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -187,7 +189,7 @@ ui <- fluidPage(
                                    h4("Support Library Staff Counts FTE as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
-                                       with highest corresponding ratio. The ARL ranking is shown above each bar."),
+                                       with highest corresponding ratio."),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -201,8 +203,8 @@ ui <- fluidPage(
                                    br(),
                                    h4("Select two statistics from the annual survey of ARL to be computed into
                                        a ratio, across user selected ARL members and years. The plot will be
-                                       produced at the bottom with ARL rankings shown above each bar. If no plot
-                                       is produced, no data maybe avilable for selected statistics."),
+                                       produced at the bottom. If no plot is produced, no data maybe avilable
+                                      for selected statistics."),
                                    br(),
                                    br(),
                                    splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
@@ -302,30 +304,43 @@ server <- function(input, output, session) {
     expVisualization()[[3]]
   })
 
-  # plot - tleTopPerDoctoral
-  output$tleTopPerDoctoral <- renderPlot({
+  # plot - tleTopPerUndergradStudent
+  output$tleTopPerUndergradStudent <- renderPlot({
     expVisualization()[[4]]
   })
 
-  # plot - tleTopPerFacultyUser
-  output$tleTopPerFacultyUser <- renderPlot({
+  # plot - tleTopPerDoctoral
+  output$tleTopPerDoctoral <- renderPlot({
     expVisualization()[[5]]
   })
 
-  # plot - tleTopPerStudentUser
-  output$tleTopPerStudentUser <- renderPlot({
+  # plot - tlePerFacultyUser
+  output$tlePerFacultyUser <- renderPlot({
     expVisualization()[[6]]
   })
 
-  # plot - tleTopPerGradStudentUser
-  output$tleTopPerGradStudentUser <- renderPlot({
+  # plot - tlePerStudentUser
+  output$tlePerStudentUser <- renderPlot({
     expVisualization()[[7]]
   })
 
-  # plot - tleTopPerDoctoralUser
-  output$tleTopPerDoctoralUser <- renderPlot({
+  # plot - tlePerGradStudentUser
+  output$tlePerGradStudentUser <- renderPlot({
     expVisualization()[[8]]
   })
+
+
+  # plot - tlePerUndergradStudent
+  output$tlePerUndergradStudent <- renderPlot({
+    expVisualization()[[9]]
+  })
+
+
+  # plot - tlePerDoctoralUser
+  output$tlePerDoctoralUser <- renderPlot({
+    expVisualization()[[10]]
+  })
+
 
 
   # -- Total Library Materials Expenditures
@@ -353,29 +368,39 @@ server <- function(input, output, session) {
     expMaterialsVis()[[3]]
   })
 
+  # plot - tlmeTopPerUndergradStudent
+  output$tlmeTopPerUndergradStudent <- renderPlot({
+    expMaterialsVis()[[4]]
+  })
+
   # plot - tlmeTopPerDoctoral
   output$tlmeTopPerDoctoral <- renderPlot({
-    expMaterialsVis()[[4]]
+    expMaterialsVis()[[5]]
   })
 
   # plot - tlmePerFacultyUserSelected
   output$tlmePerFacultyUserSelected <- renderPlot({
-    expMaterialsVis()[[5]]
+    expMaterialsVis()[[6]]
   })
 
   # plot - tlmePerStudentUserSelected
   output$tlmePerStudentUserSelected <- renderPlot({
-    expMaterialsVis()[[6]]
+    expMaterialsVis()[[7]]
   })
 
   # plot - tlmePerGradStudentUserSelected
   output$tlmePerGradStudentUserSelected <- renderPlot({
-    expMaterialsVis()[[7]]
+    expMaterialsVis()[[8]]
+  })
+
+  # plot - tlmePerUndergradStudentUserSelected
+  output$tlmePerUndergradStudentUserSelected <- renderPlot({
+    expMaterialsVis()[[9]]
   })
 
   # plot - tlmeTopPerDoctoralUserSelected
   output$tlmeTopPerDoctoralUserSelected <- renderPlot({
-    expMaterialsVis()[[8]]
+    expMaterialsVis()[[10]]
   })
 
 
