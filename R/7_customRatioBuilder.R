@@ -111,12 +111,12 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
 
@@ -152,12 +152,12 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
   return(list(customRatioTop = customRatioTop,
               customRatioUser = customRatioUser))
