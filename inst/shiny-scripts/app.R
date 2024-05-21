@@ -429,29 +429,39 @@ server <- function(input, output, session) {
     profStaffSalariesVis()[[3]]
   })
 
+  # plot - proSalTopPerUndergradStudent
+  output$proSalTopPerUndergradStudent <- renderPlot({
+    profStaffSalariesVis()[[4]]
+  })
+
   # plot - proSalTopPerDoctoral
   output$proSalTopPerDoctoral <- renderPlot({
-    profStaffSalariesVis()[[4]]
+    profStaffSalariesVis()[[5]]
   })
 
   # plot - proSalFacultyUserSelected
   output$proSalFacultyUserSelected <- renderPlot({
-    profStaffSalariesVis()[[5]]
+    profStaffSalariesVis()[[6]]
   })
 
   # plot - proSalPerStudentUserSelected
   output$proSalPerStudentUserSelected <- renderPlot({
-    profStaffSalariesVis()[[6]]
+    profStaffSalariesVis()[[7]]
   })
 
   # plot - proSalPerGradStudentUserSelected
   output$proSalPerGradStudentUserSelected <- renderPlot({
-    profStaffSalariesVis()[[7]]
+    profStaffSalariesVis()[[8]]
+  })
+
+  # plot - proSalPerUndergradStudentUserSelected
+  output$proSalPerUndergradStudentUserSelected <- renderPlot({
+    profStaffSalariesVis()[[9]]
   })
 
   # plot - proSalPerDoctoralUserSelected
   output$proSalPerDoctoralUserSelected <- renderPlot({
-    profStaffSalariesVis()[[8]]
+    profStaffSalariesVis()[[10]]
   })
 
 
