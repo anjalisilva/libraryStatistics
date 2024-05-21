@@ -109,7 +109,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -150,7 +150,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -191,7 +191,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -233,7 +233,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
   # Add ranking labels on bars
@@ -276,7 +276,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -317,7 +317,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -359,7 +359,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -401,7 +401,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -444,7 +444,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
   # Add ranking labels on bars
@@ -456,7 +456,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
 
   # ---
-  # Using total lib stats per doctoral degree by top contributors (not ARL)
+  # Using total lib stats per doctoral degree by user selection
   tlePerDoctoralUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
@@ -486,7 +486,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
