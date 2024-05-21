@@ -30,8 +30,8 @@ ui <- fluidPage(
                            directly downloaded from the ARL Data Portal.",
                            accept = c(".csv")),
                  checkboxGroupInput(inputId = "instituteInput",
-                                    label = "2. ARL Member Institute: select up to five options. If
-                                    more than five institutions are chosen, only the last five
+                                    label = "2. ARL Member: select up to five members. If
+                                    more than five members are chosen, only the last five
                                     selected will be retained. Subsequently, make the selections for
                                     the desired years from the option below."),
                  br(),
@@ -115,6 +115,10 @@ ui <- fluidPage(
                                        year = {2024},
                                        url = {https://github.com/anjalisilva/libraryStatistics},}"),
                                    br(),
+                                   br(),
+                                   ),
+                          tabPanel("Investmnet Index",
+                                   h3("Investment Index Historical Table", align = "center"),
                                    br(),
                                    ),
                           tabPanel("Total Library Expenditures",
