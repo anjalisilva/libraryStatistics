@@ -15,8 +15,8 @@ etc. To download data from ARL Data Portal, it is recommended that
 all variables are selected, with columns being 'Variables' and data
 sorted by 'Institution Name' (default options).}
 
-\item{members}{A character vector specifying up to five ARL member
-institutes of interest, as identified in the dataset. E.g.,
+\item{members}{A character vector specifying up to five ARL members
+of interest, as identified in the dataset. E.g.,
 c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").}
 
 \item{years}{A numeric vector specifying up to 5 calendar years
@@ -29,18 +29,18 @@ Default is NA.}
 \value{
 Returns bar plots showing varying ratios specified below:
 \itemize{
-  \item proFTETopPerFaculty - A barplot showing members with highest
+  \item proFTETopPerFaculty - A barplot showing ARL members with highest
         ratio of total library professional staff counts (FTE) per
         teaching faculty, over user selected number of years.
-  \item proFTETopPerStudent - A barplot showing members with highest
+  \item proFTETopPerStudent - A barplot showing ARL members with highest
         ratio of total library professional staff counts (FTE) per
         student (full-time, FT, and part-time, PT), over user selected
         number of years.
-  \item proFTETopPerGradStudent - A barplot showing members with highest
+  \item proFTETopPerGradStudent - A barplot showing ARL members with highest
         ratio of total library professional staff counts (FTE) per graduate
         student (full-time, FT, and part-time, PT), over user selected
         number of years.
-  \item proFTETopPerDoctoral - A barplot showing members with highest
+  \item proFTETopPerDoctoral - A barplot showing ARL members with highest
         ratio of total library professional staff counts (FTE) per doctoral
         degree awarded, over user selected number of years.
   \item proPerFacultyUserSelected - A barplot showing ratio of library

@@ -15,8 +15,8 @@ etc. To download data from ARL Data Portal, it is recommended that
 all variables are selected, with columns being 'Variables' and data
 sorted by 'Institution Name' (default options).}
 
-\item{members}{A character vector specifying up to five ARL member
-institutes of interest, as identified in the dataset. E.g.,
+\item{members}{A character vector specifying up to five ARL members
+of interest, as identified in the dataset. E.g.,
 c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").}
 
 \item{years}{A numeric vector specifying up to 5 calendar years
@@ -29,28 +29,31 @@ Default is NA.}
 \value{
 Returns bar plots showing varying ratios specified below:
 \itemize{
-  \item tlmeTopPerFaculty - A barplot showing members with highest ratio of total
-        library expenditures per teaching faculty, over user selected number of years.
-  \item tlmeTopPerStudent - A barplot showing members with highest ratio of total
-        library expenditures per student (full-time, FT, and part-time, PT), over
-         user selected number of years.
-  \item tlmeTopPerGradStudent - A barplot showing members with highest ratio of total
-        library expenditures per graduate student (full-time, FT, and part-time, PT),
+  \item tlmeTopPerFaculty - A barplot showing ARL members with
+        highest ratio of total library expenditures per teaching
+        faculty, over user selected number of years.
+  \item tlmeTopPerStudent - A barplot showing members with highest
+        ratio of total library expenditures per student (full-time,
+        FT, and part-time, PT), over user selected number of years.
+  \item tlmeTopPerGradStudent - A barplot showing members with highest
+        ratio of total library expenditures per graduate student (full-time,
+        FT, and part-time, PT), over user selected number of years.
+  \item tlmeTopPerDoctoral - A barplot showing members with highest
+        ratio of total library expenditures per doctoral degree awarded,
         over user selected number of years.
-  \item tlmeTopPerDoctoral - A barplot showing members with highest ratio of total
-        library expenditures per doctoral degree awarded, over user selected number
-        of years.
-  \item tlmePerFacultyUserSelected - A barplot showing ratio of total materials expenditures per
-        teaching faculty for user selected ARL members, over user selected number of years.
-  \item tlmePerStudentUserSelected - A barplot showing ratio of total materials expenditures per
-        student (full-time, FT, and part-time, PT) for user selected ARL members, over user
-        selected number of years.
-  \item tlmePerGradStudentUserSelected - A barplot showing ratio of total materials expenditures per
-        graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
-        selected number of years.
-  \item tlmeTopPerDoctoralUserSelected - A barplot showing ratio of total materials expenditures per
-        per doctoral degree awarded for user selected ARL members, over user
-        selected number of years.
+  \item tlmePerFacultyUserSelected - A barplot showing ratio of total
+        materials expenditures per teaching faculty for user selected
+        ARL members, over user selected number of years.
+  \item tlmePerStudentUserSelected - A barplot showing ratio of total
+        materials expenditures per student (full-time, FT, and part-time, PT)
+        for user selected ARL members, over user selected number of years.
+  \item tlmePerGradStudentUserSelected - A barplot showing ratio of total
+        materials expenditures per graduate student (full-time, FT, and
+        part-time, PT) for user selected ARL members, over user selected
+        number of years.
+  \item tlmeTopPerDoctoralUserSelected - A barplot showing ratio of total
+        materials expenditures per per doctoral degree awarded for user
+        selected ARL members, over user selected number of years.
 }
 }
 \description{
