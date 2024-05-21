@@ -111,12 +111,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -152,12 +152,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -193,12 +193,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -234,12 +234,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -275,12 +275,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -317,12 +317,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -359,12 +359,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -400,12 +400,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   return(list(tleTopPerFaculty = tleTopPerFaculty,
