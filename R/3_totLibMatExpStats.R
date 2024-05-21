@@ -14,8 +14,8 @@
 #'   etc. To download data from ARL Data Portal, it is recommended that
 #'   all variables are selected, with columns being 'Variables' and data
 #'   sorted by 'Institution Name' (default options).
-#'@param members A character vector specifying up to five ARL member
-#'   institutes of interest, as identified in the dataset. E.g.,
+#'@param members A character vector specifying up to five ARL members
+#'   of interest, as identified in the dataset. E.g.,
 #'   c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").
 #'@param years A numeric vector specifying up to 5 calendar years
 #'   for which data should be plotted, e.g., c(2015, 2016, 2017,
@@ -26,28 +26,31 @@
 #'
 #' @return Returns bar plots showing varying ratios specified below:
 #' \itemize{
-#'   \item tlmeTopPerFaculty - A barplot showing members with highest ratio of total
-#'         library expenditures per teaching faculty, over user selected number of years.
-#'   \item tlmeTopPerStudent - A barplot showing members with highest ratio of total
-#'         library expenditures per student (full-time, FT, and part-time, PT), over
-#'          user selected number of years.
-#'   \item tlmeTopPerGradStudent - A barplot showing members with highest ratio of total
-#'         library expenditures per graduate student (full-time, FT, and part-time, PT),
+#'   \item tlmeTopPerFaculty - A barplot showing ARL members with
+#'         highest ratio of total library expenditures per teaching
+#'         faculty, over user selected number of years.
+#'   \item tlmeTopPerStudent - A barplot showing members with highest
+#'         ratio of total library expenditures per student (full-time,
+#'         FT, and part-time, PT), over user selected number of years.
+#'   \item tlmeTopPerGradStudent - A barplot showing members with highest
+#'         ratio of total library expenditures per graduate student (full-time,
+#'         FT, and part-time, PT), over user selected number of years.
+#'   \item tlmeTopPerDoctoral - A barplot showing members with highest
+#'         ratio of total library expenditures per doctoral degree awarded,
 #'         over user selected number of years.
-#'   \item tlmeTopPerDoctoral - A barplot showing members with highest ratio of total
-#'         library expenditures per doctoral degree awarded, over user selected number
-#'         of years.
-#'   \item tlmePerFacultyUserSelected - A barplot showing ratio of total materials expenditures per
-#'         teaching faculty for user selected ARL members, over user selected number of years.
-#'   \item tlmePerStudentUserSelected - A barplot showing ratio of total materials expenditures per
-#'         student (full-time, FT, and part-time, PT) for user selected ARL members, over user
-#'         selected number of years.
-#'   \item tlmePerGradStudentUserSelected - A barplot showing ratio of total materials expenditures per
-#'         graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
-#'         selected number of years.
-#'   \item tlmeTopPerDoctoralUserSelected - A barplot showing ratio of total materials expenditures per
-#'         per doctoral degree awarded for user selected ARL members, over user
-#'         selected number of years.
+#'   \item tlmePerFacultyUserSelected - A barplot showing ratio of total
+#'         materials expenditures per teaching faculty for user selected
+#'         ARL members, over user selected number of years.
+#'   \item tlmePerStudentUserSelected - A barplot showing ratio of total
+#'         materials expenditures per student (full-time, FT, and part-time, PT)
+#'         for user selected ARL members, over user selected number of years.
+#'   \item tlmePerGradStudentUserSelected - A barplot showing ratio of total
+#'         materials expenditures per graduate student (full-time, FT, and
+#'         part-time, PT) for user selected ARL members, over user selected
+#'         number of years.
+#'   \item tlmeTopPerDoctoralUserSelected - A barplot showing ratio of total
+#'         materials expenditures per per doctoral degree awarded for user
+#'         selected ARL members, over user selected number of years.
 #' }
 #'
 #' @examples
@@ -111,12 +114,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) #+
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                   position = position_dodge(width = 0.9),
+    #                   vjust = 0,
+    #                   size = 6)
 
 
   # ---
@@ -152,12 +155,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -193,12 +196,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -234,12 +237,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -275,12 +278,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -317,12 +320,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -359,12 +362,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -400,12 +403,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   return(list(tlmeTopPerFaculty = tlmeTopPerFaculty,

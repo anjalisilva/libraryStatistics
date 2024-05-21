@@ -14,8 +14,8 @@
 #'   etc. To download data from ARL Data Portal, it is recommended that
 #'   all variables are selected, with columns being 'Variables' and data
 #'   sorted by 'Institution Name' (default options).
-#'@param members A character vector specifying up to five ARL member
-#'   institutes of interest, as identified in the dataset. E.g.,
+#'@param members A character vector specifying up to five ARL members
+#'   of interest, as identified in the dataset. E.g.,
 #'   c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD").
 #'@param years A numeric vector specifying up to 5 calendar years
 #'   for which data should be plotted, e.g., c(2015, 2016, 2017,
@@ -26,18 +26,18 @@
 #'
 #' @return Returns bar plots showing varying ratios specified below:
 #' \itemize{
-#'   \item proFTETopPerFaculty - A barplot showing members with highest
+#'   \item proFTETopPerFaculty - A barplot showing ARL members with highest
 #'         ratio of total library professional staff counts (FTE) per
 #'         teaching faculty, over user selected number of years.
-#'   \item proFTETopPerStudent - A barplot showing members with highest
+#'   \item proFTETopPerStudent - A barplot showing ARL members with highest
 #'         ratio of total library professional staff counts (FTE) per
 #'         student (full-time, FT, and part-time, PT), over user selected
 #'         number of years.
-#'   \item proFTETopPerGradStudent - A barplot showing members with highest
+#'   \item proFTETopPerGradStudent - A barplot showing ARL members with highest
 #'         ratio of total library professional staff counts (FTE) per graduate
 #'         student (full-time, FT, and part-time, PT), over user selected
 #'         number of years.
-#'   \item proFTETopPerDoctoral - A barplot showing members with highest
+#'   \item proFTETopPerDoctoral - A barplot showing ARL members with highest
 #'         ratio of total library professional staff counts (FTE) per doctoral
 #'         degree awarded, over user selected number of years.
 #'   \item proPerFacultyUserSelected - A barplot showing ratio of library
@@ -117,12 +117,12 @@ visProfStaffCounts <- function(dataARL, members, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -158,12 +158,12 @@ visProfStaffCounts <- function(dataARL, members, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -199,12 +199,12 @@ visProfStaffCounts <- function(dataARL, members, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -240,12 +240,12 @@ visProfStaffCounts <- function(dataARL, members, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -281,7 +281,7 @@ visProfStaffCounts <- function(dataARL, members, years = NA) {
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
     ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
                        position = position_dodge(width = 0.9),
