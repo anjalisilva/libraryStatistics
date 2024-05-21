@@ -202,6 +202,50 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
 
   # ---
+  # Using total lib stats per undergraduate student by top contributors (not ARL)
+  tleTopPerUndergradStudent <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    dplyr::mutate(expPerUndergradStudent = `Total library expenditures`/ totalUndergradStudents) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerUndergradStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures\nPer Undergrad Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Members with Highest Ratio of Total Library\nExpenditures Per Undergrad Student (FT + PT)") +
+    # subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) # +
+  # Add ranking labels on bars
+  # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+  #                    position = position_dodge(width = 0.9),
+  #                    vjust = 0,
+  #                    size = 6)
+
+
+
+
+  # ---
   # Using total lib stats per doctoral degree by top contributors (not ARL)
   tleTopPerDoctoral <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
@@ -368,8 +412,52 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
 
   # ---
+  # Using total lib stats per undergraduate student by user selection
+  tlePerUndergradStudentUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                    (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    dplyr::mutate(expPerUndergradStudent = `Total library expenditures`/ totalUndergradStudents) %>%
+    # Replace INF values with NA
+    dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `expPerUndergradStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Total Library Expenditures\nPer Undergrad Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Ratio of Total Library Expenditures Per Undergrad Student\n(FT + PT) For User Selected Members") +
+    # subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) # +
+  # Add ranking labels on bars
+  # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+  #                    position = position_dodge(width = 0.9),
+  #                    vjust = 0,
+  #                    size = 6)
+
+
+
+  # ---
   # Using total lib stats per doctoral degree by top contributors (not ARL)
-  tleTopPerDoctoralUserSelected <- selectedData %>%
+  tlePerDoctoralUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
@@ -411,11 +499,13 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
   return(list(tleTopPerFaculty = tleTopPerFaculty,
               tleTopPerStudent = tleTopPerStudent,
               tleTopPerGradStudent = tleTopPerGradStudent,
+              tleTopPerUndergradStudent = tleTopPerUndergradStudent,
               tleTopPerDoctoral = tleTopPerDoctoral,
               tlePerFacultyUserSelected = tlePerFacultyUserSelected,
               tlePerStudentUserSelected = tlePerStudentUserSelected,
               tlePerGradStudentUserSelected = tlePerGradStudentUserSelected,
-              tleTopPerDoctoralUserSelected = tleTopPerDoctoralUserSelected))
+              tlePerUndergradStudentUserSelected = tlePerUndergradStudentUserSelected,
+              tlePerDoctoralUserSelected = tlePerDoctoralUserSelected))
 }
 
 # [END]
