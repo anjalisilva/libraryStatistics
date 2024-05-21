@@ -115,7 +115,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -156,7 +156,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -197,7 +197,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -205,6 +205,49 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
     #                    position = position_dodge(width = 0.9),
     #                    vjust = 0,
     #                    size = 6)
+
+
+  # ---
+  # Using professional staff salaries per undergraduate student by top contributors (not ARL)
+  proSalTopPerUndergradStudent <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    dplyr::mutate(proPerUndergradStudent = `Professional salaries & wages`/ totalUndergradStudents) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerUndergradStudent = na_if(proPerUndergradStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `proPerUndergradStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Professional Staff Salaries\nPer Undergrad Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Members with Highest Ratio of Professional Staff\nSalaries Per Undergrad Student (FT + PT)") +
+    # subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) # +
+  # Add ranking labels on bars
+  # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+  #                    position = position_dodge(width = 0.9),
+  #                    vjust = 0,
+  #                    size = 6)
+
 
 
   # ---
@@ -238,7 +281,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -279,7 +322,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -321,7 +364,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -363,7 +406,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -374,7 +417,52 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
 
 
   # ---
-  # Using prof staff salaries per doctoral degree by top contributors (not ARL)
+  # Using prof staff salaries per undergraduate student by user selection
+  proSalPerUndergradStudentUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    dplyr::mutate(proPerUndergradStudent = `Professional salaries & wages`/ totalUndergradStudents) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerUndergradStudent = na_if(proPerUndergradStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `proPerUndergradStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Professional Staff Salaries\nPer Undergrad Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Ratio of Professional Staff Salaries Per\nUndergrad Student (FT + PT) For User Selected Members") +
+    # subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) # +
+  # Add ranking labels on bars
+  # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+  #                    position = position_dodge(width = 0.9),
+  #                    vjust = 0,
+  #                    size = 6)
+
+
+
+
+  # ---
+  # Using prof staff salaries per doctoral degree by user selection
   proSalPerDoctoralUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
@@ -404,7 +492,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -416,10 +504,12 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
   return(list(proSalTopPerFaculty = proSalTopPerFaculty,
               proSalTopPerStudent = proSalTopPerStudent,
               proSalTopPerGradStudent = proSalTopPerGradStudent,
+              proSalTopPerUndergradStudent = proSalTopPerUndergradStudent,
               proSalTopPerDoctoral = proSalTopPerDoctoral,
               proSalFacultyUserSelected = proSalFacultyUserSelected,
               proSalPerStudentUserSelected = proSalPerStudentUserSelected,
               proSalPerGradStudentUserSelected = proSalPerGradStudentUserSelected,
+              proSalPerUndergradStudentUserSelected = proSalPerUndergradStudentUserSelected,
               proSalPerDoctoralUserSelected = proSalPerDoctoralUserSelected))
 }
 
