@@ -166,6 +166,7 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalFacultyUserSelected"), plotOutput("proSalTopPerFaculty")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerStudentUserSelected"), plotOutput("proSalTopPerStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerGradStudentUserSelected"), plotOutput("proSalTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerUndergradStudentUserSelected"), plotOutput("proSalTopPerUndergradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerDoctoralUserSelected"), plotOutput("proSalTopPerDoctoral")),
                                    )),
                           tabPanel("Professional Staff Counts",
@@ -178,10 +179,11 @@ ui <- fluidPage(
                                    br(),
                                    br(),
                                    fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerFacultyUserSelected"), plotOutput("proFTETopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerStudentUserSelected"), plotOutput("proFTETopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerGradStudentUserSelected"), plotOutput("proFTETopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proPerDoctoralUserSelected"), plotOutput("proFTETopPerDoctoral")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerFacultyUserSelected"), plotOutput("proFTETopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerStudentUserSelected"), plotOutput("proFTETopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerGradStudentUserSelected"), plotOutput("proFTETopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerUndergradStudentUserSelected"), plotOutput("proFTETopPerUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerDoctoralUserSelected"), plotOutput("proFTETopPerDoctoral")),
                                    )),
                           tabPanel("Support Staff Counts",
                                    h3("Support Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
@@ -196,6 +198,7 @@ ui <- fluidPage(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerFacultyUserSelected"), plotOutput("supFTETopPerFaculty")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerStudentUserSelected"), plotOutput("supFTETopPerStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerUndergradStudentUserSelected"), plotOutput("supFTETopUndergradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
                                    )),
                           tabPanel("Calculate Custom Ratio",
@@ -490,29 +493,40 @@ server <- function(input, output, session) {
     profStaffCountsVis()[[3]]
   })
 
-  # plot - proFTETopPerDoctoral
-  output$proFTETopPerDoctoral <- renderPlot({
+
+  # plot - proFTETopPerUndergradStudent
+  output$proFTETopPerUndergradStudent <- renderPlot({
     profStaffCountsVis()[[4]]
   })
 
-  # plot - proPerFacultyUserSelected
-  output$proPerFacultyUserSelected <- renderPlot({
+  # plot - proFTETopPerDoctoral
+  output$proFTETopPerDoctoral <- renderPlot({
     profStaffCountsVis()[[5]]
   })
 
-  # plot - proPerStudentUserSelected
-  output$proPerStudentUserSelected <- renderPlot({
+  # plot - proPerFacultyUserSelected
+  output$proFTEPerFacultyUserSelected <- renderPlot({
     profStaffCountsVis()[[6]]
   })
 
-  # plot - proPerGradStudentUserSelected
-  output$proPerGradStudentUserSelected <- renderPlot({
+  # plot - proPerStudentUserSelected
+  output$proFTEPerStudentUserSelected <- renderPlot({
     profStaffCountsVis()[[7]]
   })
 
-  # plot - proPerDoctoralUserSelected
-  output$proPerDoctoralUserSelected <- renderPlot({
+  # plot - proPerGradStudentUserSelected
+  output$proFTEPerGradStudentUserSelected <- renderPlot({
     profStaffCountsVis()[[8]]
+  })
+
+  # plot - proFTEPerUndergradStudentUserSelected
+  output$proFTEPerUndergradStudentUserSelected <- renderPlot({
+    profStaffCountsVis()[[9]]
+  })
+
+  # plot - proPerDoctoralUserSelected
+  output$proFTEPerDoctoralUserSelected <- renderPlot({
+    profStaffCountsVis()[[10]]
   })
 
 
@@ -541,29 +555,39 @@ server <- function(input, output, session) {
     supStaffCountsVis()[[3]]
   })
 
+  # plot - supFTETopUndergradStudent
+  output$supFTETopUndergradStudent <- renderPlot({
+    supStaffCountsVis()[[4]]
+  })
+
   # plot - supFTETopPerDoctoral
   output$supFTETopPerDoctoral <- renderPlot({
-    supStaffCountsVis()[[4]]
+    supStaffCountsVis()[[5]]
   })
 
   # plot - supPerFacultyUserSelected
   output$supPerFacultyUserSelected <- renderPlot({
-    supStaffCountsVis()[[5]]
+    supStaffCountsVis()[[6]]
   })
 
   # plot - supPerStudentUserSelected
   output$supPerStudentUserSelected <- renderPlot({
-    supStaffCountsVis()[[6]]
+    supStaffCountsVis()[[7]]
   })
 
   # plot - supPerGradStudentUserSelected
   output$supPerGradStudentUserSelected <- renderPlot({
-    supStaffCountsVis()[[7]]
+    supStaffCountsVis()[[8]]
+  })
+
+  # plot - supPerUndergradStudentUserSelected
+  output$supPerUndergradStudentUserSelected <- renderPlot({
+    supStaffCountsVis()[[9]]
   })
 
   # plot - supPerDoctoralUserSelected
   output$supPerDoctoralUserSelected <- renderPlot({
-    supStaffCountsVis()[[8]]
+    supStaffCountsVis()[[10]]
   })
 
 
