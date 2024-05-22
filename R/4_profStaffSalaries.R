@@ -144,7 +144,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
                         fill = factor(`Institution Name`),
                         width = .75)) +
     ggplot2::geom_bar(position = "dodge", stat = "identity") +
-    ggplot2::labs(y = "Professional Staff Count (FTE) \nPer Student",
+    ggplot2::labs(y = "Professional Staff Salaries\nPer Student",
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +

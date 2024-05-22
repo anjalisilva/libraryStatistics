@@ -109,7 +109,7 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
@@ -150,7 +150,7 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                 breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars

@@ -115,14 +115,14 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -156,14 +156,14 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -197,14 +197,57 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
+
+
+
+  # ---
+  # Using support staff count per undergraduate student by top contributors (not ARL)
+  supFTETopUndergradStudent <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    dplyr::mutate(supPerUndergradStudent = `Support staff`/ totalUndergradStudents) %>%
+    # Replace INF values with NA
+    dplyr::mutate(supPerUndergradStudent = na_if(supPerUndergradStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, supPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(supPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `supPerUndergradStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Support Staff Count (FTE)\nPer Undergrad Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Members with Highest Ratio of Support Staff\nCount (FTE) Per Undergrad Student (FT + PT)") +
+    # subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) # +
+  # Add ranking labels on bars
+  # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+  #                    position = position_dodge(width = 0.9),
+  #                    vjust = 0,
+  #                    size = 6)
 
 
   # ---
@@ -238,14 +281,14 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -279,14 +322,14 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -321,14 +364,14 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
 
   # ---
@@ -363,14 +406,58 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
+
+
+  # ---
+  # Using support staff count per undergraduate student by user selection
+  supPerUndergradStudentUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    dplyr::mutate(supPerUndergradStudent = `Support staff`/ totalUndergradStudents) %>%
+    # Replace INF values with NA
+    dplyr::mutate(supPerUndergradStudent = na_if(supPerUndergradStudent, Inf)) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, supPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(supPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    ggplot2::ggplot(aes(x = factor(`Year`),
+                        y = `supPerUndergradStudent`,
+                        fill = factor(`Institution Name`),
+                        width = .75)) +
+    ggplot2::geom_bar(position = "dodge", stat = "identity") +
+    ggplot2::labs(y = "Support Staff Count (FTE)\nPer Undergrad Student",
+                  x = "Year",
+                  fill = "ARL Member") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle(label = "Ratio of Support Staff Count (FTE) Per\nUndergrad Student (FT + PT)") +
+    # subtitle = "ARL rank is shown on top of each bar.") +
+    ggplot2::theme(text = element_text(size = 15, color = 'black'),
+                   axis.text.x = element_text(angle = 90,
+                                              hjust = 1,
+                                              vjust = 0.5,
+                                              color = 'black', size = 15),
+                   axis.text.y = element_text(color = 'black', size = 15)) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5)) # +
+  # Add ranking labels on bars
+  # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+  #                    position = position_dodge(width = 0.9),
+  #                    vjust = 0,
+  #                    size = 6)
+
 
 
   # ---
@@ -404,22 +491,24 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-1]) +
+    ggplot2::scale_fill_manual(values = setColorPalette()) +
     ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) +
+                                breaks = scales::pretty_breaks(n = 5)) # +
     # Add ranking labels on bars
-    ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-                       position = position_dodge(width = 0.9),
-                       vjust = 0,
-                       size = 6)
+    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
+    #                    position = position_dodge(width = 0.9),
+    #                    vjust = 0,
+    #                    size = 6)
 
   return(list(supFTETopPerFaculty = supFTETopPerFaculty,
               supFTETopPerStudent = supFTETopPerStudent,
               supFTETopPerGradStudent = supFTETopPerGradStudent,
+              supFTETopUndergradStudent = supFTETopUndergradStudent,
               supFTETopPerDoctoral = supFTETopPerDoctoral,
               supPerFacultyUserSelected = supPerFacultyUserSelected,
               supPerStudentUserSelected = supPerStudentUserSelected,
               supPerGradStudentUserSelected = supPerGradStudentUserSelected,
+              supPerUndergradStudentUserSelected = supPerUndergradStudentUserSelected,
               supPerDoctoralUserSelected = supPerDoctoralUserSelected))
 
 
