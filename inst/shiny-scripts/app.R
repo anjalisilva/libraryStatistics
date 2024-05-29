@@ -120,7 +120,9 @@ ui <- fluidPage(
                           tabPanel("Investmnet Index",
                                    h3("Investment Index Historical Table", align = "center"),
                                    br(),
-                                   ),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("100%"), tableOutput("indexTableGenVis")),
+                                   )),
                           tabPanel("Total Library Expenditures",
                                    h3("Total Library Expenditures (USD) Ratios", align = "center"),
                                    br(),
@@ -617,6 +619,19 @@ server <- function(input, output, session) {
 
 
 
+  # -- Index Table Generator
+  indexTableGenVis <- eventReactive(eventExpr = c(input$file1,
+                                                    input$instituteInput,
+                                                    input$yearsInput), {
+                                                    indexTableGenerator(
+                                                        dataARL = csvInput(),
+                                                        members = as.character(input$instituteInput),
+                                                        years = as.vector(input$yearsInput, mode = "numeric"))
+                                                    })
+  # plot - indexTableGenVis
+  output$indexTableGenVis <- renderTable({
+    indexTableGenVis()
+  })
 
 
   # URLs for downloading data
