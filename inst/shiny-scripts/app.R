@@ -120,9 +120,7 @@ ui <- fluidPage(
                           tabPanel("Investmnet Index",
                                    h3("Investment Index Historical Table", align = "center"),
                                    br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("100%"), tableOutput("indexTableGenVis")),
-                                   )),
+                                   htmlOutput("indexTableGen")),
                           tabPanel("Total Library Expenditures",
                                    h3("Total Library Expenditures (USD) Ratios", align = "center"),
                                    br(),
@@ -629,7 +627,7 @@ server <- function(input, output, session) {
                                                         years = as.vector(input$yearsInput, mode = "numeric"))
                                                     })
   # plot - indexTableGenVis
-  output$indexTableGenVis <- renderTable({
+  output$indexTableGen <- renderText({
     indexTableGenVis()
   })
 
