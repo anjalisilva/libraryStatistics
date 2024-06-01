@@ -8,6 +8,10 @@
 # inputCountsPath <- system.file("extdata", "ARL Data Download.csv", package = "libraryStatistics")
 # ARLDataDownload <- readr::read_csv(inputCountsPath)
 
+<<<<<<< HEAD
+=======
+# ARLDataDownload <- readr::read_csv("ARLData.csv")
+>>>>>>> 92e6d15 (Updated R functions)
 
 # To do
 # 1. Right now comparing user selection against

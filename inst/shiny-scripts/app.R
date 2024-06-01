@@ -30,7 +30,11 @@ ui <- fluidPage(
                            directly downloaded from the ARL Data Portal.",
                            accept = c(".csv")),
                  checkboxGroupInput(inputId = "instituteInput",
+<<<<<<< HEAD
                                     label = "2. ARL Member: select up to five members. If
+=======
+                                    label = "2. ARL Member Libraries: select up to five members. If
+>>>>>>> 92e6d15 (Updated R functions)
                                     more than five members are chosen, only the last five
                                     selected will be retained. Subsequently, make the selections for
                                     the desired years from the option below."),
@@ -71,8 +75,13 @@ ui <- fluidPage(
                                       by the Association of Research Libraries (ARL). The Shiny application enables the
                                       generation of various statistical ratios for comparative analysis. Through the
                                       interactive interface of the application, users can dynamically visualize ratios
+<<<<<<< HEAD
                                       by altering ARL members, years, and also by creating custom ratios, which
                                       enhances the accessibility and usability of the published data."),
+=======
+                                      by selecting ARL members, years, and also by creating custom ratios, which
+                                      enhances the usability of the published data."),
+>>>>>>> 92e6d15 (Updated R functions)
                                    br(),
                                    h4("How to use the libraryStatistics Shiny app?"),
                                    h5("1. Data Preparation: Begin by downloading the dataset from the ARL Data
@@ -84,9 +93,15 @@ ui <- fluidPage(
                                       followed by other indicators in any order, such as 'Institution Name',
                                       'Institution type', etc., as downloaded directly from the ARL Data Portal."),
                                    h5("3. Uploading Data and Parameter Selection: Upload the dataset (.csv format)
+<<<<<<< HEAD
                                       to Shiny application. After uploading the dataset, a list of choices for
                                       'Institute' and 'Years' based on the uploaded dataset will appear. You may
                                       select up to five ARL member institutes and up to five years for analysis."),
+=======
+                                      to the Shiny application. After uploading the dataset, a list of choices for
+                                      'Library' and 'Year' based on the uploaded dataset will appear. You may
+                                      select up to five ARL member libraries and up to five years for analysis."),
+>>>>>>> 92e6d15 (Updated R functions)
                                    h5("4. Exploring Results: Navigate the tabs on the right side at the top of the
                                       application to explore the results. The left panel will remain static, allowing
                                       user to modify the selections if needed. Changes to selections will
@@ -117,7 +132,11 @@ ui <- fluidPage(
                                    br(),
                                    br(),
                                    ),
+<<<<<<< HEAD
                           tabPanel("Investmnet Index",
+=======
+                          tabPanel("Investment Index",
+>>>>>>> 92e6d15 (Updated R functions)
                                    h3("Investment Index Historical Table", align = "center"),
                                    br(),
                                    htmlOutput("indexTableGen")),
@@ -125,9 +144,15 @@ ui <- fluidPage(
                                    h3("Total Library Expenditures (USD) Ratios", align = "center"),
                                    br(),
                                    h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
+<<<<<<< HEAD
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
                                        with highest corresponding ratio."),
+=======
+                                       reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
+                                       libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
+                                       with the highest ratio."),
+>>>>>>> 92e6d15 (Updated R functions)
                                    br(),
                                    br(),
                                    fluidRow(
@@ -141,9 +166,15 @@ ui <- fluidPage(
                                    h3("Total Library Materials Expenditures (USD) Ratios", align = "center"),
                                    br(),
                                    h4("Total library materials expenditures in United States Dollars (USD) as ratios in comparison to various statistics
+<<<<<<< HEAD
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
                                        with highest corresponding ratio."),
+=======
+                                       reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
+                                       libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
+                                       with the highest ratio."),
+>>>>>>> 92e6d15 (Updated R functions)
                                    br(),
                                    br(),
                                    fluidRow(
@@ -157,9 +188,15 @@ ui <- fluidPage(
                                    h3("Professional Staff Salaries (USD) Ratios", align = "center"),
                                    br(),
                                    h4("Professional staff salaries in United States Dollars (USD) as ratios in comparison to various statistics
+<<<<<<< HEAD
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
                                        with highest corresponding ratio. "),
+=======
+                                       reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
+                                       libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
+                                       with the highest ratio."),
+>>>>>>> 92e6d15 (Updated R functions)
                                    br(),
                                    br(),
                                    fluidRow(
@@ -173,9 +210,15 @@ ui <- fluidPage(
                                    h3("Professional Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
                                    br(),
                                    h4("Professional Library Staff Counts FTE as ratios in comparison to various statistics
+<<<<<<< HEAD
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
                                        with highest corresponding ratio. "),
+=======
+                                       reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
+                                       libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
+                                       with the highest ratio. "),
+>>>>>>> 92e6d15 (Updated R functions)
                                    br(),
                                    br(),
                                    fluidRow(
@@ -189,9 +232,15 @@ ui <- fluidPage(
                                    h3("Support Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
                                    br(),
                                    h4("Support Library Staff Counts FTE as ratios in comparison to various statistics
+<<<<<<< HEAD
                                        reported in the annual survey of ARL. The subtitle identifies the ratio being used. Ratios for ARL member
                                        institutes selected by the user are shown on left. Plot on the right shows ARL member institutes
                                        with highest corresponding ratio."),
+=======
+                                       reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
+                                       libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
+                                       with the highest ratio."),
+>>>>>>> 92e6d15 (Updated R functions)
                                    br(),
                                    br(),
                                    fluidRow(
@@ -205,9 +254,15 @@ ui <- fluidPage(
                                    h3("Calculate Custom Ratio For Selected Members", align = "center"),
                                    br(),
                                    h4("Select two statistics from the annual survey of ARL to be computed into
+<<<<<<< HEAD
                                        a ratio, across user selected ARL members and years. The plot will be
                                        produced at the bottom. If no plot is produced, no data maybe avilable
                                       for selected statistics."),
+=======
+                                       a ratio, across your selected ARL member libraries and years. The plot will be
+                                       produced at the bottom. If no plot is produced, no data maybe avilable
+                                      for your selected statistics."),
+>>>>>>> 92e6d15 (Updated R functions)
                                    br(),
                                    br(),
                                    splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
