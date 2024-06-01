@@ -67,9 +67,19 @@ Libraries (ARL) as bar plots. Note, this function provides question
 8a of ARL survey as the numerator of the ratio.
 }
 \examples{
+# Reading R package example data
+# ?ARLDataDownload
 visProfStaffSalaries(dataARL = ARLDataDownload,
-                     members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
-                     years = c(2015, 2016, 2017, 2022, 2018, 2019))
+                   members = c("Institute A", "Institute B", "Institute C", "Institute D", "Institute E"),
+                   years = c(2020, 2021, 2022))
+
+# Reading actual data downloaded from ARL
+# Set file path
+# ARLData <- readr::read_csv("~/ARLData.csv")
+# visProfStaffSalaries(dataARL = ARLData,
+#                   members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
+#                   years = c(2015, 2016, 2017, 2022, 2018, 2019))
+
 
 }
 \references{
