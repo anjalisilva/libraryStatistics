@@ -67,7 +67,7 @@ visTotalLibraryExp(dataARL = ARLDataDownload,
                    members = c("Institute A", "Institute B", "Institute C", "Institute D", "Institute E"),
                    years = c(2020, 2021, 2022))
 
-# Reading actual data downloaded from ARL
+# Reading actual data downloaded from ARL (not run)
 # Set file path
 # ARLData <- readr::read_csv("~/ARLData.csv")
 # visTotalLibraryExp(dataARL = ARLData,

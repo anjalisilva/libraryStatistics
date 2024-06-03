@@ -55,11 +55,22 @@ ratio can be visualized for user selected ARL members over user selected
 years, as bar plots.
 }
 \examples{
+# Reading R package example data
+# ?ARLDataDownload
 customRatioBuilder(dataARL = ARLDataDownload,
                    numerator = "Electronic books",
                    denominator = "Total fulltime students",
-                   members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
-                   years = c(2015, 2016, 2017, 2022, 2018, 2019))
+                   members = c("Institute A", "Institute B", "Institute C", "Institute D", "Institute E"),
+                   years = c(2020, 2021, 2022))
+
+# Reading actual data downloaded from ARL (not run)
+# Set file path
+# ARLData <- readr::read_csv("~/ARLData.csv")
+# customRatioBuilder(dataARL = ARLData,
+#                    numerator = "Electronic books",
+#                    denominator = "Total fulltime students",
+#                    members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
+#                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
 
 }
 \references{

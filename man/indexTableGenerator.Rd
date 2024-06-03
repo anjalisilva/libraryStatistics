@@ -37,9 +37,18 @@ Libraries (ARL) Investment Index over years as reported in the
 annual survey.
 }
 \examples{
+# Reading R package example data
+# ?ARLDataDownload
 indexTableGenerator(dataARL = ARLDataDownload,
-                   members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
-                   years = c(2015, 2016, 2017, 2022, 2018, 2019))
+                   members = c("Institute A", "Institute B", "Institute C", "Institute D"),
+                   years = c(2020, 2021, 2022))
+
+# Reading actual data downloaded from ARL (not run)
+# Set file path
+# ARLData <- readr::read_csv("~/ARLData.csv")
+# indexTableGenerator(dataARL = ARLData,
+#                    members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
+#                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
 
 }
 \references{
