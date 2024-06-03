@@ -88,6 +88,9 @@ browseVignettes("libraryStatistics>")
 7.  ***customRatioBuilder*** build and visualize a custom ratio based on
     user selected numerator and denominator from various statistics
     reported in the annual survey of ARL.
+8.  ***indexTableGenerator*** build a table containing Association of
+    Research Libraries (ARL) Investment Index over years as reported in
+    the annual survey.
 
 An overview of the package is illustrated below:
 
