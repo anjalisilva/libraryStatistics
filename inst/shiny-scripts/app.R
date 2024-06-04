@@ -76,7 +76,7 @@ ui <- fluidPage(
                                    br(),
                                    h4("How to use the libraryStatistics Shiny app?"),
                                    h5("1. Data Preparation: Begin by downloading the dataset from the ARL Data
-                                      Portal. Ensure that all variables are selected, with columns set to 'Variables'
+                                      Portal (www.arlstatistics.org/data/main). Ensure that all variables are selected, with columns set to 'Variables'
                                       and the data sorted by 'Institution Name' (default options). Data should be
                                       downloaded in comma-separated value (.csv) format."),
                                    h5("2. Check Data: The downloaded dataset should have rows corresponding to years
@@ -85,7 +85,7 @@ ui <- fluidPage(
                                       'Institution type', etc., as downloaded directly from the ARL Data Portal."),
                                    h5("3. Uploading Data and Parameter Selection: Upload the dataset (.csv format)
                                       to the Shiny application. After uploading the dataset, a list of choices for
-                                      'Library' and 'Year' based on the uploaded dataset will appear. You may
+                                      'ARL Member Libraries' and 'Years' based on the uploaded dataset will appear. You may
                                       select up to five ARL member libraries and up to five years for analysis."),
                                    h5("4. Exploring Results: Navigate the tabs on the right side at the top of the
                                       application to explore the results. The left panel will remain static, allowing

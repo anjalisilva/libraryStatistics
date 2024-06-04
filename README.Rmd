@@ -78,7 +78,19 @@ An overview of the package is illustrated below:
 
 ## Details
 
-The R package and Shiny dashboard that permit to visualize, track trends, and compare up to five years of data downloaded directly from ARL data portal, with no data cleaning involved. Upon uploading of data, the user is directed to select up to five ARL members of choice and up to five years of choice. The user can visually compare the selected institute against other members for indicators defined by ARL as ratios. An example of an ratio is library expenditures per faculty, per student, and per doctoral degree awarded, can be visualized and compared across members. Overall, the tool enhances the utilization of ARL collected data in making evidence-based decisions within UTL and other libraries, to gain insights into the multifaceted ways in which library resources contribute to its community, to support research and scholarship endeavors. 
+The R package and Shiny application permit to visualize, track trends, and compare data downloaded directly from ARL data portal, up to five years at a time, with no data cleaning involved. The R package is designed for the analysis of library statistics published from the annual survey conducted by the ARL. The R package contain functions that permit the user to read in downloaded data downloaded from the ARL Data Portal and perform various analyses. The input data file should be in comma-separated value (.csv) format, with rows corresponding to years and columns representing ARL indicators (variables). The first column must be labeled 'Year', followed by other indicators in any order, such as 'Institution Name', 'Institution type', etc., as directly downloaded from the ARL Data Portal.
+
+
+For the Shiny application, the user is able to upload data and navigate through the different tabs of the application to generate various statistical ratios for comparative analyses. Through the interactive interface of the Shiny application, users can dynamically visualize ratios by selecting ARL member libraries, years, and also by creating custom ratios, which enhances the usability of the published data.
+
+
+An example of an ratio is library expenditures per faculty, per student, and per doctoral degree awarded, can be visualized and compared across libraries. Overall, the tool enhances the utilization of ARL collected data in making evidence-based decisions within UTL and other libraries, to gain insights into the multifaceted ways in which library resources contribute to its community, to support research and scholarship endeavors. 
+
+
+
+
+
+
 
 ## Shiny App
 
