@@ -71,14 +71,20 @@ ui <- fluidPage(
                                       by the Association of Research Libraries (ARL). The Shiny application enables the
                                       generation of various statistical ratios for comparative analysis. Through the
                                       interactive interface of the application, users can dynamically visualize ratios
-                                      by selecting ARL members, years, and also by creating custom ratios, which
-                                      enhances the usability of the published data."),
+                                      by selecting ARL member libraries, years, and also by creating custom ratios, which
+                                      enhances the usability of the published data.
+
+                                      Library statistics published from the annual survey may be downloaded from ARL Data
+                                      Portal for any number of years and across any number of ARL member libraries. However,
+                                      at one time, both the R package and Shiny application would only enable to perform analysis on
+                                      5 ARL member libraries and 5 years."),
                                    br(),
                                    h4("How to use the libraryStatistics Shiny app?"),
                                    h5("1. Data Preparation: Begin by downloading the dataset from the ARL Data
                                       Portal (www.arlstatistics.org/data/main). Ensure that all variables are selected, with columns set to 'Variables'
                                       and the data sorted by 'Institution Name' (default options). Data should be
-                                      downloaded in comma-separated value (.csv) format."),
+                                      downloaded in comma-separated value (.csv) format. Data may be downloaded for
+                                      any number of years and across all member institutions available."),
                                    h5("2. Check Data: The downloaded dataset should have rows corresponding to years
                                       and columns to ARL indicators (variables). The first column must be 'Year',
                                       followed by other indicators in any order, such as 'Institution Name',
@@ -86,11 +92,12 @@ ui <- fluidPage(
                                    h5("3. Uploading Data and Parameter Selection: Upload the dataset (.csv format)
                                       to the Shiny application. After uploading the dataset, a list of choices for
                                       'ARL Member Libraries' and 'Years' based on the uploaded dataset will appear. You may
-                                      select up to five ARL member libraries and up to five years for analysis."),
+                                      select up to 5 ARL member libraries and up to 5 years for analysis."),
                                    h5("4. Exploring Results: Navigate the tabs on the right side at the top of the
                                       application to explore the results. The left panel will remain static, allowing
-                                      user to modify the selections if needed. Changes to selections will
-                                      automatically update the results displayed in the various tabs on the right."),
+                                      user to modify the selections for ARL member libraries or years, as needed. Changes
+                                      to selections will automatically update the results displayed in the various
+                                      tabs on the right."),
                                    br(),
                                    h4("Uncertain about what type of data to upload?"),
                                    h5("Data should be sourced directly from the ARL Data Portal without any preprocessing.
@@ -244,7 +251,7 @@ server <- function(input, output, session) {
 
   # Update Choices for Year for User
   observe({
-    columns <- unique(csvInput()$Year)
+    columns <- sort(unique(csvInput()$Year), decreasing = TRUE)
     updateCheckboxGroupInput(session = session,
                              inputId = "yearsInput",
                              label = NULL,

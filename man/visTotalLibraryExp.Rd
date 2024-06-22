@@ -64,7 +64,7 @@ as the numerator of the ratio.
 # Reading R package example data
 # ?ARLDataDownload
 visTotalLibraryExp(dataARL = ARLDataDownload,
-                   members = c("Institute A", "Institute B", "Institute C", "Institute D", "Institute E"),
+                   members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
                    years = c(2020, 2021, 2022))
 
 # Reading actual data downloaded from ARL (not run)
