@@ -208,5 +208,5 @@ issues](https://github.com/anjalisilva/libraryStatistics).
 
 ## Acknowledgments
 
-- This work was done at University of Toronto Libraries, Ontario, Canada
-  from 2023-2024.
+- Access to ARL annual survey data provided by University of Toronto
+  Libraries, Ontario, Canada.
