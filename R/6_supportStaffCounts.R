@@ -116,7 +116,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Support Staff\nCount (FTE) Per Teaching Faculty") +
+    ggplot2::ggtitle(label = "Ratio of Support Staff Count (FTE) Per Teaching\nFaculty For Top 5 ARL Members Overall") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -157,7 +157,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Support Staff\nCount (FTE) Per Student (FT + PT)") +
+    ggplot2::ggtitle(label = "Ratio of Support Staff Count (FTE) Per Student\n(FT + PT)  For Top 5 ARL Members Overall") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -198,7 +198,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Support Staff\nCount (FTE) Per Grad Student (FT + PT)") +
+    ggplot2::ggtitle(label = "Ratio of Support Staff Count (FTE) Per Grad Student\n(FT + PT) For Top 5 ARL Members Overall") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -241,7 +241,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Support Staff\nCount (FTE) Per Undergrad Student (FT + PT)") +
+    ggplot2::ggtitle(label = "Ratio of Support Staff Count (FTE) Per Undergrad Student\n(FT + PT) For Top 5 ARL Members Overall") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
@@ -282,7 +282,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = "Members with Highest Ratio of Support Staff\nCount (FTE) Per Doctoral Degree") +
+    ggplot2::ggtitle(label = "Ratio of Support Staff Count (FTE) Per Doctoral\nDegree For Top 5 ARL Members Overall") +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
