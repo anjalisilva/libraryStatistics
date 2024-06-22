@@ -74,7 +74,7 @@ ui <- fluidPage(
                                       by selecting ARL member libraries, years, and also by creating custom ratios, which
                                       enhances the usability of the published data.
 
-                                      Library statistics published from the annual survey may be downloaded from ARL Data
+                                      Library statistics data published from the annual survey may be downloaded from ARL Data
                                       Portal for any number of years and across any number of ARL member libraries. However,
                                       at one time, both the R package and Shiny application would only enable to perform analysis on
                                       5 ARL member libraries and 5 years."),
@@ -261,11 +261,11 @@ server <- function(input, output, session) {
 
   # Update Choices for Institution Name for User
   observe({
-    columns2 <- unique(csvInput()$`Institution Name`)
+    columns2 <- sort(setdiff(unique(csvInput()$`Institution Name`), 'MEDIAN'))
     updateCheckboxGroupInput(session = session,
                        inputId = "instituteInput",
                        label = NULL,
-                       choices = columns2[-1], # remove median
+                       choices = columns2, # remove median
                        selected = columns2[2])
   })
 

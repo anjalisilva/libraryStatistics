@@ -74,6 +74,7 @@
 #' @import ggplot2
 #' @import magrittr
 #' @import dplyr
+#' @import stringr
 customRatioBuilder <- function(dataARL, numerator, denominator, members, years = NA) {
 
   selectedData <- dataAdjustment(dataARL = dataARL)
@@ -153,7 +154,7 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = paste("Ratio of ", stringr::str_to_title(combinedString), "\nfor user selected members")) +
+    ggplot2::ggtitle(label = paste("Ratio of ", stringr::str_to_title(combinedString), "\nFor User Selected Members")) +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,

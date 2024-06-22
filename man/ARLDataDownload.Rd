@@ -5,17 +5,19 @@
 \alias{ARLDataDownload}
 \title{Association of Research Libraries (ARL) Data Download Example}
 \format{
-A dataset with 16 rows and 80 columns.
+A dataset with 18 rows and 80 columns.
 \describe{
  The first column should be labeled 'Year', followed by other indicators
  in any order, such as 'Institution Name', 'Institution type', etc., as
  provided by the ARL Data Portal. In total this example dataset contain data
  for 5 institutions, called Library A to Library E across three years
- from 2020, 2021 to 2022.
+ from 2020, 2021 to 2022. The median value is also provided, as it is reflected
+ in data downloaded from ARL Data Portal.
+
 }
 }
 \source{
-ARL Data Portal {https://www.arlstatistics.org/data}
+ARL Data Portal: {https://www.arlstatistics.org/data}
 }
 \usage{
 ARLDataDownload

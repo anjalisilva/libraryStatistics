@@ -22,14 +22,22 @@ count](https://img.shields.io/github/languages/count/anjalisilva/MPLNClust)
 ## Description
 
 `libraryStatistics` is an R package with a Shiny dashboard that permit
-to visualize and compare up to five years of data, at one time, from the
-annual survey of Association of Research Libraries (ARL). ARL data
-describes the collections, staffing, expenditures, and service
-activities of the ARL member libraries in the United States and Canada.
-This tool contains functions to perform analysis of ARL data by
-calculating ratios and produce graphical outputs to support for
-comparative and exploratory analysis. The `libraryStatistics` package
-was developed using `R version 4.3.2 (2023-10-31)`,
+to visualize and compare data from the annual survey of Association of
+Research Libraries (ARL). ARL data describes the collections, staffing,
+expenditures, and service activities of the ARL member libraries in the
+United States and Canada. This R package is designed for the analysis
+and visualization of library statistics published from the annual
+survey. The Shiny application enables the generation of various
+statistical ratios for comparative analysis. Through the interactive
+interface of the application, users can dynamically visualize ratios by
+selecting ARL member libraries, years, and also by creating custom
+ratios, which enhances the usability of the published data. Library
+statistics data published from the annual survey may be downloaded from
+ARL Data Portal for any number of years and across any number of ARL
+member libraries. However, at one time, both the R package and Shiny
+application would only enable to perform analysis on 5 ARL member
+libraries and 5 years. The `libraryStatistics` package was developed
+using `R version 4.3.2 (2023-10-31)`,
 `Platform: x86_64-apple-darwin20 (64-bit)` and
 `Running under: macOS Ventura 13.2`.
 
@@ -62,8 +70,8 @@ browseVignettes("libraryStatistics>")
 `libraryStatistics` contains 7 functions.
 
 1.  ***shinyLibStats*** opens the Shiny application with visual
-    analytics and comparison of upto to five years of data from the
-    annual survey of ARL uploaded by the user.
+    analytics and comparison of upto to 5 years of data from the annual
+    survey of ARL uploaded by the user.
 2.  ***visTotalLibraryExp*** visualize total library expenditures in
     United States Dollars (USD) as ratios in comparison to various
     statistics reported in the annual survey of ARL as bar plots. This
@@ -96,22 +104,36 @@ An overview of the package is illustrated below:
 
 <div style="text-align:center">
 
-<img src="inst/extdata/Overview_MPLNClust.png" width="800" height="450"/>
+<img src="inst/extdata/pipelineLS.png" width="800" height="450"/>
 
 <div style="text-align:left">
 <div style="text-align:left">
 
 ## Details
 
-The R package and Shiny dashboard that permit to visualize, track
-trends, and compare up to five years of data downloaded directly from
-ARL data portal, with no data cleaning involved. Upon uploading of data,
-the user is directed to select up to five ARL members of choice and up
-to five years of choice. The user can visually compare the selected
-institute against other members for indicators defined by ARL as ratios.
+The R package and Shiny application permit to visualize, track trends,
+and compare data downloaded directly from ARL data portal, up to 5 years
+at a time, with no data cleaning involved. The R package is designed for
+the analysis of library statistics published from the annual survey
+conducted by the ARL. The R package contain functions that permit the
+user to read in downloaded data downloaded from the ARL Data Portal and
+perform various analyses. The input data file should be in
+comma-separated value (.csv) format, with rows corresponding to years
+and columns representing ARL indicators (variables). The first column
+must be labeled ‘Year’, followed by other indicators in any order, such
+as ‘Institution Name’, ‘Institution type’, etc., as directly downloaded
+from the ARL Data Portal.
+
+For the Shiny application, the user is able to upload data and navigate
+through the different tabs of the application to generate various
+statistical ratios for comparative analyses. Through the interactive
+interface of the Shiny application, users can dynamically visualize
+ratios by selecting ARL member libraries, years, and also by creating
+custom ratios, which enhances the usability of the published data.
+
 An example of an ratio is library expenditures per faculty, per student,
 and per doctoral degree awarded, can be visualized and compared across
-members. Overall, the tool enhances the utilization of ARL collected
+libraries. Overall, the tool enhances the utilization of ARL collected
 data in making evidence-based decisions within UTL and other libraries,
 to gain insights into the multifaceted ways in which library resources
 contribute to its community, to support research and scholarship
@@ -128,7 +150,7 @@ libraryStatistics::shinyLibStats()
 
 <div style="text-align:center">
 
-<img src="inst/extdata/ShinyAppMPLNClust1.png" alt="ShinyApp1" width="650" height="400"/>
+<img src="inst/extdata/shinyInterface.png" alt="ShinyApp1" width="650" height="400"/>
 
 <div style="text-align:left">
 <div style="text-align:left">
