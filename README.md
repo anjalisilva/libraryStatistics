@@ -210,4 +210,5 @@ issues](https://github.com/anjalisilva/libraryStatistics).
 ## Acknowledgments
 
 - Access to ARL annual survey data provided by University of Toronto
-  Libraries, Ontario, Canada.
+  Libraries, Ontario, Canada. We wish to thank Dr. Kevin Borden and
+  Holly Gross for their insights while developing this work.
