@@ -13,7 +13,6 @@ A dataset with 18 rows and 80 columns.
  for 5 institutions, called Library A to Library E across three years
  from 2020, 2021 to 2022. The median value is also provided, as it is reflected
  in data downloaded from ARL Data Portal.
-
 }
 }
 \source{

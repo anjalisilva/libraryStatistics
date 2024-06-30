@@ -30,15 +30,15 @@
 #' # Reading R package example data
 #' # ?ARLDataDownload
 #' indexTableGenerator(dataARL = ARLDataDownload,
-#'                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
-#'                    years = c(2020, 2021, 2022))
+#'                     members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
+#'                     years = c(2020, 2021, 2022))
 #'
 #' # Reading actual data downloaded from ARL (not run)
 #' # Set file path
 #' # ARLData <- readr::read_csv("~/ARLData.csv")
 #' # indexTableGenerator(dataARL = ARLData,
-#' #                    members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
-#' #                    years = c(2015, 2016, 2017, 2022, 2018, 2019))
+#' #                     members = c("BOSTON", "TORONTO", "OTTAWA", "LAVAL", "HARVARD"),
+#' #                     years = c(2015, 2016, 2017, 2022, 2018, 2019))
 #'
 #' @author {Anjali Silva, \email{a.silva@utoronto.ca}, Klara Maidenberg, \email{klara.maidenberg@utoronto.ca}}
 #'
