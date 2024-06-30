@@ -48,7 +48,7 @@
 #' customRatioBuilder(dataARL = ARLDataDownload,
 #'                    numerator = "Electronic books",
 #'                    denominator = "Total fulltime students",
-#'                    members = c("Institute A", "Institute B", "Institute C", "Institute D", "Institute E"),
+#'                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
 #'                    years = c(2020, 2021, 2022))
 #'
 #' # Reading actual data downloaded from ARL (not run)
@@ -154,7 +154,7 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = paste("Ratio of ", stringr::str_to_title(combinedString), "\nFor User Selected Members")) +
+    ggplot2::ggtitle(label = paste("Ratio of ", stringr::str_to_title(combinedString), "For User Selected Members")) +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
