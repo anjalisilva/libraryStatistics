@@ -98,6 +98,7 @@ ui <- fluidPage(
                                       user to modify the selections for ARL member libraries or years, as needed. Changes
                                       to selections will automatically update the results displayed in the various
                                       tabs on the right."),
+                                   shiny::img(src = 'pipelineLS.png', align = "centre", height = "85%", width = "85%"),
                                    br(),
                                    h4("Uncertain about what type of data to upload?"),
                                    h5("Data should be sourced directly from the ARL Data Portal without any preprocessing.
