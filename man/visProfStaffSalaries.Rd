@@ -40,13 +40,17 @@ Returns bar plots showing varying ratios specified below:
         ratio of total library professional staff salaries per graduate
         student (full-time, FT, and part-time, PT), over user selected
         number of years.
+  \item proSalTopPerUndergradStudent - A barplot showing ARL members with highest
+        ratio of total library professional staff salaries per undergraduate
+        student (full-time, FT, and part-time, PT), over user selected
+        number of years.
   \item proSalTopPerDoctoral - A barplot showing ARL members with highest
         ratio of total library professional staff salaries per doctoral
         degree awarded, over user selected number of years.
   \item proSalFacultyUserSelected - A barplot showing ratio of library
         professional staff salaries per teaching faculty for user
         selected ARL members, over user selected number of years.
-  \item proSalStudentUserSelected - A barplot showing ratio of library
+  \item proSalPerStudentUserSelected - A barplot showing ratio of library
         professional staff salaries per student (full-time, FT, and
         part-time, PT) for user selected ARL members, over user selected
         number of years.
@@ -54,7 +58,11 @@ Returns bar plots showing varying ratios specified below:
         professional staff salaries per graduate student (full-time, FT,
         and part-time, PT) for user selected ARL members, over user
         selected number of years.
-  \item proSalDoctoralUserSelected - A barplot showing ratio of library
+  \item proSalPerUndergradStudentUserSelected - A barplot showing ratio of library
+        professional staff salaries per undergraduate student (full-time, FT,
+        and part-time, PT) for user selected ARL members, over user
+        selected number of years.
+  \item proSalPerDoctoralUserSelected - A barplot showing ratio of library
         professional staff salaries per per doctoral degree awarded for user
         selected ARL members, over user selected number of years.
 }

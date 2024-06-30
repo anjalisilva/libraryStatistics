@@ -26,32 +26,40 @@
 #'
 #' @return Returns bar plots showing varying ratios specified below:
 #' \itemize{
-#'   \item proFTETopPerFaculty - A barplot showing ARL members with highest
+#'   \item supFTETopPerFaculty - A barplot showing ARL members with highest
 #'         ratio of total library support staff counts (FTE) per
 #'         teaching faculty, over user selected number of years.
-#'   \item proFTETopPerStudent - A barplot showing ARL members with highest
+#'   \item supFTETopPerStudent - A barplot showing ARL members with highest
 #'         ratio of total library support staff counts (FTE) per
 #'         student (full-time, FT, and part-time, PT), over user selected
 #'         number of years.
-#'   \item proFTETopPerGradStudent - A barplot showing ARL members with highest
+#'   \item supFTETopPerGradStudent - A barplot showing ARL members with highest
 #'         ratio of total library support staff counts (FTE) per graduate
 #'         student (full-time, FT, and part-time, PT), over user selected
 #'         number of years.
-#'   \item proFTETopPerDoctoral - A barplot showing ARL members with highest
+#'   \item supFTETopUndergradStudent - A barplot showing ARL members with highest
+#'         ratio of total library support staff counts (FTE) per undergraduate
+#'         student (full-time, FT, and part-time, PT), over user selected
+#'         number of years.
+#'   \item supFTETopPerDoctoral - A barplot showing ARL members with highest
 #'         ratio of total library support staff counts (FTE) per doctoral
 #'         degree awarded, over user selected number of years.
-#'   \item proPerFacultyUserSelected - A barplot showing ratio of library
+#'   \item supPerFacultyUserSelected - A barplot showing ratio of library
 #'         support staff counts (FTE) per teaching faculty for user
 #'         selected ARL members, over user selected number of years.
-#'   \item proPerStudentUserSelected - A barplot showing ratio of library
+#'   \item supPerStudentUserSelected - A barplot showing ratio of library
 #'         support staff counts (FTE) per student (full-time, FT, and
 #'         part-time, PT) for user selected ARL members, over user selected
 #'         number of years.
-#'   \item proPerGradStudentUserSelected - A barplot showing ratio of total
+#'   \item supPerGradStudentUserSelected - A barplot showing ratio of total
 #'         library support staff counts (FTE) per graduate student
 #'         (full-time, FT, and part-time, PT) for user selected ARL members,
 #'         over user selected number of years.
-#'   \item proPerDoctoralUserSelected - A barplot showing ratio of total
+#'   \item supPerUndergradStudentUserSelected - A barplot showing ratio of total
+#'         library support staff counts (FTE) per undergraduate student
+#'         (full-time, FT, and part-time, PT) for user selected ARL members,
+#'         over user selected number of years.
+#'   \item supPerDoctoralUserSelected - A barplot showing ratio of total
 #'         library expenditures per per doctoral degree awarded for user
 #'         selected ARL members, over user selected number of years.
 #' }

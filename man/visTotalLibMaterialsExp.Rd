@@ -38,6 +38,9 @@ Returns bar plots showing varying ratios specified below:
   \item tlmeTopPerGradStudent - A barplot showing members with highest
         ratio of total library expenditures per graduate student (full-time,
         FT, and part-time, PT), over user selected number of years.
+  \item tlmeTopPerUndergradStudent - A barplot showing members with highest
+        ratio of total library expenditures per undergraduate student (full-time,
+        FT, and part-time, PT), over user selected number of years.
   \item tlmeTopPerDoctoral - A barplot showing members with highest
         ratio of total library expenditures per doctoral degree awarded,
         over user selected number of years.
@@ -49,6 +52,10 @@ Returns bar plots showing varying ratios specified below:
         for user selected ARL members, over user selected number of years.
   \item tlmePerGradStudentUserSelected - A barplot showing ratio of total
         materials expenditures per graduate student (full-time, FT, and
+        part-time, PT) for user selected ARL members, over user selected
+        number of years.
+  \item tlmePerUndergradStudentUserSelected - A barplot showing ratio of total
+        materials expenditures per undergraduate student (full-time, FT, and
         part-time, PT) for user selected ARL members, over user selected
         number of years.
   \item tlmeTopPerDoctoralUserSelected - A barplot showing ratio of total

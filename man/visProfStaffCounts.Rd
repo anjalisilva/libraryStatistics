@@ -40,6 +40,10 @@ Returns bar plots showing varying ratios specified below:
         ratio of total library professional staff counts (FTE) per graduate
         student (full-time, FT, and part-time, PT), over user selected
         number of years.
+  \item proFTETopPerUndergradStudent - A barplot showing ARL members with highest
+        ratio of total library professional staff counts (FTE) per undergraduate
+        student (full-time, FT, and part-time, PT), over user selected
+        number of years.
   \item proFTETopPerDoctoral - A barplot showing ARL members with highest
         ratio of total library professional staff counts (FTE) per doctoral
         degree awarded, over user selected number of years.
@@ -52,6 +56,10 @@ Returns bar plots showing varying ratios specified below:
         number of years.
   \item proPerGradStudentUserSelected - A barplot showing ratio of total
         library professional staff counts (FTE) per graduate student
+        (full-time, FT, and part-time, PT) for user selected ARL members,
+        over user selected number of years.
+  \item proFTEPerUndergradStudentUserSelected - A barplot showing ratio of total
+        library professional staff counts (FTE) per undergraduate student
         (full-time, FT, and part-time, PT) for user selected ARL members,
         over user selected number of years.
   \item proPerDoctoralUserSelected - A barplot showing ratio of total
