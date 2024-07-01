@@ -23,7 +23,7 @@ count](https://img.shields.io/github/languages/count/anjalisilva/MPLNClust)
 
 `libraryStatistics` is an R package with a Shiny dashboard that permit
 to visualize and compare data from the annual survey of Association of
-Research Libraries (ARL; (www.arlstatistics.org/data/main)). ARL data
+Research Libraries (ARL; URL: www.arlstatistics.org/data/main). ARL data
 describes the collections, staffing, expenditures, and service
 activities of the ARL member libraries in the United States and Canada.
 This R package is designed for the analysis and visualization of library
