@@ -156,7 +156,7 @@ libraryStatistics::shinyLibStats()
 <div style="text-align:left">
 <div style="text-align:left">
 
-In simple, the ***shinyLibStats*** is a web applications available with
+In simple, the ***shinyLibStats*** is a web application available with
 `libraryStatistics`.
 
 ## Tutorials
