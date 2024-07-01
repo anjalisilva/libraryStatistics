@@ -190,6 +190,10 @@ A BibTeX entry for LaTeX users is
 
 ## Package References
 
+- R Core Team (2023). R: A language and environment for statistical
+  computing. R Foundation for Statistical Computing, Vienna, Austria.
+  <https://www.R-project.org/>
+
 - [Mian, A., & Gross, H. (2023). ARL Statistics 2022. Washington, DC:
   Association of Research
   Libraries.](https://publications.arl.org/ARL-Statistics-2022/)
@@ -211,4 +215,4 @@ issues](https://github.com/anjalisilva/libraryStatistics).
 
 - Access to ARL annual survey data provided by University of Toronto
   Libraries, Ontario, Canada. We wish to thank Dr. Kevin Borden and
-  Holly Gross for their insights while developing this work.
+  Holly Gross for their feedback while developing this work.
