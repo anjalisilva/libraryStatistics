@@ -51,7 +51,7 @@ devtools::install_github("anjalisilva/libraryStatistics", build_vignettes = TRUE
 library("libraryStatistics")
 ```
 
-To run the Shiny app:
+To run the Shiny application:
 
 ``` r
 libraryStatistics::shinyLibStats()
@@ -140,10 +140,10 @@ to gain insights into the multifaceted ways in which library resources
 contribute to its community, to support research and scholarship
 endeavors.
 
-## Shiny App
+## Shiny Application
 
-The Shiny app employing ***libraryStatistics*** could be run and results
-could be visualized:
+The Shiny application employing ***libraryStatistics*** could be run and
+results could be visualized using following command:
 
 ``` r
 libraryStatistics::shinyLibStats()

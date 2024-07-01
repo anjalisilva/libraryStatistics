@@ -39,7 +39,7 @@ devtools::install_github("anjalisilva/libraryStatistics", build_vignettes = TRUE
 library("libraryStatistics")
 ```
 
-To run the Shiny app:
+To run the Shiny application:
 ``` r
 libraryStatistics::shinyLibStats()
 ```
@@ -87,9 +87,9 @@ For the Shiny application, the user is able to upload data and navigate through 
 An example of an ratio is library expenditures per faculty, per student, and per doctoral degree awarded, can be visualized and compared across libraries. Overall, the tool enhances the utilization of ARL collected data in making evidence-based decisions within UTL and other libraries, to gain insights into the multifaceted ways in which library resources contribute to its community, to support research and scholarship endeavors. 
 
 
-## Shiny App
+## Shiny Application
 
-The Shiny app employing __*libraryStatistics*__ could be run and results could be visualized:
+The Shiny application employing __*libraryStatistics*__ could be run and results could be visualized using following command:
 ``` r
 libraryStatistics::shinyLibStats()
 ```
