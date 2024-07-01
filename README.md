@@ -113,8 +113,8 @@ An overview of the package is illustrated below:
 
 The R package and Shiny application permit to visualize, track trends,
 and compare data downloaded directly from ARL data portal
-(((www.arlstatistics.org/data/main))), up to 5 ARL member libraries and
-5 years at a time, with no data cleaning involved. The R package is
+(www.arlstatistics.org/data/main), up to 5 ARL member libraries and 5
+years at a time, with no data cleaning involved. The R package is
 designed for the analysis of library statistics published from the
 annual survey conducted by the ARL. The R package contain functions that
 permit the user to read in downloaded data downloaded from the ARL Data
