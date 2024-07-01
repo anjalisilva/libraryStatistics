@@ -31,14 +31,14 @@ ui <- fluidPage(
                            accept = c(".csv")),
                  checkboxGroupInput(inputId = "instituteInput",
                                     label = "2. ARL Member Libraries: select up to five members. If
-                                    more than five members are chosen, only the last five
-                                    selected will be retained. Subsequently, make the selections for
+                                    more than five members are selected, only the last five
+                                    will be retained. Subsequently, make the selections for
                                     the desired years from the option below."),
                  br(),
                  checkboxGroupInput(inputId = "yearsInput",
-                                    label = "3. Years: select up to five choices. If more than five
-                                    choices are selected, the most recent five years will be
-                                    automatically selected."),
+                                    label = "3. Years: select up to five years. If more than five
+                                    years are selected, the most recent five years will be
+                                    retained. Subsequently, navigate through the tabs to the right."),
 
                  # br() element to introduce extra vertical spacing ----
                  br(),

@@ -113,7 +113,7 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                   x = "Year",
                   fill = "ARL Member") +
     ggplot2::theme_bw() +
-    ggplot2::ggtitle(label = paste("Ratio of", stringr::str_to_title(combinedString),"\nFor Top 5 ARL Members Overall")) +
+    ggplot2::ggtitle(label = paste("Ratio of", stringr::str_to_title(combinedString),"For Top 5 ARL Members Overall")) +
     # subtitle = "ARL rank is shown on top of each bar.") +
     ggplot2::theme(text = element_text(size = 15, color = 'black'),
                    axis.text.x = element_text(angle = 90,
