@@ -212,7 +212,7 @@ ui <- fluidPage(
                           tabPanel("Calculate Custom Ratio",
                                    h3("Calculate Custom Ratio For Selected Members", align = "center"),
                                    br(),
-                                   h4("Select two statistics from the annual survey of ARL to be computed into
+                                   h4("Select two distinct statistics from the annual survey of ARL to be computed into
                                        a ratio, across your selected ARL member libraries and years. The plot will be
                                        produced at the bottom. If no plot is produced, no data maybe avilable
                                       for your selected statistics."),
