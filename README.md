@@ -67,7 +67,7 @@ data(package = "libraryStatistics")
 browseVignettes("libraryStatistics>")
 ```
 
-`libraryStatistics` contains 7 functions.
+`libraryStatistics` contains 8 functions.
 
 1.  ***shinyLibStats*** opens the Shiny application with visual
     analytics and comparison of upto to 5 years of data from the annual
