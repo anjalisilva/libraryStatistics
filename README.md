@@ -70,36 +70,36 @@ browseVignettes("libraryStatistics>")
 
 `libraryStatistics` contains 8 functions.
 
-1.  ***shinyLibStats*** opens the Shiny application or the dashboard
-    which permit to perform visual analytics and comparison of up to 5
-    years and up to 5 ARL member libraries based on ARL annual survey
-    data uploaded by the user.
-2.  ***visTotalLibraryExp*** permit to visualize total library
+1.  ***shinyLibStats*** opens the Shiny application/dashboard which
+    permit to perform visual comparisons of up to 5 ARL member libraries
+    and up to 5 years, at one time, from user uploaded ARL annual survey
+    data.
+2.  ***visTotalLibraryExp*** permits to visualize total library
     expenditures in United States Dollars (USD) as ratios in comparison
     to various statistics reported in the annual survey of ARL as bar
     plots. This ratio shows question 6 on ARL survey as the numerator.
-3.  ***visTotalLibMaterialsExp*** permit to visualize total library
+3.  ***visTotalLibMaterialsExp*** permits to visualize total library
     materials expenditures in United States Dollars (USD) as ratios in
     comparison to various statistics reported in the annual survey of
     ARL as bar plots. This ratio shows question 7 on ARL survey as the
     numerator.
-4.  ***visProfStaffSalaries*** permit to visualize salaries of
+4.  ***visProfStaffSalaries*** permits to visualize salaries of
     professional library staff in United States Dollars (USD), as ratios
     in comparison to various statistics reported in the annual survey of
     ARL as bar plots. This ratio shows question 8a on ARL survey as the
     numerator.
-5.  ***visProfStaffCounts*** permit to visualize library professional
+5.  ***visProfStaffCounts*** permits to visualize library professional
     staff counts, full-time equivalent (FTE), as ratios in comparison to
     various statistics reported in the annual survey of ARL as bar
     plots. This ratio shows question 13a on ARL survey as the numerator.
-6.  ***visSupStaffCounts*** permit to visualize library support staff
+6.  ***visSupStaffCounts*** permits to visualize library support staff
     counts, full-time equivalent (FTE), as ratios in comparison to
     various statistics reported in the annual survey of ARL as bar
     plots. This ratio shows question 13b on ARL survey as the numerator.
-7.  ***customRatioBuilder*** permit to build and visualize a custom
+7.  ***customRatioBuilder*** permits to build and visualize a custom
     ratio based on user selected numerator and denominator from various
     statistics reported in the annual survey of ARL.
-8.  ***indexTableGenerator*** permit to build a table containing ARL
+8.  ***indexTableGenerator*** permits to build a table containing ARL
     Investment Index over years as reported in the annual survey.
 
 An overview of the package is illustrated below:
@@ -117,12 +117,12 @@ The R package and Shiny dashboard permit to visualize, track trends, and
 compare data downloaded directly from the ARL data portal
 (www.arlstatistics.org/data/main), with no data cleaning involved. At
 one time, up to 5 ARL member libraries and 5 distinct years can be
-compared using this tool. The R package is designed for the analysis of
+compared using this tool. The tool is designed for the analysis of
 library statistics published from the annual survey conducted by the
 ARL. The R package contain functions that permit the user to read in
-data downloaded from the ARL Data Portal and perform visual comparative
-analyses using ratios. The input data file should be in comma-separated
-value (.csv) format downloaded from the ARL Data Portal
+data downloaded from the ARL Data Portal and perform visual comparisons
+using ratios. The input data file should be in comma-separated value
+(.csv) format as directly downloaded from the ARL Data Portal
 (www.arlstatistics.org/data/main). Users must ensure that all variables
 are selected when downloading data, with columns set to ‘Variables’ and
 the data sorted by ‘Institution Name’ (which are the default options on
@@ -130,28 +130,24 @@ ARL Data Portal). As such the first column must be labeled ‘Year’,
 followed by other indicators in any order, such as ‘Institution Name’,
 ‘Institution type’, etc., as directly downloaded from the ARL Data
 Portal. Data may be downloaded for any number of years and across any
-number member libraries/institutions (or all) available. Note:
-corrections made by respective library in the ARL survey after data
-submission deadline will be reflected in the footnotes of future years,
-but the dataset will not be updated to reflect the corrections.
+number member libraries/institutions (or all) available.
 
 For the Shiny application, the user is able to upload a dataset in .csv
 format that is directly downloaded from ARL Data Portal (as explained
 above). Upon uploading data, the choices for libraries and years will be
 visible. Through the interactive interface of the Shiny application,
 users can dynamically visualize ratios by selecting up to 5 ARL member
-libraries and up to 5 years. Users also have the ability generate and
-visualize custom ratios, which enhances the usability of the published
-ARL data.
+libraries and up to 5 years.
 
-Functions or dedicated tabs of Shiny dashboard are available for
-generating visualizations for ARL Investment Index, ratios for ‘Total
-Library Expenditures’, ‘Total Library Materials Expenditures’,
-‘Professional Staff Salaries’, ‘Professional Staff Counts’, and ‘Support
-Staff Counts’. Some examples of ratios that can be visualized are total
-library expenditures (in USD) per faculty, per student, and per doctoral
-degree awarded, etc. These ratios can be visualized and compared for up
-to 5 libraries and up to 5 distinct years chosen by the user.
+Functions of the R package and dedicated tabs of the Shiny dashboard are
+available for generating visualizations for ARL Investment Index, ratios
+for ‘Total Library Expenditures’, ‘Total Library Materials
+Expenditures’, ‘Professional Staff Salaries’, ‘Professional Staff
+Counts’, and ‘Support Staff Counts’. Some examples of ratios that can be
+visualized are total library expenditures (in USD) per faculty, per
+student, and per doctoral degree awarded, etc. Users also have the
+option to generate and visualize custom ratios using all available ARL
+indicators, which enhances the usability of the published ARL data.
 
 Tool is useful in helping ARL libraries understand their own
 performance, benchmark performance against other ARL member libraries,
@@ -163,6 +159,11 @@ collected data in making evidence-based decisions within UTL and other
 libraries, to gain insights into the multifaceted ways in which library
 resources contribute to its community, to support research and
 scholarship endeavors.
+
+Note: corrections made by a library in the ARL survey, after data
+submission deadline, will be reflected in the footnotes of future years,
+but the dataset will not be updated to reflect the corrections. Be
+mindful of this when visualizing data downloaded from ARL Data Portal.
 
 ## Shiny Application
 
