@@ -122,15 +122,15 @@ library statistics published from the annual survey conducted by the
 ARL. The R package contain functions that permit the user to read in
 data downloaded from the ARL Data Portal and perform visual comparisons
 using ratios. The input data file should be in comma-separated value
-(.csv) format as directly downloaded from the ARL Data Portal
-(www.arlstatistics.org/data/main). Users must ensure that all variables
-are selected when downloading data, with columns set to ‘Variables’ and
-the data sorted by ‘Institution Name’ (which are the default options on
-ARL Data Portal). As such the first column must be labeled ‘Year’,
-followed by other indicators in any order, such as ‘Institution Name’,
-‘Institution type’, etc., as directly downloaded from the ARL Data
-Portal. Data may be downloaded for any number of years and across any
-number member libraries/institutions (or all) available.
+(.csv) format as directly downloaded from the ARL Data Portal. Users
+must ensure that all variables are selected when downloading data, with
+columns set to ‘Variables’ and the data sorted by ‘Institution Name’
+(which are the default options on ARL Data Portal). As such the first
+column must be labeled ‘Year’, followed by other indicators in any
+order, such as ‘Institution Name’, ‘Institution type’, etc., as directly
+downloaded from the ARL Data Portal. Data may be downloaded for any
+number of years and across any number member libraries/institutions (or
+all) available.
 
 For the Shiny application, the user is able to upload a dataset in .csv
 format that is directly downloaded from ARL Data Portal (as explained
