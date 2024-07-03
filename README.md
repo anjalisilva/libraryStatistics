@@ -70,30 +70,31 @@ browseVignettes("libraryStatistics>")
 
 `libraryStatistics` contains 8 functions.
 
-1.  ***shinyLibStats*** opens the Shiny application with visual
-    analytics and comparison of upto to 5 years of data from the annual
-    survey of ARL uploaded by the user.
-2.  ***visTotalLibraryExp*** visualize total library expenditures in
-    United States Dollars (USD) as ratios in comparison to various
-    statistics reported in the annual survey of ARL as bar plots. This
-    is question 6 on ARL survey as the numerator.
+1.  ***shinyLibStats*** opens the Shiny application which permit to
+    perform visual analytics and comparison of up to 5 years and up to 5
+    ARL member libraries based on ARL annual survey data uploaded by the
+    user.
+2.  ***visTotalLibraryExp*** permit to visualize total library
+    expenditures in United States Dollars (USD) as ratios in comparison
+    to various statistics reported in the annual survey of ARL as bar
+    plots. This ratio shows question 6 on ARL survey as the numerator.
 3.  ***visTotalLibMaterialsExp*** visualize total library materials
     expenditures in United States Dollars (USD) as ratios in comparison
     to various statistics reported in the annual survey of ARL as bar
-    plots. This is question 7 on ARL survey as the numerator.
+    plots. This ratio shows question 7 on ARL survey as the numerator.
 4.  ***visProfStaffSalaries*** visualize salaries of professional
     library staff in United States Dollars (USD), as ratios in
     comparison to various statistics reported in the annual survey of
-    ARL as bar plots. This is question 8a on ARL survey as the
+    ARL as bar plots. This ratio shows question 8a on ARL survey as the
     numerator.
 5.  ***visProfStaffCounts*** visualize library professional staff
     counts, full-time equivalent (FTE), as ratios in comparison to
     various statistics reported in the annual survey of ARL as bar
-    plots. This is question 13a on ARL survey as the numerator.
+    plots. This ratio shows question 13a on ARL survey as the numerator.
 6.  ***visSupStaffCounts*** visualize library support staff counts,
     full-time equivalent (FTE), as ratios in comparison to various
     statistics reported in the annual survey of ARL as bar plots. This
-    is question 13b on ARL survey as the numerator.
+    ratio shows question 13b on ARL survey as the numerator.
 7.  ***customRatioBuilder*** build and visualize a custom ratio based on
     user selected numerator and denominator from various statistics
     reported in the annual survey of ARL.
