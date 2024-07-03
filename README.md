@@ -114,13 +114,13 @@ An overview of the package is illustrated below:
 ## Details
 
 The R package and Shiny application permit to visualize, track trends,
-and compare data downloaded directly from ARL data portal
+and compare data downloaded directly from the ARL data portal
 (www.arlstatistics.org/data/main), up to 5 ARL member libraries and 5
 years at a time, with no data cleaning involved. The R package is
 designed for the analysis of library statistics published from the
 annual survey conducted by the ARL. The R package contain functions that
-permit the user to read in downloaded data downloaded from the ARL Data
-Portal and perform various analyses. The input data file should be in
+permit the user to read in data downloaded from the ARL Data Portal and
+perform various analyses. The input data file should be in
 comma-separated value (.csv) format, with rows corresponding to years
 and columns representing ARL indicators (variables). The first column
 must be labeled ‘Year’, followed by other indicators in any order, such
@@ -134,11 +134,12 @@ interface of the Shiny application, users can dynamically visualize
 ratios by selecting ARL member libraries, years, and also by creating
 custom ratios, which enhances the usability of the published data.
 
-An example of an ratio is library expenditures per faculty, per student,
-and per doctoral degree awarded, can be visualized and compared across
-libraries. Overall, the tool enhances the utilization of ARL collected
-data in making evidence-based decisions within UTL and other libraries,
-to gain insights into the multifaceted ways in which library resources
+Some examples of ratios are library expenditures per faculty, per
+student, and per doctoral degree awarded, etc. These can be visualized
+and compared across libraries and varying years using the R package.
+Overall, the tool enhances the utilization of ARL collected data in
+making evidence-based decisions within UTL and other libraries, to gain
+insights into the multifaceted ways in which library resources
 contribute to its community, to support research and scholarship
 endeavors.
 
@@ -192,9 +193,9 @@ A BibTeX entry for LaTeX users is
 
 ## Package References
 
-- R Core Team (2023). R: A language and environment for statistical
-  computing. R Foundation for Statistical Computing, Vienna, Austria.
-  <https://www.R-project.org/>
+- [R Core Team (2023). R: A language and environment for statistical
+  computing. R Foundation for Statistical Computing, Vienna,
+  Austria.](https://www.R-project.org/)
 
 - [Mian, A., & Gross, H. (2023). ARL Statistics 2022. Washington, DC:
   Association of Research
@@ -202,6 +203,30 @@ A BibTeX entry for LaTeX users is
 
 - [Association of Research Libraries. (2023). ARL Statistics 2023
   Instructions.](https://www.arlstatistics.org/resources/stats_instructions)
+
+- [Wickham, H., François, R., Henry, L., Müller, K., Vaughan, D. (2023).
+  *dplyr: A Grammar of Data Manipulation*. R package version
+  1.1.4.](https://CRAN.R-project.org/package=dplyr)
+
+- [Wickham, H. ggplot2: Elegant Graphics for Data Analysis.
+  Springer-Verlag New York, 2016.]()
+
+- [Zhu, H. (2024). *kableExtra: Construct Complex Table with ‘kable’ and
+  Pipe Syntax*. R package version
+  1.4.0.](https://CRAN.R-project.org/package=kableExtra)
+
+- [Bache, S., Wickham, H. (2022). *magrittr: A Forward-Pipe Operator for
+  R*. R package version
+  2.0.3.](https://CRAN.R-project.org/package=magrittr)
+
+- [Chang. W., Cheng, J., Allaire, J., Sievert, C., Schloerke, B., Xie,
+  Y., Allen, J., McPherson, J., Dipert, A., Borges, B. (2023). *shiny:
+  Web Application Framework for R*. R package version
+  1.8.0.](https://CRAN.R-project.org/package=shiny)
+
+- [Wickham H (2023). *stringr: Simple, Consistent Wrappers for Common
+  String Operations*. R package version
+  1.5.1.](https://CRAN.R-project.org/package=stringr)
 
 ## Maintainer
 
