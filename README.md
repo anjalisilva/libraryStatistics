@@ -78,29 +78,29 @@ browseVignettes("libraryStatistics>")
     expenditures in United States Dollars (USD) as ratios in comparison
     to various statistics reported in the annual survey of ARL as bar
     plots. This ratio shows question 6 on ARL survey as the numerator.
-3.  ***visTotalLibMaterialsExp*** visualize total library materials
-    expenditures in United States Dollars (USD) as ratios in comparison
-    to various statistics reported in the annual survey of ARL as bar
-    plots. This ratio shows question 7 on ARL survey as the numerator.
-4.  ***visProfStaffSalaries*** visualize salaries of professional
-    library staff in United States Dollars (USD), as ratios in
+3.  ***visTotalLibMaterialsExp*** permit to visualize total library
+    materials expenditures in United States Dollars (USD) as ratios in
     comparison to various statistics reported in the annual survey of
+    ARL as bar plots. This ratio shows question 7 on ARL survey as the
+    numerator.
+4.  ***visProfStaffSalaries*** permit to visualize salaries of
+    professional library staff in United States Dollars (USD), as ratios
+    in comparison to various statistics reported in the annual survey of
     ARL as bar plots. This ratio shows question 8a on ARL survey as the
     numerator.
-5.  ***visProfStaffCounts*** visualize library professional staff
-    counts, full-time equivalent (FTE), as ratios in comparison to
+5.  ***visProfStaffCounts*** permit to visualize library professional
+    staff counts, full-time equivalent (FTE), as ratios in comparison to
     various statistics reported in the annual survey of ARL as bar
     plots. This ratio shows question 13a on ARL survey as the numerator.
-6.  ***visSupStaffCounts*** visualize library support staff counts,
-    full-time equivalent (FTE), as ratios in comparison to various
-    statistics reported in the annual survey of ARL as bar plots. This
-    ratio shows question 13b on ARL survey as the numerator.
-7.  ***customRatioBuilder*** build and visualize a custom ratio based on
-    user selected numerator and denominator from various statistics
-    reported in the annual survey of ARL.
-8.  ***indexTableGenerator*** build a table containing Association of
-    Research Libraries (ARL) Investment Index over years as reported in
-    the annual survey.
+6.  ***visSupStaffCounts*** permit to visualize library support staff
+    counts, full-time equivalent (FTE), as ratios in comparison to
+    various statistics reported in the annual survey of ARL as bar
+    plots. This ratio shows question 13b on ARL survey as the numerator.
+7.  ***customRatioBuilder*** permit to build and visualize a custom
+    ratio based on user selected numerator and denominator from various
+    statistics reported in the annual survey of ARL.
+8.  ***indexTableGenerator*** permit to build a table containing ARL
+    Investment Index over years as reported in the annual survey.
 
 An overview of the package is illustrated below:
 
