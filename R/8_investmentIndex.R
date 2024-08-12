@@ -81,7 +81,7 @@ indexTableGenerator <- function(dataARL, members, years = NA) {
     dplyr::select(- userSelectedInstitutes) %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black", background = "#D7261E")
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black", background = "#ffffbf")
 
   return(rankTableVisualize)
 
