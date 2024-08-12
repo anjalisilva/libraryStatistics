@@ -24,10 +24,12 @@
 #'   If more than 5 values provided, last 5 values will be selected.
 #'   Default is NA.
 #'
-#' @return Returns bar plots showing varying ratios specified below:
+#' @return Returns bar plots and tables showing varying ratios specified below:
 #' \itemize{
 #'   \item tleTopPerFaculty - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per teaching faculty, over user selected number of years.
+#'   \item tleTopPerFacultyTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tleTopPerStudent - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per student (full-time, FT, and part-time, PT), over
 #'          user selected number of years.
@@ -100,6 +102,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
    dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
@@ -134,14 +138,37 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    size = 6)
 
 
+  # Final table - total lib stats per faculty by top contributors over 5 years
+  tleTopPerFacultyTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
+    dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerFaculty) %>%
+    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
+
+
   # ---
-  # Using total lib stats per student by top contributors (not ARL)
+  # Using total lib stats per student by top contributors
   tleTopPerStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/
-                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allStudents != 0) %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/ allStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -175,14 +202,39 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    size = 6)
 
 
+
+  # Final table - total lib stats per student by top contributors
+  tleTopPerStudentTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allStudents != 0) %>%
+    dplyr::mutate(expPerStudent = MASS::fractions(`Total library expenditures`/ allStudents)) %>%
+    dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
+
+
   # ---
-  # Using total lib stats per graduate student by top contributors (not ARL)
+  # Using total lib stats per graduate student by top contributors
   tleTopPerGradStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerGradStudent = `Total library expenditures`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allGradStudents != 0) %>%
+    dplyr::mutate(expPerGradStudent = `Total library expenditures`/ allGradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -216,14 +268,38 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    size = 6)
 
 
+  # Final table - total lib stats per graduate student by top contributors
+  tleTopPerGradStudentTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allGradStudents != 0) %>%
+    dplyr::mutate(expPerGradStudent = MASS::fractions(`Total library expenditures`/ allGradStudents)) %>%
+    dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerGradStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
+
+
   # ---
-  # Using total lib stats per undergraduate student by top contributors (not ARL)
+  # Using total lib stats per undergraduate student by top contributors
   tleTopPerUndergradStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(totalUndergradStudents != 0) %>%
     dplyr::mutate(expPerUndergradStudent = `Total library expenditures`/ totalUndergradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, Inf)) %>%
@@ -258,17 +334,40 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
   #                    size = 6)
 
 
+  # Final table - total lib stats per undergraduate student by top contributors
+  tleTopPerUndergradStudentTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(totalUndergradStudents != 0) %>%
+    dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total library expenditures`/ totalUndergradStudents)) %>%
+    dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
 
 
   # ---
-  # Using total lib stats per doctoral degree by top contributors (not ARL)
+  # Using total lib stats per doctoral degree by top contributors
   tleTopPerDoctoral <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
     dplyr::mutate(expPerDoctoral = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
-    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
+    dplyr::mutate(expPerDoctoral = dplyr::na_if(expPerDoctoral, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
     dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
@@ -299,6 +398,27 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    position = position_dodge(width = 0.9),
     #                    vjust = 0,
     #                    size = 6)
+
+
+  # Final table - total lib stats per doctoral degree by top contributors
+  tleTopPerDoctoralTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
+    dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerDoctoral) %>%
+    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
 
 
   # ---
@@ -342,6 +462,26 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    size = 6)
 
 
+  # Final table - total lib stats per faculty by user selection
+  tlePerFacultyUserSelectedTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
+    dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerFaculty) %>%
+    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
+
+
   # ---
   # Using total lib stats per student by user selection
   tlePerStudentUserSelected <- selectedData %>%
@@ -349,8 +489,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerStudent = `Total library expenditures`/
-                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    dplyr::mutate(expPerStudent = `Total library expenditures`/ allStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -384,6 +524,27 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    size = 6)
 
 
+  # Final table - total lib stats per student by user selection
+  tlePerStudentUserSelectedTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    dplyr::mutate(expPerStudent = MASS::fractions(`Total library expenditures`/ allStudents)) %>%
+    dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
+
+
   # ---
   # Using total lib stats per graduate student by user selection
   tlePerGradStudentUserSelected <- selectedData %>%
@@ -391,8 +552,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerGradStudent = `Total library expenditures`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    dplyr::mutate(expPerGradStudent = `Total library expenditures`/ allgradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -424,6 +585,27 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    position = position_dodge(width = 0.9),
     #                    vjust = 0,
     #                    size = 6)
+
+
+  # Final table - total lib stats per graduate student by user selection
+  tlePerGradStudentUserSelectedTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    dplyr::mutate(expPerGradStudent = MASS::fractions(`Total library expenditures`/ allgradStudents)) %>%
+    dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerGradStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
 
 
   # ---
@@ -469,6 +651,28 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
   #                    size = 6)
 
 
+  # Final table - total lib stats per undergraduate student by user selection
+  tlePerUndergradStudentUserSelectedTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total library expenditures`/ totalUndergradStudents)) %>%
+    dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
+
+
 
   # ---
   # Using total lib stats per doctoral degree by user selection
@@ -511,16 +715,47 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     #                    size = 6)
 
 
+
+  # Final table - total lib stats per doctoral degree by user selection
+  tlePerDoctoralUserSelectedTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
+    dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
+    dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, expPerDoctoral) %>%
+    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped") %>%
+    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+
+
+
   return(list(tleTopPerFaculty = tleTopPerFaculty,
+              tleTopPerFacultyTable = tleTopPerFacultyTable,
               tleTopPerStudent = tleTopPerStudent,
+              tleTopPerStudentTable = tleTopPerStudentTable,
               tleTopPerGradStudent = tleTopPerGradStudent,
+              tleTopPerGradStudentTable = tleTopPerGradStudentTable,
               tleTopPerUndergradStudent = tleTopPerUndergradStudent,
+              tleTopPerUndergradStudentTable = tleTopPerUndergradStudentTable,
               tleTopPerDoctoral = tleTopPerDoctoral,
+              tleTopPerDoctoralTable = tleTopPerDoctoralTable,
               tlePerFacultyUserSelected = tlePerFacultyUserSelected,
+              tlePerFacultyUserSelectedTable = tlePerFacultyUserSelectedTable,
               tlePerStudentUserSelected = tlePerStudentUserSelected,
+              tlePerStudentUserSelectedTable = tlePerStudentUserSelectedTable,
               tlePerGradStudentUserSelected = tlePerGradStudentUserSelected,
+              tlePerGradStudentUserSelectedTable = tlePerGradStudentUserSelectedTable,
               tlePerUndergradStudentUserSelected = tlePerUndergradStudentUserSelected,
-              tlePerDoctoralUserSelected = tlePerDoctoralUserSelected))
+              tlePerUndergradStudentUserSelectedTable = tlePerUndergradStudentUserSelectedTable,
+              tlePerDoctoralUserSelected = tlePerDoctoralUserSelected,
+              tlePerDoctoralUserSelectedTable = tlePerDoctoralUserSelectedTable))
 }
 
 # [END]
