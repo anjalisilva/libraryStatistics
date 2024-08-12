@@ -33,29 +33,47 @@
 #'   \item tleTopPerStudent - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per student (full-time, FT, and part-time, PT), over
 #'          user selected number of years.
+#'   \item tleTopPerStudentTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tleTopPerGradStudent - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per graduate student (full-time, FT, and part-time, PT),
 #'         over user selected number of years.
+#'   \item tleTopPerGradStudentTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tleTopPerUndergradStudent - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per undergraduate student (full-time, FT, and part-time, PT),
 #'         over user selected number of years.
+#'   \item tleTopPerUndergradStudentTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tleTopPerDoctoral - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per doctoral degree awarded, over user selected number
 #'         of years.
+#'   \item tleTopPerDoctoralTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tlePerFacultyUserSelected - A barplot showing ratio of total library expenditures per
 #'         teaching faculty for user selected ARL members, over user selected number of years.
+#'   \item tlePerFacultyUserSelectedTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tlePerStudentUserSelected - A barplot showing ratio of total library expenditures per
 #'         student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
+#'   \item tlePerStudentUserSelectedTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tlePerGradStudentUserSelected - A barplot showing ratio of total library expenditures per
 #'         graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
+#'   \item tlePerGradStudentUserSelectedTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tlePerUndergradStudentUserSelected - A barplot showing ratio of total library expenditures per
 #'         undergraduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
+#'   \item tlePerUndergradStudentUserSelectedTable - A table showing the original values used for calculating
+#          the ratios.
 #'   \item tleTopPerDoctoralUserSelected - A barplot showing ratio of total library expenditures per
 #'         per doctoral degree awarded for user selected ARL members, over user
 #'         selected number of years.
+#'   \item tlePerDoctoralUserSelectedTable - A table showing the original values used for calculating
+#          the ratios.
 #' }
 #'
 #' @examples
@@ -86,6 +104,7 @@
 #' @import ggplot2
 #' @import magrittr
 #' @import dplyr
+#' @importFrom MASS fractions
 visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
   selectedData <- dataAdjustment(dataARL = dataARL)
@@ -409,6 +428,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
+    # Replace INF values with NA
+    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
@@ -470,6 +491,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
+    # Replace INF values with NA
+    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
@@ -533,6 +556,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     dplyr::mutate(expPerStudent = MASS::fractions(`Total library expenditures`/ allStudents)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
+    # Replace INF values with NA
+    dplyr::mutate(expPerStudent = na_if(expPerStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
@@ -596,6 +621,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total library expenditures`/ allgradStudents)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
+    # Replace INF values with NA
+    dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
@@ -661,6 +688,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total library expenditures`/ totalUndergradStudents)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
+    # Replace INF values with NA
+    dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
@@ -724,6 +753,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
+    # Replace INF values with NA
+    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
