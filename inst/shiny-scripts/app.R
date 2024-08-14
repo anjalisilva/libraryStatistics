@@ -135,7 +135,8 @@ ui <- fluidPage(
                                    h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
-                                       with the highest ratio."),
+                                       with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
+                                       a data point for the given year."),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -151,7 +152,8 @@ ui <- fluidPage(
                                    h4("Total library materials expenditures in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
-                                       with the highest ratio."),
+                                       with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
+                                       a data point for the given year."),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -167,7 +169,8 @@ ui <- fluidPage(
                                    h4("Professional staff salaries in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
-                                       with the highest ratio."),
+                                       with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
+                                       a data point for the given year."),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -183,7 +186,8 @@ ui <- fluidPage(
                                    h4("Professional Library Staff Counts FTE as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
-                                       with the highest ratio. "),
+                                       with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
+                                       a data point for the given year."),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -199,7 +203,8 @@ ui <- fluidPage(
                                    h4("Support Library Staff Counts FTE as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
-                                       with the highest ratio."),
+                                       with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
+                                       a data point for the given year."),
                                    br(),
                                    br(),
                                    fluidRow(
@@ -214,8 +219,8 @@ ui <- fluidPage(
                                    br(),
                                    h4("Select two distinct statistics from the annual survey of ARL to be computed into
                                        a ratio, across your selected ARL member libraries and years. The plot will be
-                                       produced at the bottom. If no plot is produced, no data maybe avilable
-                                      for your selected statistics."),
+                                       produced at the bottom. If no plot is produced, data may not be avilable
+                                      for selected statistics."),
                                    br(),
                                    br(),
                                    splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
