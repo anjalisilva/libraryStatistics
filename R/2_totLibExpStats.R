@@ -141,6 +141,8 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Total teaching faculty` != 0) %>%
+    # Add an error message if no data is selected based on criteria
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
@@ -182,6 +184,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Total teaching faculty` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
@@ -205,6 +208,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/ allStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
@@ -248,6 +252,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerStudent = MASS::fractions(`Total library expenditures`/ allStudents)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
@@ -271,6 +276,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allGradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerGradStudent = `Total library expenditures`/ allGradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
@@ -313,6 +319,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allGradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total library expenditures`/ allGradStudents)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
@@ -337,6 +344,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(totalUndergradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerUndergradStudent = `Total library expenditures`/ totalUndergradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, Inf)) %>%
@@ -380,6 +388,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(totalUndergradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total library expenditures`/ totalUndergradStudents)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
@@ -402,6 +411,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerDoctoral = dplyr::na_if(expPerDoctoral, Inf)) %>%
@@ -444,6 +454,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     # Replace INF values with NA
@@ -467,6 +478,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = `Total library expenditures`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
@@ -507,6 +519,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     # Replace INF values with NA
@@ -530,6 +543,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     dplyr::mutate(expPerStudent = `Total library expenditures`/ allStudents) %>%
     # Replace INF values with NA
@@ -571,6 +585,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     dplyr::mutate(expPerStudent = MASS::fractions(`Total library expenditures`/ allStudents)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
@@ -595,6 +610,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     dplyr::mutate(expPerGradStudent = `Total library expenditures`/ allgradStudents) %>%
     # Replace INF values with NA
@@ -636,6 +652,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total library expenditures`/ allgradStudents)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
@@ -660,6 +677,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                     (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     dplyr::mutate(expPerUndergradStudent = `Total library expenditures`/ totalUndergradStudents) %>%
@@ -702,6 +720,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total library expenditures`/ totalUndergradStudents)) %>%
@@ -728,6 +747,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = `Total library expenditures`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
@@ -769,6 +789,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     # Replace INF values with NA
