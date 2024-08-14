@@ -28,52 +28,70 @@
 #' \itemize{
 #'   \item tleTopPerFaculty - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per teaching faculty, over user selected number of years.
-#'   \item tleTopPerFacultyTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tleTopPerStudent - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per student (full-time, FT, and part-time, PT), over
 #'          user selected number of years.
-#'   \item tleTopPerStudentTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tleTopPerGradStudent - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per graduate student (full-time, FT, and part-time, PT),
 #'         over user selected number of years.
-#'   \item tleTopPerGradStudentTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tleTopPerUndergradStudent - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per undergraduate student (full-time, FT, and part-time, PT),
 #'         over user selected number of years.
-#'   \item tleTopPerUndergradStudentTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tleTopPerDoctoral - A barplot showing ARL members with highest ratio of total
 #'         library expenditures per doctoral degree awarded, over user selected number
 #'         of years.
-#'   \item tleTopPerDoctoralTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tlePerFacultyUserSelected - A barplot showing ratio of total library expenditures per
 #'         teaching faculty for user selected ARL members, over user selected number of years.
-#'   \item tlePerFacultyUserSelectedTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tlePerStudentUserSelected - A barplot showing ratio of total library expenditures per
 #'         student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
-#'   \item tlePerStudentUserSelectedTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tlePerGradStudentUserSelected - A barplot showing ratio of total library expenditures per
 #'         graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
-#'   \item tlePerGradStudentUserSelectedTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tlePerUndergradStudentUserSelected - A barplot showing ratio of total library expenditures per
 #'         undergraduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
 #'         selected number of years.
-#'   \item tlePerUndergradStudentUserSelectedTable - A table showing the original values used for calculating
-#          the ratios.
 #'   \item tleTopPerDoctoralUserSelected - A barplot showing ratio of total library expenditures per
 #'         per doctoral degree awarded for user selected ARL members, over user
 #'         selected number of years.
+#'   \item tleTopPerFacultyTable - A table showing the original values used for calculating
+#          the ratios for ARL members with highest ratio of total
+#'         library expenditures per teaching faculty, over user selected number of years.
+#'   \item tleTopPerStudentTable - A table showing the original values used for calculating
+#          the ratios for ARL members with highest ratio of total
+#'         library expenditures per student (full-time, FT, and part-time, PT), over
+#'          user selected number of years.
+#'   \item tleTopPerGradStudentTable - A table showing the original values used for calculating
+#          the ratios for ARL members with highest ratio of total
+#'         library expenditures per graduate student (full-time, FT, and part-time, PT),
+#'         over user selected number of years.
+#'   \item tleTopPerUndergradStudentTable - A table showing the original values used for calculating
+#          the ratios for ARL members with highest ratio of total
+#'         library expenditures per undergraduate student (full-time, FT, and part-time, PT),
+#'         over user selected number of years.
+#'   \item tleTopPerDoctoralTable - A table showing the original values used for calculating
+#          the ratios for ARL members with highest ratio of total
+#'         library expenditures per doctoral degree awarded, over user selected number
+#'         of years.
+#'   \item tlePerFacultyUserSelectedTable - A table showing the original values used for calculating
+#          the ratios for total library expenditures per
+#'         teaching faculty for user selected ARL members, over user selected number of years.
+#'   \item tlePerStudentUserSelectedTable - A table showing the original values used for calculating
+#          the ratios for total library expenditures per
+#'         graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
+#'         selected number of years.
+#'   \item tlePerGradStudentUserSelectedTable - A table showing the original values used for calculating
+#          the ratios for total library expenditures per
+#'         graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
+#'         selected number of years.
+#'   \item tlePerUndergradStudentUserSelectedTable - A table showing the original values used for calculating
+#          the ratios for total library expenditures per
+#'         undergraduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
+#'         selected number of years.
 #'   \item tlePerDoctoralUserSelectedTable - A table showing the original values used for calculating
-#          the ratios.
+#          the ratios for total library expenditures per
+#'         per doctoral degree awarded for user selected ARL members, over user
+#'         selected number of years.
 #' }
 #'
 #' @examples
@@ -492,7 +510,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     # Replace INF values with NA
-    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
+    dplyr::mutate(expPerFaculty = na_if(expPerFaculty, "Inf")) %>%
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
@@ -768,24 +786,24 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
 
 
   return(list(tleTopPerFaculty = tleTopPerFaculty,
-              tleTopPerFacultyTable = tleTopPerFacultyTable,
               tleTopPerStudent = tleTopPerStudent,
-              tleTopPerStudentTable = tleTopPerStudentTable,
               tleTopPerGradStudent = tleTopPerGradStudent,
-              tleTopPerGradStudentTable = tleTopPerGradStudentTable,
               tleTopPerUndergradStudent = tleTopPerUndergradStudent,
-              tleTopPerUndergradStudentTable = tleTopPerUndergradStudentTable,
               tleTopPerDoctoral = tleTopPerDoctoral,
-              tleTopPerDoctoralTable = tleTopPerDoctoralTable,
               tlePerFacultyUserSelected = tlePerFacultyUserSelected,
-              tlePerFacultyUserSelectedTable = tlePerFacultyUserSelectedTable,
               tlePerStudentUserSelected = tlePerStudentUserSelected,
-              tlePerStudentUserSelectedTable = tlePerStudentUserSelectedTable,
               tlePerGradStudentUserSelected = tlePerGradStudentUserSelected,
-              tlePerGradStudentUserSelectedTable = tlePerGradStudentUserSelectedTable,
               tlePerUndergradStudentUserSelected = tlePerUndergradStudentUserSelected,
-              tlePerUndergradStudentUserSelectedTable = tlePerUndergradStudentUserSelectedTable,
               tlePerDoctoralUserSelected = tlePerDoctoralUserSelected,
+              tleTopPerFacultyTable = tleTopPerFacultyTable,
+              tleTopPerStudentTable = tleTopPerStudentTable,
+              tleTopPerGradStudentTable = tleTopPerGradStudentTable,
+              tleTopPerUndergradStudentTable = tleTopPerUndergradStudentTable,
+              tleTopPerDoctoralTable = tleTopPerDoctoralTable,
+              tlePerFacultyUserSelectedTable = tlePerFacultyUserSelectedTable,
+              tlePerStudentUserSelectedTable = tlePerStudentUserSelectedTable,
+              tlePerGradStudentUserSelectedTable = tlePerGradStudentUserSelectedTable,
+              tlePerUndergradStudentUserSelectedTable = tlePerUndergradStudentUserSelectedTable,
               tlePerDoctoralUserSelectedTable = tlePerDoctoralUserSelectedTable))
 }
 
