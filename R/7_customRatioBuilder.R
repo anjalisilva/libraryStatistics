@@ -121,15 +121,7 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)]) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) # +
-    # Add ranking labels on bars
-    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-    #                    position = position_dodge(width = 0.9),
-    #                    vjust = 0,
-    #                    size = 6)
-
+    ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)])
 
 
   # ---
@@ -162,14 +154,17 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                                               vjust = 0.5,
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
-    ggplot2::scale_fill_manual(values = setColorPalette()) +
-    ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                breaks = scales::pretty_breaks(n = 5)) # +
-    # Add ranking labels on bars
-    # ggplot2::geom_text(aes(label = `Rank in ARL investment index`),
-    #                    position = position_dodge(width = 0.9),
-    #                    vjust = 0,
-    #                    size = 6)
+    ggplot2::scale_fill_manual(values = setColorPalette())
+
+
+  checkForDollarSign <- function(numerator, denominator) {
+    if (numerator == denominator) {
+    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                breaks = scales::pretty_breaks(n = 5))
+    } else {
+
+      ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                  breaks = scales::pretty_breaks(n = 5)) }}
 
   return(list(customRatioTop = customRatioTop,
               customRatioUser = customRatioUser))
