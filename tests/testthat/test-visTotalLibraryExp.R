@@ -8,7 +8,7 @@ test_that("Data generation is as expected", {
                      years = c(2020, 2021, 2022))
 
   expect_type(visTotalLibraryExpOutput, "list")
-  expect_length(visTotalLibraryExpOutput, 10)
+  expect_length(visTotalLibraryExpOutput, 20)
 })
 
 
