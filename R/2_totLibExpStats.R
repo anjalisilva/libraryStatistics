@@ -194,10 +194,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
-
-
+    kableExtra::kable_paper(lightable_options = "striped")
 
   # ---
   # Using total lib stats per student by top contributors
@@ -262,9 +259,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
-
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
   # ---
@@ -329,9 +324,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
-
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
   # ---
@@ -398,8 +391,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
 
@@ -466,8 +458,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
 
@@ -531,8 +522,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
 
@@ -598,9 +588,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
-
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
   # ---
@@ -665,8 +653,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
 
@@ -734,9 +721,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
-
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
 
@@ -801,9 +786,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
     kableExtra::kbl() %>%
-    kableExtra::kable_paper(lightable_options = "striped") %>%
-    kableExtra::row_spec(row = instituteRows, bold = T, color = "black")
-
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
   return(list(tleTopPerFaculty = tleTopPerFaculty,
