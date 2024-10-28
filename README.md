@@ -109,6 +109,7 @@ An overview of the package is illustrated below:
 <img src="inst/extdata/pipelineLS.png" width="800" height="450"/>
 
 <div style="text-align:left">
+
 <div style="text-align:left">
 
 ## Details
@@ -179,6 +180,7 @@ libraryStatistics::shinyLibStats()
 <img src="inst/extdata/shinyInterface.png" alt="ShinyApp1" width="650" height="400"/>
 
 <div style="text-align:left">
+
 <div style="text-align:left">
 
 In simple, the ***shinyLibStats*** is a web application available with
@@ -266,3 +268,15 @@ issues](https://github.com/anjalisilva/libraryStatistics).
   Libraries (UTL), Ontario, Canada. We wish to thank Larry Alford, Laura
   Anderson, Glen Morales and Caitlin Tillman from UTL and Dr. Kevin
   Borden and Holly Gross from ARL for their feedback.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
