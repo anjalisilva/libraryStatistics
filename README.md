@@ -52,7 +52,7 @@ devtools::install_github("anjalisilva/libraryStatistics", build_vignettes = TRUE
 library("libraryStatistics")
 ```
 
-To run the Shiny application:
+To run the Shiny application (under construction):
 
 ``` r
 libraryStatistics::shinyLibStats()
