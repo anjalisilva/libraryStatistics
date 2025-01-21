@@ -186,12 +186,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Total teaching faculty` != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
-    dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
     dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
