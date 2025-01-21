@@ -251,12 +251,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(allStudents != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerStudent = MASS::fractions(`Total library expenditures`/ allStudents)) %>%
-    dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
     dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -316,12 +316,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(allGradStudents != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total library expenditures`/ allGradStudents)) %>%
-    dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
     dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -383,12 +383,12 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(totalUndergradStudents != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total library expenditures`/ totalUndergradStudents)) %>%
-    dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
     dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -448,7 +448,6 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
-    dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     # Replace INF values with NA
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
@@ -456,6 +455,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerDoctoral) %>%
     dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -512,7 +512,6 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total library expenditures`/`Total teaching faculty`)) %>%
-    dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, "Inf")) %>%
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
@@ -520,6 +519,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerFaculty) %>%
     dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -578,7 +578,6 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     dplyr::mutate(expPerStudent = MASS::fractions(`Total library expenditures`/ allStudents)) %>%
-    dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
@@ -586,6 +585,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerStudent) %>%
     dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -643,7 +643,6 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total library expenditures`/ allgradStudents)) %>%
-    dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
@@ -651,6 +650,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerGradStudent) %>%
     dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -711,7 +711,6 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total library expenditures`/ totalUndergradStudents)) %>%
-    dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     # Replace INF values with NA
     dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
@@ -719,6 +718,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerUndergradStudent) %>%
     dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
@@ -776,7 +776,6 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total library expenditures`/ `Doctor's degrees awarded`)) %>%
-    dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     # Replace INF values with NA
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
@@ -784,6 +783,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::top_n(5, expPerDoctoral) %>%
     dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
