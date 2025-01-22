@@ -44,7 +44,7 @@
 #'   \item supFTETopPerDoctoral - A barplot showing ARL members with highest
 #'         ratio of total library support staff counts (FTE) per doctoral
 #'         degree awarded, over user selected number of years.
-#'   \item supPerFacultyUserSelected - A barplot showing ratio of library
+#'   \item supFTEPerFacultyUserSelected - A barplot showing ratio of library
 #'         support staff counts (FTE) per teaching faculty for user
 #'         selected ARL members, over user selected number of years.
 #'   \item supPerStudentUserSelected - A barplot showing ratio of library
@@ -62,6 +62,48 @@
 #'   \item supPerDoctoralUserSelected - A barplot showing ratio of total
 #'         library expenditures per per doctoral degree awarded for user
 #'         selected ARL members, over user selected number of years.
+#'   \item supFTETopPerFacultyTable - A table showing the original values used
+#'         for calculating the ratios for ARL members with highest ratio of
+#'         total library professional staff counts (FTE) per teaching faculty, over
+#'         user selected number of years.
+#'   \item supFTETopPerStudentTable - A table showing the original values used
+#'         for calculating the ratios for ARL members with highest ratio of total
+#'         total library professional staff counts (FTE) per student (full-time, FT,
+#'         and part-time, PT), over user selected number of years.
+#'   \item supFTETopPerGradStudentTable - A table showing the original values
+#'         used for calculating the ratios for ARL members with highest ratio
+#'         of total library professional staff counts (FTE) per graduate student
+#'         (full-time, FT, and part-time, PT), over user selected number of years.
+#'   \item supFTETopPerUndergradStudentTable - A table showing the original values
+#'         used for calculating the ratios for ARL members with highest ratio of
+#'         total library professional staff counts (FTE) per undergraduate student
+#'         (full-time, FT, and part-time, PT), over user selected number of years.
+#'   \item supFTETopPerDoctoralTable - A table showing the original values used
+#'         for calculating the ratios for ARL members with highest ratio of total
+#'         library professional staff counts (FTE) per doctoral degree awarded, over
+#'         user selected number of years.
+#'   \item supFTEPerFacultyUserSelectedTable - A table showing the original values
+#'         used for calculating the ratios for total library professional staff
+#'         counts (FTE) per teaching faculty for user selected ARL members, over user
+#'         selected number of years.
+#'   \item supFTEPerStudentUserSelectedTable - A table showing the original values
+#'         used for calculating the ratios for total library professional staff counts
+#'         (FTE) per graduate student (full-time, FT, and part-time, PT) for user
+#'         selected ARL members, over user selected number of years.
+#'   \item supFTEPerGradStudentUserSelectedTable - A table showing the original values
+#'         used for calculating the ratios for total library professional staff
+#'         salaries per graduate student (full-time, FT, and part-time, PT) for
+#'         user selected ARL members, over user selected number of years.
+#'   \item supFTEPerUndergradStudentUserSelectedTable - A table showing the
+#'         original values used for calculating the ratios for total library
+#'         professional staff counts (FTE)per undergraduate student (full-time,
+#'         FT, and part-time, PT) for user selected ARL members, over user selected
+#'         number of years.
+#'   \item supFTEPerDoctoralUserSelectedTable - A table showing the original values
+#'         used for calculating the ratios for total library professional staff
+#'         counts (FTE) per per doctoral degree awarded for user selected ARL members,
+#'         over user selected number of years.
+
 #' }
 #'
 #' @examples
@@ -108,6 +150,10 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    # Add an error message if no data is selected based on criteria
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerFaculty = `Support staff`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerFaculty = na_if(supPerFaculty, Inf)) %>%
@@ -142,14 +188,39 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    size = 6)
 
 
+  # Final table - support staff count per faculty by top contributors over 5 years
+  supFTETopPerFacultyTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
+    dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerFaculty) %>%
+    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerFaculty = as.character(proPerFaculty)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerFaculty') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+
+
   # ---
   # Using support staff count per student by top contributors
   supFTETopPerStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(supPerStudent = `Support staff`/
-                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(supPerStudent = `Support staff`/ allStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerStudent = na_if(supPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -183,14 +254,39 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    size = 6)
 
 
+  # Final table -  support staff count per student by top contributors
+  supFTETopPerStudentTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerStudent = MASS::fractions(`Support staff`/ allStudents)) %>%
+    dplyr::select('Year', 'proPerStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerStudent = as.character(proPerStudent)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+
   # ---
   # Using support staff count per graduate student by top contributors
   supFTETopPerGradStudent <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(profPerStudent = `Support staff`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allGradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(profPerStudent = `Support staff`/ allGradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(profPerStudent = na_if(profPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -224,6 +320,27 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    size = 6)
 
 
+  # Final table - staff staff count per graduate student by top contributors
+  supFTETopPerGradStudentTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allGradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(profPerGradStudent = MASS::fractions(`Support staff`/ allGradStudents)) %>%
+    dplyr::select('Year', 'profPerGradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, profPerGradStudent) %>%
+    dplyr::arrange(`Year`, desc(profPerGradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(profPerGradStudent = as.character(profPerGradStudent)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'profPerGradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
 
   # ---
   # Using support staff count per undergraduate student by top contributors (not ARL)
@@ -233,6 +350,9 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(totalUndergradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerUndergradStudent = `Support staff`/ totalUndergradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerUndergradStudent = na_if(supPerUndergradStudent, Inf)) %>%
@@ -267,12 +387,40 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
   #                    size = 6)
 
 
+
+  # Final table - support staff count per undergraduate student by top contributors
+  supFTETopPerUndergradStudentTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(totalUndergradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerUndergradStudent = MASS::fractions(`Support staff`/ totalUndergradStudents)) %>%
+    dplyr::select('Year', 'proPerUndergradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerUndergradStudent = as.character(proPerUndergradStudent)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerUndergradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+
+
   # ---
   # Using support staff count per doctoral degree by top contributors (not ARL)
   supFTETopPerDoctoral <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerStudent = `Support staff`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerStudent = na_if(supPerStudent, Inf)) %>%
@@ -308,13 +456,39 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    size = 6)
 
 
+  # Final table - support staff count per doctoral degree by top contributors
+  supFTETopPerDoctoralTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerDoctoral = MASS::fractions(`Support staff`/ `Doctor's degrees awarded`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerDoctoral = na_if(proPerDoctoral, "Inf")) %>%
+    dplyr::select('Year', 'proPerDoctoral', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerDoctoral) %>%
+    dplyr::arrange(`Year`, desc(proPerDoctoral)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerDoctoral = as.character(proPerDoctoral)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerDoctoral') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+
   # ---
   # Using support staff count per faculty by user selection
-  supPerFacultyUserSelected <- selectedData %>%
+  supFTEPerFacultyUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerFaculty = `Support staff`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerFaculty = na_if(supPerFaculty, Inf)) %>%
@@ -349,15 +523,41 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    size = 6)
 
 
-  # ---
-  # Using support staff stats per student by user selection
-  supPerStudentUserSelected <- selectedData %>%
+  # Final table - support staff count per faculty by user selection
+  supFTEPerFacultyUserSelectedTable <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(supPerStudent = `Support staff`/
-                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerFaculty = na_if(proPerFaculty, "Inf")) %>%
+    dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerFaculty) %>%
+    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerFaculty = as.character(proPerFaculty)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerFaculty') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+  # ---
+  # Using support staff stats per student by user selection
+  supFTEPerStudentUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`allStudents` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(supPerStudent = `Support staff`/ allStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerStudent = na_if(supPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -391,15 +591,44 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    size = 6)
 
 
-  # ---
-  # Using support staff stats per graduate student by user selection
-  supPerGradStudentUserSelected <- selectedData %>%
+
+  # Final table - support staff count per student by user selection
+  supFTEPerStudentUserSelectedTable <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(supPerGradStudent = `Support staff`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`allStudents` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerStudent = MASS::fractions(`Support staff`/ allStudents)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerStudent = na_if(proPerStudent, "Inf")) %>%
+    dplyr::select('Year', 'proPerStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerStudent = as.character(proPerStudent)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+
+  # ---
+  # Using support staff stats per graduate student by user selection
+  supFTEUndergradStudentUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`allStudents` != 0) %>%
+    dplyr::mutate(supPerGradStudent = `Support staff`/ allgradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerGradStudent = na_if(supPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -433,15 +662,42 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    size = 6)
 
 
-  # ---
-  # Using support staff count per undergraduate student by user selection
-  supPerUndergradStudentUserSelected <- selectedData %>%
+  # Final table - support staff count per graduate student by user selection
+  supFTEPerGradStudentUserSelectedTable <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`allStudents` != 0) %>%
+    dplyr::mutate(proPerGradStudent = MASS::fractions(`Support staff`/ allgradStudents)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerGradStudent = na_if(proPerGradStudent, "Inf")) %>%
+    dplyr::select('Year', 'proPerGradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerGradStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerGradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerGradStudent = as.character(proPerGradStudent)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerGradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+  # ---
+  # Using support staff count per undergraduate student by user selection
+  supFTEDoctoralUserSelected <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`totalUndergradStudents` != 0) %>%
     dplyr::mutate(supPerUndergradStudent = `Support staff`/ totalUndergradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerUndergradStudent = na_if(supPerUndergradStudent, Inf)) %>%
@@ -477,13 +733,41 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
 
 
 
-  # ---
-  # Using support staff stats per doctoral degree by top contributors (not ARL)
-  supPerDoctoralUserSelected <- selectedData %>%
+  # Final table - support staff count per undergraduate student by user selection
+  supFTEPerUndergradStudentUserSelectedTable <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
+                                              (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`totalUndergradStudents` != 0) %>%
+    dplyr::mutate(proPerUndergradStudent = MASS::fractions(`Support staff`/ totalUndergradStudents)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerUndergradStudent = na_if(proPerUndergradStudent, "Inf")) %>%
+    dplyr::select('Year', 'proPerUndergradStudent', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerUndergradStudent) %>%
+    dplyr::arrange(`Year`, desc(proPerUndergradStudent)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerUndergradStudent = as.character(proPerUndergradStudent)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerUndergradStudent') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+  # ---
+  # Using support staff stats per doctoral degree by top contributors (not ARL)
+  supFTETopPerFacultyTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
     dplyr::mutate(supPerDoctoral = `Support staff`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerDoctoral = na_if(supPerDoctoral, Inf)) %>%
@@ -517,18 +801,50 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     #                    vjust = 0,
     #                    size = 6)
 
+
+  # Final table - support staff count per doctoral degree by user selection
+  supFTEPerDoctoralUserSelectedTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    dplyr::mutate(proPerDoctoral = MASS::fractions(`Support staff`/ `Doctor's degrees awarded`)) %>%
+    # Replace INF values with NA
+    dplyr::mutate(proPerDoctoral = na_if(proPerDoctoral, "Inf")) %>%
+    dplyr::select('Year', 'proPerDoctoral', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerDoctoral) %>%
+    dplyr::arrange(`Year`, desc(proPerDoctoral)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerDoctoral = as.character(proPerDoctoral)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerDoctoral') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+
   return(list(supFTETopPerFaculty = supFTETopPerFaculty,
               supFTETopPerStudent = supFTETopPerStudent,
               supFTETopPerGradStudent = supFTETopPerGradStudent,
               supFTETopUndergradStudent = supFTETopUndergradStudent,
               supFTETopPerDoctoral = supFTETopPerDoctoral,
-              supPerFacultyUserSelected = supPerFacultyUserSelected,
-              supPerStudentUserSelected = supPerStudentUserSelected,
-              supPerGradStudentUserSelected = supPerGradStudentUserSelected,
-              supPerUndergradStudentUserSelected = supPerUndergradStudentUserSelected,
-              supPerDoctoralUserSelected = supPerDoctoralUserSelected))
-
-
-
+              supFTEPerFacultyUserSelected = supFTEPerFacultyUserSelected,
+              supFTEPerStudentUserSelected = supFTEPerStudentUserSelected,
+              supFTEGradStudentUserSelected = supFTEGradStudentUserSelected,
+              supFTEUndergradStudentUserSelected = supFTEUndergradStudentUserSelected,
+              supFTEDoctoralUserSelected = supFTEDoctoralUserSelected,
+              supFTETopPerFacultyTable = supFTETopPerFacultyTable,
+              supFTETopPerStudentTable = supFTETopPerStudentTable,
+              supFTETopPerGradStudentTable = supFTETopPerGradStudentTable,
+              supFTETopPerUndergradStudentTable = supFTETopPerUndergradStudentTable,
+              supFTETopPerDoctoralTable = supFTETopPerDoctoralTable,
+              supFTEPerFacultyUserSelectedTable = supFTEPerFacultyUserSelectedTable,
+              supFTEPerStudentUserSelectedTable = supFTEPerStudentUserSelectedTable,
+              supFTEPerGradStudentUserSelectedTable = supFTEPerGradStudentUserSelectedTable,
+              supFTEPerUndergradStudentUserSelectedTable = supFTEPerUndergradStudentUserSelectedTable,
+              supFTEPerDoctoralUserSelectedTable = supFTEPerDoctoralUserSelectedTable))
 }
 # [END]

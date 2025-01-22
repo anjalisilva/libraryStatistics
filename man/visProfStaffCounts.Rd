@@ -47,14 +47,14 @@ Returns bar plots showing varying ratios specified below:
   \item proFTETopPerDoctoral - A barplot showing ARL members with highest
         ratio of total library professional staff counts (FTE) per doctoral
         degree awarded, over user selected number of years.
-  \item proPerFacultyUserSelected - A barplot showing ratio of library
+  \item proFTEFacultyUserSelected - A barplot showing ratio of library
         professional staff counts (FTE) per teaching faculty for user
         selected ARL members, over user selected number of years.
-  \item proPerStudentUserSelected - A barplot showing ratio of library
+  \item proFTEStudentUserSelected - A barplot showing ratio of library
         professional staff counts (FTE) per student (full-time, FT, and
         part-time, PT) for user selected ARL members, over user selected
         number of years.
-  \item proPerGradStudentUserSelected - A barplot showing ratio of total
+  \item proFTEGradStudentUserSelected - A barplot showing ratio of total
         library professional staff counts (FTE) per graduate student
         (full-time, FT, and part-time, PT) for user selected ARL members,
         over user selected number of years.
@@ -62,9 +62,50 @@ Returns bar plots showing varying ratios specified below:
         library professional staff counts (FTE) per undergraduate student
         (full-time, FT, and part-time, PT) for user selected ARL members,
         over user selected number of years.
-  \item proPerDoctoralUserSelected - A barplot showing ratio of total
+  \item proFTEDoctoralUserSelected - A barplot showing ratio of total
         library expenditures per per doctoral degree awarded for user
         selected ARL members, over user selected number of years.
+  \item proFTETopPerFacultyTable - A table showing the original values used
+        for calculating the ratios for ARL members with highest ratio of
+        total library professional staff counts (FTE) per teaching faculty, over
+        user selected number of years.
+  \item proFTETopPerStudentTable - A table showing the original values used
+        for calculating the ratios for ARL members with highest ratio of total
+        total library professional staff counts (FTE) per student (full-time, FT,
+        and part-time, PT), over user selected number of years.
+  \item proFTETopPerGradStudentTable - A table showing the original values
+        used for calculating the ratios for ARL members with highest ratio
+        of total library professional staff counts (FTE) per graduate student
+        (full-time, FT, and part-time, PT), over user selected number of years.
+  \item proFTETopPerUndergradStudentTable - A table showing the original values
+        used for calculating the ratios for ARL members with highest ratio of
+        total library professional staff counts (FTE) per undergraduate student
+        (full-time, FT, and part-time, PT), over user selected number of years.
+  \item proFTETopPerDoctoralTable - A table showing the original values used
+        for calculating the ratios for ARL members with highest ratio of total
+        library professional staff counts (FTE) per doctoral degree awarded, over
+        user selected number of years.
+  \item proFTEPerFacultyUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff
+        counts (FTE) per teaching faculty for user selected ARL members, over user
+        selected number of years.
+  \item proFTEPerStudentUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff counts
+        (FTE) per graduate student (full-time, FT, and part-time, PT) for user
+        selected ARL members, over user selected number of years.
+  \item proFTEPerGradStudentUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff
+        salaries per graduate student (full-time, FT, and part-time, PT) for
+        user selected ARL members, over user selected number of years.
+  \item proFTEPerUndergradStudentUserSelectedTable - A table showing the
+        original values used for calculating the ratios for total library
+        professional staff counts (FTE)per undergraduate student (full-time,
+        FT, and part-time, PT) for user selected ARL members, over user selected
+        number of years.
+  \item proFTEPerDoctoralUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff
+        counts (FTE) per per doctoral degree awarded for user selected ARL members,
+        over user selected number of years.
 }
 }
 \description{

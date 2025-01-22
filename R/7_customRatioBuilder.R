@@ -35,11 +35,19 @@
 #' @return Returns bar plots showing varying ratios specified below:
 #' \itemize{
 #'   \item customRatioTop - A barplot showing members with highest
-#'         ratio of custom ratio based on user selected numerator
+#'         custom ratio based on user selected numerator
 #'         and denominator, over user selected years.
 #'   \item customRatioUser - A barplot showing ratio based on user
 #'         selected numerator and denominator, for user selected
 #'         ARL members, over user selected number of years.
+#'   \item customRatioTopTable - A table showing the original values used
+#'         for calculating the ratios for ARL members with highest
+#'         custom ratio based on user selected numerator
+#'         and denominator, over user selected years.
+#'   \item customRatioUserTable - A table showing the original values used
+#'         for calculating the ratios for user selected numerator and
+#'         denominator, for user selected ARL members, over user selected
+#'         number of years.
 #' }
 #'
 #' @examples
@@ -122,6 +130,30 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
                                               color = 'black', size = 15),
                    axis.text.y = element_text(color = 'black', size = 15)) +
     ggplot2::scale_fill_manual(values = setColorPalette()[-c(1:5)])
+
+
+  # A table showing the original values used for
+  # calculating the ratios for ARL members with highest
+  # custom ratio based on user selected numerator
+  # and denominator, over user selected years
+
+  customRatioTopTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
+    dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerFaculty) %>%
+    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerFaculty = as.character(proPerFaculty)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerFaculty') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
 
 
   # ---

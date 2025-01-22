@@ -40,11 +40,19 @@ Default is NA.}
 Returns bar plots showing varying ratios specified below:
 \itemize{
   \item customRatioTop - A barplot showing members with highest
-        ratio of custom ratio based on user selected numerator
+        custom ratio based on user selected numerator
         and denominator, over user selected years.
   \item customRatioUser - A barplot showing ratio based on user
         selected numerator and denominator, for user selected
         ARL members, over user selected number of years.
+  \item customRatioTopTable - A table showing the original values used
+        for calculating the ratios for ARL members with highest
+        custom ratio based on user selected numerator
+        and denominator, over user selected years.
+  \item customRatioUserTable - A table showing the original values used
+        for calculating the ratios for user selected numerator and
+        denominator, for user selected ARL members, over user selected
+        number of years.
 }
 }
 \description{

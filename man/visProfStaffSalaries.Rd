@@ -65,6 +65,46 @@ Returns bar plots showing varying ratios specified below:
   \item proSalPerDoctoralUserSelected - A barplot showing ratio of library
         professional staff salaries per per doctoral degree awarded for user
         selected ARL members, over user selected number of years.
+  \item proSalTopPerFacultyTable - A table showing the original values used
+        for calculating the ratios for ARL members with highest ratio of
+        total library professional staff salaries per teaching faculty, over
+        user selected number of years.
+  \item proSalTopPerStudentTable - A table showing the original values used
+        for calculating the ratios for ARL members with highest ratio of total
+        library professional staff salaries per student (full-time, FT,
+        and part-time, PT), over user selected number of years.
+  \item proSalTopPerGradStudentTable - A table showing the original values
+        used for calculating the ratios for ARL members with highest ratio
+        of total library professional staff salaries per graduate student
+        (full-time, FT, and part-time, PT), over user selected number of years.
+  \item proSalTopPerUndergradStudentTable - A table showing the original values
+        used for calculating the ratios for ARL members with highest ratio of total
+        library professional staff salaries per undergraduate student
+        (full-time, FT, and part-time, PT), over user selected number of years.
+  \item proSalTopPerDoctoralTable - A table showing the original values used
+        for calculating the ratios for ARL members with highest ratio of total
+        library professional staff salaries per doctoral degree awarded, over
+        user selected number of years.
+  \item proSalPerFacultyUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff
+        salaries per teaching faculty for user selected ARL members, over user
+        selected number of years.
+  \item proSalPerStudentUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff
+        salaries per graduate student (full-time, FT, and part-time, PT) for user
+        selected ARL members, over user selected number of years.
+  \item proSalPerGradStudentUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff
+        salaries per graduate student (full-time, FT, and part-time, PT) for
+        user selected ARL members, over user selected number of years.
+  \item proSalPerUndergradStudentUserSelectedTable - A table showing the
+        original values used for calculating the ratios for total library professional
+        staff salaries per undergraduate student (full-time, FT, and part-time, PT)
+        for user selected ARL members, over user selected number of years.
+  \item proSalPerDoctoralUserSelectedTable - A table showing the original values
+        used for calculating the ratios for total library professional staff
+        salaries per per doctoral degree awarded for user selected ARL members,
+        over user selected number of years.
 }
 }
 \description{

@@ -61,6 +61,35 @@ Returns bar plots showing varying ratios specified below:
   \item tlmeTopPerDoctoralUserSelected - A barplot showing ratio of total
         materials expenditures per per doctoral degree awarded for user
         selected ARL members, over user selected number of years.
+
+  \item tlmeTopPerFacultyTable - A table showing the original values used for calculating
+        library materials expenditures per teaching faculty, over user selected number of years.
+  \item tlmeTopPerStudentTable - A table showing the original values used for calculating
+        library materials expenditures per student (full-time, FT, and part-time, PT), over
+         user selected number of years.
+  \item tlmeTopPerGradStudentTable - A table showing the original values used for calculating
+        library materials expenditures per graduate student (full-time, FT, and part-time, PT),
+        over user selected number of years.
+  \item tlmeTopPerUndergradStudentTable - A table showing the original values used for calculating
+        library materials expenditures per undergraduate student (full-time, FT, and part-time, PT),
+        over user selected number of years.
+  \item tlmeTopPerDoctoralTable - A table showing the original values used for calculating
+        library materials expenditures per doctoral degree awarded, over user selected number
+        of years.
+  \item tlmePerFacultyUserSelectedTable - A table showing the original values used for calculating
+        teaching faculty for user selected ARL members, over user selected number of years.
+  \item tlmePerStudentUserSelectedTable - A table showing the original values used for calculating
+        graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
+        selected number of years.
+  \item tlmePerGradStudentUserSelectedTable - A table showing the original values used for calculating
+        graduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
+        selected number of years.
+  \item tlmePerUndergradStudentUserSelectedTable - A table showing the original values used for calculating
+        undergraduate student (full-time, FT, and part-time, PT) for user selected ARL members, over user
+        selected number of years.
+  \item tlmePerDoctoralUserSelectedTable - A table showing the original values used for calculating
+        per doctoral degree awarded for user selected ARL members, over user
+        selected number of years.
 }
 }
 \description{
