@@ -465,8 +465,6 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerDoctoral = MASS::fractions(`Support staff`/ `Doctor's degrees awarded`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(proPerDoctoral = na_if(proPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'proPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerDoctoral) %>%
@@ -533,8 +531,6 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Total teaching faculty` != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(proPerFaculty = na_if(proPerFaculty, "Inf")) %>%
     dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerFaculty) %>%
@@ -603,8 +599,6 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`allStudents` != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerStudent = MASS::fractions(`Support staff`/ allStudents)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(proPerStudent = na_if(proPerStudent, "Inf")) %>%
     dplyr::select('Year', 'proPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerStudent) %>%
@@ -673,8 +667,6 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`allStudents` != 0) %>%
     dplyr::mutate(proPerGradStudent = MASS::fractions(`Support staff`/ allgradStudents)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(proPerGradStudent = na_if(proPerGradStudent, "Inf")) %>%
     dplyr::select('Year', 'proPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerGradStudent) %>%
@@ -745,8 +737,6 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`totalUndergradStudents` != 0) %>%
     dplyr::mutate(proPerUndergradStudent = MASS::fractions(`Support staff`/ totalUndergradStudents)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(proPerUndergradStudent = na_if(proPerUndergradStudent, "Inf")) %>%
     dplyr::select('Year', 'proPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerUndergradStudent) %>%
@@ -812,8 +802,6 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
     dplyr::mutate(proPerDoctoral = MASS::fractions(`Support staff`/ `Doctor's degrees awarded`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(proPerDoctoral = na_if(proPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'proPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, proPerDoctoral) %>%
