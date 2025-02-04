@@ -104,6 +104,9 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`denominator` != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     # sym() convert column names to symbols and !! unquote them
     dplyr::mutate(customRatio = !!sym(numerator) / !!sym(denominator)) %>%
     # Replace INF values with NA
@@ -138,20 +141,25 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
   # and denominator, over user selected years
 
   customRatioTopTable <- selectedData %>%
+    dplyr::select(`Year`, `Institution Name`, `Rank in ARL investment index`, numerator, denominator) %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    # filter denominator with zero value to avoid Inf results
-    dplyr::filter(`Total teaching faculty` != 0) %>%
+    # remove NA values from denominator
+    dplyr::filter(!is.na(!!sym(denominator))) %>%
+    # remove 0 values from denominator
+    dplyr::filter((!!sym(denominator)) != 0) %>%
+    # Add an error message if no data is selected based on criteria
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
-    dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
-    dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
+    # sym() convert column names to symbols and !! unquote them
+    dplyr::mutate(customRatio = MASS::fractions(!!sym(numerator)/!!sym(denominator))) %>%
+    dplyr::select('Year', 'customRatio', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, proPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
+    dplyr::top_n(5, customRatio) %>%
+    dplyr::arrange(`Year`, desc(customRatio)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(proPerFaculty = as.character(proPerFaculty)) %>%  # Convert to character
-    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerFaculty') %>%
+    dplyr::mutate(customRatio = as.character(customRatio)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'customRatio') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
 
@@ -189,6 +197,33 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
     ggplot2::scale_fill_manual(values = setColorPalette())
 
 
+  # A table showing the original values used for
+  # calculating the ratios for ARL members with highest
+  # custom ratio based on user selected numerator
+  # and denominator, over user selected years
+
+  customRatioUserSelectedTable <- selectedData %>%
+    dplyr::filter(`Year` %in% yearsToDisplay) %>%
+    dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
+    # Remove median value as it is not a true entry
+    dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    # Add an error message if no data is selected based on criteria
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
+    dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
+    dplyr::group_by(`Year`) %>%
+    dplyr::top_n(5, proPerFaculty) %>%
+    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::mutate(proPerFaculty = as.character(proPerFaculty)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerFaculty') %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_paper(lightable_options = "striped")
+
+
+
   checkForDollarSign <- function(numerator, denominator) {
     if (numerator == denominator) {
     ggplot2::scale_y_continuous(labels = scales::dollar_format(),
@@ -197,6 +232,10 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
 
       ggplot2::scale_y_continuous(labels = scales::label_comma(),
                                   breaks = scales::pretty_breaks(n = 5)) }}
+
+
+
+
 
   return(list(customRatioTop = customRatioTop,
               customRatioUser = customRatioUser))
