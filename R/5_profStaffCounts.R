@@ -569,7 +569,7 @@ visProfStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`allStudents` != 0) %>%
     # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
-    dplyr::mutate(proPerStudent = `Professional staff`/allStudents)) %>%
+    dplyr::mutate(proPerStudent = `Professional staff` / allStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(proPerStudent = na_if(proPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
