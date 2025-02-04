@@ -186,6 +186,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Total teaching faculty` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total materials expenditures`/`Total teaching faculty`)) %>%
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
@@ -206,8 +207,11 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerStudent = `Total materials expenditures`/
-                    (`Total fulltime students` + `Part-time students, undergraduate and graduate`)) %>%
+    dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(expPerStudent = MASS::fractions(`Total materials expenditures`/ allStudents)) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -249,6 +253,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerStudent = MASS::fractions(`Total materials expenditures`/ allStudents)) %>%
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
@@ -268,8 +273,11 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerGradStudent = `Total materials expenditures`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(allGradStudents != 0) %>%
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(expPerGradStudent = MASS::fractions(`Total materials expenditures`/ allGradStudents)) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -312,6 +320,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allGradStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total materials expenditures`/ allGradStudents)) %>%
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
@@ -378,6 +387,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(totalUndergradStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total materials expenditures`/ totalUndergradStudents)) %>%
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
@@ -441,10 +451,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total materials expenditures`/ `Doctor's degrees awarded`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
@@ -506,10 +515,11 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total materials expenditures`/`Total teaching faculty`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerFaculty = na_if(expPerFaculty, "Inf")) %>%
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
@@ -572,11 +582,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`allStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerStudent = MASS::fractions(`Total materials expenditures`/ allStudents)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerStudent = na_if(expPerStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
@@ -596,8 +607,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    dplyr::mutate(expPerGradStudent = `Total materials expenditures`/
-                    (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
+    dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`allgradStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
+    dplyr::mutate(expPerGradStudent = `Total materials expenditures`/allgradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -638,11 +653,12 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`allgradStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total materials expenditures`/ allgradStudents)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
@@ -664,6 +680,10 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`totalUndergradStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerUndergradStudent = `Total materials expenditures`/ totalUndergradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, Inf)) %>%
@@ -705,12 +725,13 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`totalUndergradStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total materials expenditures`/ totalUndergradStudents)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, "Inf")) %>%
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
@@ -729,6 +750,10 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = `Total materials expenditures`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
@@ -769,10 +794,11 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total materials expenditures`/ `Doctor's degrees awarded`)) %>%
-    # Replace INF values with NA
-    dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, "Inf")) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%

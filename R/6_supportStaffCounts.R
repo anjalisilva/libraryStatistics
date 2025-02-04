@@ -195,6 +195,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Total teaching faculty` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
     dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
@@ -219,6 +220,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerStudent = `Support staff`/ allStudents) %>%
     # Replace INF values with NA
@@ -262,6 +264,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerStudent = MASS::fractions(`Support staff`/ allStudents)) %>%
     dplyr::select('Year', 'proPerStudent', `Institution Name`) %>%
@@ -285,6 +288,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allGradStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(profPerStudent = `Support staff`/ allGradStudents) %>%
     # Replace INF values with NA
@@ -328,6 +332,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(allGradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allGradStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(profPerGradStudent = MASS::fractions(`Support staff`/ allGradStudents)) %>%
     dplyr::select('Year', 'profPerGradStudent', `Institution Name`) %>%
@@ -352,6 +357,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(totalUndergradStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerUndergradStudent = `Support staff`/ totalUndergradStudents) %>%
     # Replace INF values with NA
@@ -397,6 +403,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(totalUndergradStudents != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerUndergradStudent = MASS::fractions(`Support staff`/ totalUndergradStudents)) %>%
     dplyr::select('Year', 'proPerUndergradStudent', `Institution Name`) %>%
@@ -420,6 +427,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerStudent = `Support staff`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
@@ -463,6 +471,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerDoctoral = MASS::fractions(`Support staff`/ `Doctor's degrees awarded`)) %>%
     dplyr::select('Year', 'proPerDoctoral', `Institution Name`) %>%
@@ -486,6 +495,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Total teaching faculty` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerFaculty = `Support staff`/`Total teaching faculty`) %>%
     # Replace INF values with NA
@@ -529,6 +539,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Total teaching faculty` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
     dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
@@ -552,6 +563,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`allStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerStudent = `Support staff`/ allStudents) %>%
     # Replace INF values with NA
@@ -597,6 +609,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::mutate(allStudents = `Total fulltime students` + `Part-time students, undergraduate and graduate`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`allStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerStudent = MASS::fractions(`Support staff`/ allStudents)) %>%
     dplyr::select('Year', 'proPerStudent', `Institution Name`) %>%
@@ -618,10 +631,11 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`allStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerGradStudent = `Support staff`/ allgradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerGradStudent = na_if(supPerGradStudent, Inf)) %>%
@@ -662,10 +676,11 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
-    dplyr::filter(`allStudents` != 0) %>%
+    dplyr::filter(`allgradStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerGradStudent = MASS::fractions(`Support staff`/ allgradStudents)) %>%
     dplyr::select('Year', 'proPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
@@ -685,11 +700,12 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(totalUndergradStudents = ((`Total fulltime students` + `Part-time students, undergraduate and graduate`) -
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`totalUndergradStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerUndergradStudent = `Support staff`/ totalUndergradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerUndergradStudent = na_if(supPerUndergradStudent, Inf)) %>%
@@ -736,6 +752,8 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
                                               (`Part-time graduate students` + `Total fulltime graduate students`))) %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`totalUndergradStudents` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(proPerUndergradStudent = MASS::fractions(`Support staff`/ totalUndergradStudents)) %>%
     dplyr::select('Year', 'proPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
@@ -755,9 +773,10 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
-    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerDoctoral = `Support staff`/ `Doctor's degrees awarded`) %>%
     # Replace INF values with NA
     dplyr::mutate(supPerDoctoral = na_if(supPerDoctoral, Inf)) %>%
@@ -798,6 +817,9 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Doctor's degrees awarded` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(`Doctor's degrees awarded` != 0) %>%
