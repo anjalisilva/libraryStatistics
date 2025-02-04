@@ -44,7 +44,7 @@
 #'         for calculating the ratios for ARL members with highest
 #'         custom ratio based on user selected numerator
 #'         and denominator, over user selected years.
-#'   \item customRatioUserTable - A table showing the original values used
+#'   \item customRatioUserSelectedTable - A table showing the original values used
 #'         for calculating the ratios for user selected numerator and
 #'         denominator, for user selected ARL members, over user selected
 #'         number of years.
@@ -55,6 +55,12 @@
 #' # ?ARLDataDownload
 #' customRatioBuilder(dataARL = ARLDataDownload,
 #'                    numerator = "Electronic books",
+#'                    denominator = "Total fulltime students",
+#'                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
+#'                    years = c(2020, 2021, 2022))
+#'
+#' customRatioBuilder(dataARL = ARLDataDownload,
+#'                    numerator = "Total library expenditures",
 #'                    denominator = "Total fulltime students",
 #'                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
 #'                    years = c(2020, 2021, 2022))
@@ -211,34 +217,76 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
     dplyr::filter(`Total teaching faculty` != 0) %>%
     # Add an error message if no data is selected based on criteria
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
-    dplyr::mutate(proPerFaculty = MASS::fractions(`Support staff`/`Total teaching faculty`)) %>%
-    dplyr::select('Year', 'proPerFaculty', `Institution Name`) %>%
+    # sym() convert column names to symbols and !! unquote them
+    dplyr::mutate(customRatio = MASS::fractions(!!sym(numerator)/!!sym(denominator))) %>%
+    dplyr::select('Year', 'customRatio', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, proPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(proPerFaculty)) %>%
+    dplyr::top_n(5, customRatio) %>%
+    dplyr::arrange(`Year`, desc(customRatio)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
-    dplyr::mutate(proPerFaculty = as.character(proPerFaculty)) %>%  # Convert to character
-    tidyr::pivot_wider(names_from = `Year`, values_from = 'proPerFaculty') %>%
+    dplyr::mutate(customRatio = as.character(customRatio)) %>%  # Convert to character
+    tidyr::pivot_wider(names_from = `Year`, values_from = 'customRatio') %>%
     kableExtra::kbl() %>%
     kableExtra::kable_paper(lightable_options = "striped")
 
 
+    # column names requiring $
+    columnNamesDollarSign <- c("Expenditures for monographs",
+                               "Expenditures for serials",
+                               "Expenditures for other materials",
+                               "Misc. materials expenditures",
+                               "Total materials expenditures",
+                               "Expenditures for binding",
+                               "Professional salaries & wages",
+                               "Support staff salaries & wages",
+                               "Student assistant wages",
+                               "Total salaries & wages",
+                               "Other operating expenditures",
+                               "Total library expenditures",
+                               "Expenditures for computer files",
+                               "Expenditures for electronic serials",
+                               "Total electronic resources expenditures",
+                               "Library expenditures for bibliographic utilities, networks, etc.",
+                               "External expenditures for bibliographic utilities, networks, etc.",
+                               "Expenditures for computer hardware and software",
+                               "Expenditures for document delivery and interlibrary loans",
+                               "Total university expenditures",
+                               "One-time resource purchases",
+                               "Ongoing resource purchases",
+                               "Fringe benefits, dollar amount")
 
-  checkForDollarSign <- function(numerator, denominator) {
-    if (numerator == denominator) {
-    ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+
+    if (numerator %in% columnNamesDollarSign) {
+      customRatioTop <- customRatioTop +
+       ggplot2::scale_y_continuous(labels = scales::dollar_format(),
                                 breaks = scales::pretty_breaks(n = 5))
+
+      customRatioUser <- customRatioUser +
+         ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                     breaks = scales::pretty_breaks(n = 5))
+
+    } else if (denominator %in% columnNamesDollarSign) {
+      customRatioTop <- customRatioTop +
+        ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                    breaks = scales::pretty_breaks(n = 5))
+
+      customRatioUser <- customRatioUser +
+        ggplot2::scale_y_continuous(labels = scales::dollar_format(),
+                                    breaks = scales::pretty_breaks(n = 5))
+
     } else {
+      customRatioTop <- customRatioTop +
+        ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                    breaks = scales::pretty_breaks(n = 5))
 
-      ggplot2::scale_y_continuous(labels = scales::label_comma(),
-                                  breaks = scales::pretty_breaks(n = 5)) }}
-
-
-
-
+      customRatioUser <- customRatioUser +
+        ggplot2::scale_y_continuous(labels = scales::label_comma(),
+                                    breaks = scales::pretty_breaks(n = 5))
+    }
 
   return(list(customRatioTop = customRatioTop,
-              customRatioUser = customRatioUser))
-
+              customRatioTopTable = customRatioTopTable,
+              customRatioUser = customRatioUser,
+              customRatioUserSelectedTable = customRatioUserSelectedTable))
 }
 # [END]

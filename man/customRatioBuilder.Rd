@@ -49,7 +49,7 @@ Returns bar plots showing varying ratios specified below:
         for calculating the ratios for ARL members with highest
         custom ratio based on user selected numerator
         and denominator, over user selected years.
-  \item customRatioUserTable - A table showing the original values used
+  \item customRatioUserSelectedTable - A table showing the original values used
         for calculating the ratios for user selected numerator and
         denominator, for user selected ARL members, over user selected
         number of years.
@@ -67,6 +67,12 @@ years, as bar plots.
 # ?ARLDataDownload
 customRatioBuilder(dataARL = ARLDataDownload,
                    numerator = "Electronic books",
+                   denominator = "Total fulltime students",
+                   members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
+                   years = c(2020, 2021, 2022))
+
+customRatioBuilder(dataARL = ARLDataDownload,
+                   numerator = "Total library expenditures",
                    denominator = "Total fulltime students",
                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
                    years = c(2020, 2021, 2022))
