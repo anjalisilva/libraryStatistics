@@ -626,14 +626,14 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
 
   # ---
   # Using support staff stats per graduate student by user selection
-  supFTEUndergradStudentUserSelected <- selectedData %>%
+  supFTEGradStudentUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     dplyr::mutate(allgradStudents = `Part-time graduate students` + `Total fulltime graduate students`) %>%
     # filter denominator with zero value to avoid Inf results
-    dplyr::filter(`allStudents` != 0) %>%
+    dplyr::filter(`allgradStudents` != 0) %>%
     # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(supPerGradStudent = `Support staff`/ allgradStudents) %>%
