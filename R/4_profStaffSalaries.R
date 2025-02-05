@@ -637,7 +637,7 @@ visProfStaffSalaries <- function(dataARL, members, years = NA) {
     dplyr::mutate(proPerGradStudent = `Professional salaries & wages`/
                     (`Part-time graduate students` + `Total fulltime graduate students`)) %>%
     # filter denominator with zero value to avoid Inf results
-    dplyr::filter(allgradStudents != 0) %>%
+    dplyr::filter(proPerGradStudent != 0) %>%
     # if the resulting number of rows is zero, end and tell user
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     # Replace INF values with NA
