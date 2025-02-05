@@ -1,4 +1,4 @@
-context("Checking for Plots to Compare Total Library Expenditures Over Years")
+#"Checking for Plots to Compare Total Library Expenditures Over Years"
 library(libraryStatistics)
 
 test_that("Data generation is as expected", {
@@ -12,7 +12,7 @@ test_that("Data generation is as expected", {
 })
 
 
-context("Checking for invalid user input")
+# "Checking for invalid user input"
 test_that("Data generate error upon invalid user input", {
 
   # dataARL provided as a string
