@@ -695,7 +695,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
 
   # ---
   # Using support staff count per undergraduate student by user selection
-  supFTEDoctoralUserSelected <- selectedData %>%
+  supFTEUndergradStudentUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
@@ -768,7 +768,7 @@ visSupStaffCounts <- function(dataARL, members, years = NA) {
 
   # ---
   # Using support staff stats per doctoral degree by top contributors (not ARL)
-  supFTETopPerFacultyTable <- selectedData %>%
+  supFTEDoctoralUserSelected <- selectedData %>%
     dplyr::filter(`Year` %in% yearsToDisplay) %>%
     dplyr::filter(`Institution Name` %in% membersToDisplay) %>%
     # Remove median value as it is not a true entry
