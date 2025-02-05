@@ -63,23 +63,40 @@ ratio can be visualized for user selected ARL members over user selected
 years, as bar plots.
 }
 \examples{
+# Example 1
 # Reading R package example data
 # ?ARLDataDownload
-customRatioBuilder(dataARL = ARLDataDownload,
+outputEBooksPerStudent <- customRatioBuilder(dataARL = ARLDataDownload,
                    numerator = "Electronic books",
                    denominator = "Total fulltime students",
                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
                    years = c(2020, 2021, 2022))
+# Plots and table will be produced
+# Barplot showing members with highest ratio
+outputEBooksPerStudent$customRatioTop
+# Table showing the original values used for calculating the ratios
+outputEBooksPerStudent$customRatioTopTable
 
+# Barplot showing ratio for user selected ARL members
+outputEBooksPerStudent$customRatioUser
+# Table showing the original values used for calculating the ratios
+outputEBooksPerStudent$customRatioUserSelectedTable
+
+
+# Example 2
+# Reading R package example data
+# ?ARLDataDownload
 customRatioBuilder(dataARL = ARLDataDownload,
                    numerator = "Total library expenditures",
                    denominator = "Total fulltime students",
                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
                    years = c(2020, 2021, 2022))
 
-# Reading actual data downloaded from ARL (not run)
+# Example 3
+# Reading data downloaded from ARL (not run)
 # Set file path
 # ARLData <- readr::read_csv("~/ARLData.csv")
+# Set arguments
 # customRatioBuilder(dataARL = ARLData,
 #                    numerator = "Electronic books",
 #                    denominator = "Total fulltime students",
