@@ -211,7 +211,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allStudents != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
-    dplyr::mutate(expPerStudent = MASS::fractions(`Total materials expenditures`/ allStudents)) %>%
+    dplyr::mutate(expPerStudent = `Total materials expenditures`/ allStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
@@ -277,7 +277,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # filter denominator with zero value to avoid Inf results
     dplyr::filter(allGradStudents != 0) %>%
     { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
-    dplyr::mutate(expPerGradStudent = MASS::fractions(`Total materials expenditures`/ allGradStudents)) %>%
+    dplyr::mutate(expPerGradStudent = `Total materials expenditures`/ allGradStudents) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
