@@ -7,4 +7,17 @@ utils::globalVariables(c("Year", "Institution Name", "Total teaching faculty", "
                          "Total fulltime graduate students", "allGradStudents", "profPerGradStudent",
                          "expPerGradStudent", "totalUndergradStudents", "expPerUndergradStudent",
                          "Doctor's degrees awarded", "proPerDoctoral", "expPerDoctoral",
-                         "proPerGradStudent", "allgradStudents"))
+                         "proPerGradStudent", "allgradStudents", "Rank in ARL investment index",
+                         "customRatio", "Total library expenditures", "Canadian dollar exchange rate",
+                         "Total materials expenditures", "Total salaries & wages", "Other operating expenditures",
+                         "Rank in ARL investment index", "userSelectedInstitutes", "tail",
+                         "Professional staff", "proPerUndergradStudent", "Support staff",
+                         "supPerFaculty", "supPerStudent", "profPerStudent", "supPerUndergradStudent",
+                         "proPerUndergradStudent", "supPerGradStudent", "supPerDoctoral",
+                         "Total materials expenditures", "Total library expenditures",
+                         "Canadian dollar exchange rate", "Other operating expenditures",
+                         "Professional staff", "Rank in ARL investment index", "Support staff",
+                         "Total library expenditures", "Total materials expenditures",
+                         "Total salaries & wages", "customRatio", "proPerUndergradStudent",
+                         "profPerStudent", "supPerDoctoral", "supPerFaculty", "supPerGradStudent",
+                         "supPerStudent", "supPerUndergradStudent", "tail", "userSelectedInstitutes"))
