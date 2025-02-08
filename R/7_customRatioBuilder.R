@@ -70,8 +70,16 @@
 #' # Table showing the original values used for calculating the ratios
 #' outputEBooksPerStudent$customRatioUserSelectedTable
 #'
-#'
 #' # Example 2
+#' # Reading R package example data
+#' # ?ARLDataDownload
+#' outputEBooksPerStudent <- customRatioBuilder(dataARL = ARLDataDownload,
+#'                    numerator = "Total library expenditures",
+#'                    denominator = "Total fulltime students",
+#'                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
+#'                    years = c(2020, 2021, 2022))
+#'
+#' # Example 3
 #' # Reading R package example data
 #' # ?ARLDataDownload
 #' customRatioBuilder(dataARL = ARLDataDownload,
@@ -80,7 +88,7 @@
 #'                    members = c("Library A", "Library B", "Library C", "Library D", "Library E"),
 #'                    years = c(2020, 2021, 2022))
 #'
-#' # Example 3
+#' # Example 4
 #' # Reading data downloaded from ARL (not run)
 #' # Set file path
 #' # ARLData <- readr::read_csv("~/ARLData.csv")
