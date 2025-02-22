@@ -158,35 +158,35 @@ ui <- fluidPage(
 
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerFacultyUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerFacultyToggle", "Show Table")),
+                                                 actionButton("tlePerStudentUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerStudentToggle", "Show Table")),
                                      splitLayout(cellWidths = c("50%", "50%"),
                                                  htmlOutput("tlePerStudentUserSelectedTable"),
-                                                 htmlOutput("tleTopPerFacultyTable")),
+                                                 htmlOutput("tleTopPerStudentTable")),
 
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerFacultyUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerFacultyToggle", "Show Table")),
+                                                 actionButton("tlePerGradStudentUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerGradStudentToggle", "Show Table")),
                                      splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerFacultyUserSelectedTable"),
-                                                 htmlOutput("tleTopPerFacultyTable")),
+                                                 htmlOutput("tleTopPerGradStudentUserSelectedTable"),
+                                                 htmlOutput("tleTopPerGradStudentTable")),
 
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudent"), plotOutput("tleTopPerUndergradStudent")),
                                      splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerFacultyUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerFacultyToggle", "Show Table")),
+                                                 actionButton("tlePerUndergradStudentUserToggle", "Show Table"),
+                                                 actionButton("tlePerUndergradStudentToggle", "Show Table")),
                                      splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerFacultyUserSelectedTable"),
-                                                 htmlOutput("tleTopPerFacultyTable")),
+                                                 htmlOutput("tlePerUndergradStudentUserSelectedTable"),
+                                                 htmlOutput("tleTopPerUndergradStudent")),
 
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
                                      splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerFacultyUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerFacultyToggle", "Show Table")),
+                                                 actionButton("tlePerDoctoralUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerDoctoralToggle", "Show Table")),
                                      splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerFacultyUserSelectedTable"),
-                                                 htmlOutput("tleTopPerFacultyTable")),
+                                                 htmlOutput("tlePerDoctoralUserSelectedTable"),
+                                                 htmlOutput("tleTopPerDoctoralTable")),
 
                                    )),
 
@@ -408,54 +408,54 @@ server <- function(input, output, session) {
 
   # Initialize toggle states for tables
   toggleStates <- reactiveValues(
-    tlePerFacultyUser = FALSE,
-    tleTopPerFaculty = FALSE,
-    tlePerStudentUser = FALSE,
-    tleTopPerStudent = FALSE,
-    tlePerGradStudentUser = FALSE,
-    tleTopPerGradStudent = FALSE,
-    tlePerUndergradStudentUser = FALSE,
-    tleTopPerUndergradStudent = FALSE,
-    tlePerDoctoralUser = FALSE,
-    tleTopPerDoctoral = FALSE
+    tlePerFacultyUserT = FALSE,
+    tleTopPerFacultyT = FALSE,
+    tlePerStudentUserT = FALSE,
+    tleTopPerStudentT = FALSE,
+    tlePerGradStudentUserT = FALSE,
+    tleTopPerGradStudentT = FALSE,
+    tlePerUndergradStudentUserT = FALSE,
+    tleTopPerUndergradStudentT = FALSE,
+    tlePerDoctoralUserT = FALSE,
+    tleTopPerDoctoralT = FALSE
   )
 
   # Observe events for toggle buttons
   observeEvent(input$tlePerFacultyUserToggle, {
-    toggleStates$tlePerFacultyUser <- !toggleStates$tlePerFacultyUser
+    toggleStates$tlePerFacultyUserT <- !toggleStates$tlePerFacultyUserT
   })
   observeEvent(input$tleTopPerFacultyToggle, {
-    toggleStates$tleTopPerFaculty <- !toggleStates$tleTopPerFaculty
+    toggleStates$tleTopPerFacultyT <- !toggleStates$tleTopPerFacultyT
   })
   observeEvent(input$tlePerStudentUserToggle, {
-    toggleStates$tlePerStudentUser <- !toggleStates$tlePerStudentUser
+    toggleStates$tlePerStudentUserT <- !toggleStates$tlePerStudentUserT
   })
   observeEvent(input$tleTopPerStudentToggle, {
-    toggleStates$tleTopPerStudent <- !toggleStates$tleTopPerStudent
+    toggleStates$tleTopPerStudentT <- !toggleStates$tleTopPerStudentT
   })
   observeEvent(input$tlePerGradStudentUserToggle, {
-    toggleStates$tlePerGradStudentUser <- !toggleStates$tlePerGradStudentUser
+    toggleStates$tlePerGradStudentUserT <- !toggleStates$tlePerGradStudentUserT
   })
   observeEvent(input$tleTopPerGradStudentToggle, {
-    toggleStates$tleTopPerGradStudent <- !toggleStates$tleTopPerGradStudent
+    toggleStates$tleTopPerGradStudentT <- !toggleStates$tleTopPerGradStudentT
   })
   observeEvent(input$tlePerUndergradStudentUserToggle, {
-    toggleStates$tlePerUndergradStudentUser <- !toggleStates$tlePerUndergradStudentUser
+    toggleStates$tlePerUndergradStudentUserT <- !toggleStates$tlePerUndergradStudentUserT
   })
   observeEvent(input$tleTopPerUndergradStudentToggle, {
-    toggleStates$tleTopPerUndergradStudent <- !toggleStates$tleTopPerUndergradStudent
+    toggleStates$tleTopPerUndergradStudentT <- !toggleStates$tleTopPerUndergradStudentT
   })
   observeEvent(input$tlePerDoctoralUserToggle, {
-    toggleStates$tlePerDoctoralUser <- !toggleStates$tlePerDoctoralUser
+    toggleStates$tlePerDoctoralUserT <- !toggleStates$tlePerDoctoralUserT
   })
   observeEvent(input$tleTopPerDoctoralToggle, {
-    toggleStates$tleTopPerDoctoral <- !toggleStates$tleTopPerDoctoral
+    toggleStates$tleTopPerDoctoralT <- !toggleStates$tleTopPerDoctoralT
   })
 
 
   # Render tables conditionally
   output$tlePerFacultyUserSelectedTable <- renderUI({
-    if (toggleStates$tlePerFacultyUser) {
+    if (toggleStates$tlePerFacultyUserT) {
       # table - tlePerFacultyUserSelectedTable
       output$tlePerFacultyUserSelectedTable <- renderTable({
         expVisualization()[[16]]
@@ -465,7 +465,7 @@ server <- function(input, output, session) {
   })
 
   output$tleTopPerFacultyTable <- renderUI({
-    if (toggleStates$tleTopPerFaculty) {
+    if (toggleStates$tleTopPerFacultyT) {
       # table - tleTopPerFacultyTable
       output$tleTopPerFacultyTable <- renderTable({
         expVisualization()[[11]]
@@ -475,7 +475,7 @@ server <- function(input, output, session) {
   })
 
   output$tlePerStudentUserSelectedTable <- renderUI({
-    if (toggleStates$tlePerStudentUser) {
+    if (toggleStates$tlePerStudentUserT) {
       # table - tlePerStudentUserSelectedTable
       output$tlePerStudentUserSelectedTable <- renderTable({
         expVisualization()[[17]]
@@ -485,8 +485,8 @@ server <- function(input, output, session) {
   })
 
   output$tleTopPerStudentTable <- renderUI({
-    if (toggleStates$tleTopPerStudent) {
-      # table - tleTopPerFacultyTable
+    if (toggleStates$tleTopPerStudentT) {
+      # table - tleTopPerStudentTable
       output$tleTopPerStudentTable <- renderTable({
         expVisualization()[[12]]
       }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
@@ -495,7 +495,7 @@ server <- function(input, output, session) {
   })
 
   output$tlePerGradStudentUserSelectedTable <- renderUI({
-    if (toggleStates$tlePerGradStudentUser) {
+    if (toggleStates$tlePerGradStudentUserT) {
       # table - tlePerGradStudentUserSelectedTable
       output$tlePerGradStudentUserSelectedTable <- renderTable({
         expVisualization()[[18]]
@@ -505,7 +505,7 @@ server <- function(input, output, session) {
   })
 
   output$tleTopPerGradStudentTable <- renderUI({
-    if (toggleStates$tleTopPerGradStudent) {
+    if (toggleStates$tleTopPerGradStudentT) {
       # table - tleTopPerGradStudentTable
       output$tleTopPerGradStudentTable <- renderTable({
         expVisualization()[[13]]
@@ -516,7 +516,7 @@ server <- function(input, output, session) {
 
 
   output$tlePerUndergradStudentUserSelectedTable <- renderUI({
-    if (toggleStates$tlePerUndergradStudentUser) {
+    if (toggleStates$tlePerUndergradStudentUserT) {
       # table - tlePerUndergradStudentUserSelectedTable
       output$tlePerUndergradStudentUserSelectedTable <- renderTable({
         expVisualization()[[19]]
@@ -526,7 +526,7 @@ server <- function(input, output, session) {
   })
 
   output$tleTopPerUndergradStudentTable <- renderUI({
-    if (toggleStates$tleTopPerUndergradStudent) {
+    if (toggleStates$tleTopPerUndergradStudentT) {
       # table - tleTopPerUndergradStudentTable
       output$tleTopPerUndergradStudentTable <- renderTable({
         expVisualization()[[14]]
@@ -536,7 +536,7 @@ server <- function(input, output, session) {
   })
 
   output$tlePerDoctoralUserSelectedTable <- renderUI({
-    if (toggleStates$tlePerDoctoralUser) {
+    if (toggleStates$tlePerDoctoralUserT) {
       # table - tlePerDoctoralUserSelectedTable
       output$tlePerDoctoralUserSelectedTable <- renderTable({
         expVisualization()[[20]]
@@ -546,7 +546,7 @@ server <- function(input, output, session) {
   })
 
   output$tleTopPerDoctoralTable <- renderUI({
-    if (toggleStates$tleTopPerDoctoral) {
+    if (toggleStates$tleTopPerDoctoralT) {
       # table - tleTopPerDoctoralTable
       output$tleTopPerDoctoralTable <- renderTable({
         expVisualization()[[15]]
