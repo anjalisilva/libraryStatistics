@@ -192,7 +192,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
+    # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
@@ -259,7 +259,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
@@ -326,7 +326,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
@@ -393,7 +393,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
@@ -457,7 +457,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
+    # dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
@@ -523,7 +523,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
+    # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
@@ -591,7 +591,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
@@ -662,7 +662,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
@@ -735,7 +735,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
@@ -802,7 +802,7 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
+    #dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%

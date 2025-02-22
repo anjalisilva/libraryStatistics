@@ -190,7 +190,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
+    # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
@@ -257,7 +257,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
@@ -324,7 +324,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
@@ -393,7 +393,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
@@ -460,7 +460,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
+    # dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
@@ -526,7 +526,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
+    # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
@@ -594,7 +594,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
@@ -661,7 +661,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
@@ -731,7 +731,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
@@ -798,7 +798,7 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
+    # dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
@@ -806,26 +806,26 @@ visTotalLibraryExp <- function(dataARL, members = NA, years = NA) {
     kableExtra::kable_paper(lightable_options = "striped")
 
 
-  return(list(tleTopPerFaculty = tleTopPerFaculty,
-              tleTopPerStudent = tleTopPerStudent,
-              tleTopPerGradStudent = tleTopPerGradStudent,
-              tleTopPerUndergradStudent = tleTopPerUndergradStudent,
-              tleTopPerDoctoral = tleTopPerDoctoral,
-              tlePerFacultyUserSelected = tlePerFacultyUserSelected,
-              tlePerStudentUserSelected = tlePerStudentUserSelected,
-              tlePerGradStudentUserSelected = tlePerGradStudentUserSelected,
-              tlePerUndergradStudentUserSelected = tlePerUndergradStudentUserSelected,
-              tlePerDoctoralUserSelected = tlePerDoctoralUserSelected,
-              tleTopPerFacultyTable = tleTopPerFacultyTable,
-              tleTopPerStudentTable = tleTopPerStudentTable,
-              tleTopPerGradStudentTable = tleTopPerGradStudentTable,
-              tleTopPerUndergradStudentTable = tleTopPerUndergradStudentTable,
-              tleTopPerDoctoralTable = tleTopPerDoctoralTable,
-              tlePerFacultyUserSelectedTable = tlePerFacultyUserSelectedTable,
-              tlePerStudentUserSelectedTable = tlePerStudentUserSelectedTable,
-              tlePerGradStudentUserSelectedTable = tlePerGradStudentUserSelectedTable,
-              tlePerUndergradStudentUserSelectedTable = tlePerUndergradStudentUserSelectedTable,
-              tlePerDoctoralUserSelectedTable = tlePerDoctoralUserSelectedTable))
+  return(list(tleTopPerFaculty = tleTopPerFaculty, # 1
+              tleTopPerStudent = tleTopPerStudent, # 2
+              tleTopPerGradStudent = tleTopPerGradStudent, # 3
+              tleTopPerUndergradStudent = tleTopPerUndergradStudent, # 4
+              tleTopPerDoctoral = tleTopPerDoctoral, # 5
+              tlePerFacultyUserSelected = tlePerFacultyUserSelected, # 6
+              tlePerStudentUserSelected = tlePerStudentUserSelected, # 7
+              tlePerGradStudentUserSelected = tlePerGradStudentUserSelected, # 8
+              tlePerUndergradStudentUserSelected = tlePerUndergradStudentUserSelected, # 9
+              tlePerDoctoralUserSelected = tlePerDoctoralUserSelected, # 10
+              tleTopPerFacultyTable = tleTopPerFacultyTable, # 11
+              tleTopPerStudentTable = tleTopPerStudentTable, # 12
+              tleTopPerGradStudentTable = tleTopPerGradStudentTable, # 13
+              tleTopPerUndergradStudentTable = tleTopPerUndergradStudentTable, # 14
+              tleTopPerDoctoralTable = tleTopPerDoctoralTable, # 15
+              tlePerFacultyUserSelectedTable = tlePerFacultyUserSelectedTable, # 16
+              tlePerStudentUserSelectedTable = tlePerStudentUserSelectedTable, # 17
+              tlePerGradStudentUserSelectedTable = tlePerGradStudentUserSelectedTable, # 18
+              tlePerUndergradStudentUserSelectedTable = tlePerUndergradStudentUserSelectedTable, # 19
+              tlePerDoctoralUserSelectedTable = tlePerDoctoralUserSelectedTable)) # 20
 }
 
 # [END]
