@@ -310,8 +310,8 @@ customRatioBuilder <- function(dataARL, numerator, denominator, members, years =
     }
 
   return(list(customRatioTop = customRatioTop,
-              customRatioTopTable = customRatioTopTable,
               customRatioUser = customRatioUser,
+              customRatioTopTable = customRatioTopTable,
               customRatioUserSelectedTable = customRatioUserSelectedTable))
 }
 # [END]
