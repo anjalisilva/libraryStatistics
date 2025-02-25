@@ -420,10 +420,17 @@ ui <- fluidPage(
                                    splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
                                                radioButtons("numeratorChoice", label = h3("Select Numerator"), choices = "",  selected = 1),
                                                radioButtons("denominatorChoice", label = h3("Select Denominator"), choices = ""),  selected = 1),
+
                                    br(),
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("customRatioUser"), plotOutput("customRatioTop"))),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                               actionButton("customRatioUserToggle", "Show Table"),
+                                               actionButton("customRatioTopToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                               htmlOutput("customRatioUserTable"),
+                                               htmlOutput("customRatioTopTable")),
                           ),
 
 
@@ -1593,7 +1600,46 @@ server <- function(input, output, session) {
   })
 
 
+  # Initialize toggle states for tables
+  toggleStates6 <- reactiveValues(
+    customRatioUserT = FALSE,
+    customRatioTopT = FALSE
+  )
 
+  # Observe events for toggle buttons
+  observeEvent(input$customRatioUserToggle, {
+    toggleStates6$customRatioUserT <- !toggleStates6$customRatioUserT
+  })
+  observeEvent(input$customRatioTopToggle, {
+    toggleStates6$customRatioTopT <- !toggleStates6$customRatioTopT
+  })
+
+
+  # Render tables conditionally
+  output$customRatioUserTable <- renderUI({
+    if (toggleStates6$customRatioUserT) {
+      # table - customRatioUserTable
+      output$customRatioUserTable <- renderTable({
+        customRatioShiny()[[4]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("customRatioUserTable")
+    }
+  })
+
+  output$customRatioTopTable <- renderUI({
+    if (toggleStates6$customRatioTopT) {
+      # table - customRatioTopTable
+      output$customRatioTopTable <- renderTable({
+        customRatioShiny()[[3]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("customRatioTopTable")
+    }
+  })
+
+
+
+  #
+  #
   # -- Index Table Generator
   indexTableGenVis <- eventReactive(eventExpr = c(input$file1,
                                                   input$instituteInput,
