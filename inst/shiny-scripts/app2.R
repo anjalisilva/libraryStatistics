@@ -1,5 +1,5 @@
 library(shiny)
-useShinyalert(force = TRUE)
+#useShinyalert(force = TRUE)
 
 # Define UI for random distribution app ----
 ui <- fluidPage(
@@ -461,6 +461,8 @@ server <- function(input, output, session) {
         expVisualization()[[16]]
       }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
       tableOutput("tlePerFacultyUserSelectedTable")
+    } else {
+      NULL
     }
   })
 
@@ -471,6 +473,8 @@ server <- function(input, output, session) {
         expVisualization()[[11]]
       }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
       tableOutput("tleTopPerFacultyTable")
+    } else {
+      NULL
     }
   })
 
@@ -556,11 +560,9 @@ server <- function(input, output, session) {
   })
 
 
-
-
-
-
-
+  #
+  #
+  #
   # -- Total Library Materials Expenditures
   expMaterialsVis <- eventReactive(eventExpr = c(input$file1,
                                                  input$instituteInput,
