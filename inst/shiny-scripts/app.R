@@ -13,7 +13,7 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(width = 3,
 
-             tags$p("Refer to the 'Instructions' tab located on the right side for detailed guidance."),
+                 tags$p("Refer to the 'Instructions' tab located on the right side for detailed guidance."),
 
                  # br() element to introduce extra vertical spacing ----
                  br(),
@@ -58,6 +58,14 @@ ui <- fluidPage(
 
               # Output: Tabset
               tabsetPanel(type = "tabs",
+                          # Adding space between columns of tables created
+                          tags$head(
+                            tags$style(HTML("
+                                          .lightable-paper th, .lightable-paper td {
+                                            padding-left: 20px;
+                                            padding-right: 20px;
+                                          }
+                                   "))),
                           tabPanel("Instructions",
                                    h2("Instructions", align = "center"),
                                    br(),
@@ -124,7 +132,7 @@ ui <- fluidPage(
                                        url = {https://github.com/anjalisilva/libraryStatistics},}"),
                                    br(),
                                    br(),
-                                   ),
+                          ),
                           tabPanel("Investment Index",
                                    h3("Investment Index Historical Table", align = "center"),
                                    br(),
@@ -141,10 +149,52 @@ ui <- fluidPage(
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerFacultyUser"), plotOutput("tleTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlePerFacultyUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerFacultyToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlePerFacultyUserSelectedTable"),
+                                                 htmlOutput("tleTopPerFacultyTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlePerStudentUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlePerStudentUserSelectedTable"),
+                                                 htmlOutput("tleTopPerStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudent"), plotOutput("tleTopPerUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlePerGradStudentUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerGradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlePerGradStudentUserSelectedTable"),
+                                                 htmlOutput("tleTopPerGradStudentTable")),
+
+                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudentUser"), plotOutput("tleTopPerUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlePerUndergradStudentUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerUndergradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlePerUndergradStudentUserSelectedTable"),
+                                                 htmlOutput("tleTopPerUndergradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlePerDoctoralUserToggle", "Show Table"),
+                                                 actionButton("tleTopPerDoctoralToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlePerDoctoralUserSelectedTable"),
+                                                 htmlOutput("tleTopPerDoctoralTable")),
+
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerFacultyUser"), plotOutput("tleTopPerFaculty")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudent"), plotOutput("tleTopPerUndergradStudent")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
+
+
                                    )),
                           tabPanel("Total Library Materials Expenditures",
                                    h3("Total Library Materials Expenditures (USD) Ratios", align = "center"),
@@ -158,10 +208,51 @@ ui <- fluidPage(
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlmePerFacultyUserToggle", "Show Table"),
+                                                 actionButton("tlmeTopPerFacultyToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlmePerFacultyUserSelectedTable"),
+                                                 htmlOutput("tlmeTopPerFacultyTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlmePerStudentUserToggle", "Show Table"),
+                                                 actionButton("tlmeTopPerStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlmePerStudentUserSelectedTable"),
+                                                 htmlOutput("tlmeTopPerStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlmePerGradStudentUserToggle", "Show Table"),
+                                                 actionButton("tlmeTopPerGradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlmePerGradStudentUserSelectedTable"),
+                                                 htmlOutput("tlmeTopPerGradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerUndergradStudentUserSelected"), plotOutput("tlmeTopPerUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlmePerUndergradStudentUserToggle", "Show Table"),
+                                                 actionButton("tlmeTopPerUndergradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlmePerUndergradStudentUserSelectedTable"),
+                                                 htmlOutput("tlmeTopPerUndergradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("tlmePerDoctoralUserToggle", "Show Table"),
+                                                 actionButton("tlmeTopPerDoctoralToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("tlmePerDoctoralUserSelectedTable"),
+                                                 htmlOutput("tlmeTopPerDoctoralTable")),
+
+
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerUndergradStudentUserSelected"), plotOutput("tlmeTopPerUndergradStudent")),
+                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
                                    )),
                           tabPanel("Professional Staff Salaries",
                                    h3("Professional Staff Salaries (USD) Ratios", align = "center"),
@@ -175,10 +266,45 @@ ui <- fluidPage(
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalFacultyUserSelected"), plotOutput("proSalTopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proSalPerFacultyUserToggle", "Show Table"),
+                                                 actionButton("proSalTopPerFacultyToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proSalPerFacultyUserSelectedTable"),
+                                                 htmlOutput("proSalTopPerFacultyTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerStudentUserSelected"), plotOutput("proSalTopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proSalPerStudentUserToggle", "Show Table"),
+                                                 actionButton("proSalTopPerStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proSalPerStudentUserSelectedTable"),
+                                                 htmlOutput("proSalTopPerStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerGradStudentUserSelected"), plotOutput("proSalTopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proSalPerGradStudentUserToggle", "Show Table"),
+                                                 actionButton("proSalTopPerGradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proSalPerGradStudentUserSelectedTable"),
+                                                 htmlOutput("proSalTopPerGradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerUndergradStudentUserSelected"), plotOutput("proSalTopPerUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proSalPerUndergradStudentUserToggle", "Show Table"),
+                                                 actionButton("proSalTopPerUndergradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proSalPerUndergradStudentUserSelectedTable"),
+                                                 htmlOutput("proSalTopPerUndergradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerDoctoralUserSelected"), plotOutput("proSalTopPerDoctoral")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proSalPerDoctoralUserToggle", "Show Table"),
+                                                 actionButton("proSalTopPerDoctoralToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proSalPerDoctoralUserSelectedTable"),
+                                                 htmlOutput("proSalTopPerDoctoralTable")),
+
                                    )),
                           tabPanel("Professional Staff Counts",
                                    h3("Professional Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
@@ -192,10 +318,44 @@ ui <- fluidPage(
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerFacultyUserSelected"), plotOutput("proFTETopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proFTEPerFacultyUserToggle", "Show Table"),
+                                                 actionButton("proFTETopPerFacultyToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proFTEPerFacultyUserSelectedTable"),
+                                                 htmlOutput("proFTETopPerFacultyTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerStudentUserSelected"), plotOutput("proFTETopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proFTEPerStudentUserToggle", "Show Table"),
+                                                 actionButton("proFTETopPerStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proFTEPerStudentUserSelectedTable"),
+                                                 htmlOutput("proFTETopPerStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerGradStudentUserSelected"), plotOutput("proFTETopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proFTEPerGradStudentUserToggle", "Show Table"),
+                                                 actionButton("proFTETopPerGradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proFTEPerGradStudentUserSelectedTable"),
+                                                 htmlOutput("proFTETopPerGradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerUndergradStudentUserSelected"), plotOutput("proFTETopPerUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proFTEPerUndergradStudentUserToggle", "Show Table"),
+                                                 actionButton("proFTETopPerUndergradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proFTEPerUndergradStudentUserSelectedTable"),
+                                                 htmlOutput("proFTETopPerUndergradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerDoctoralUserSelected"), plotOutput("proFTETopPerDoctoral")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("proFTEPerDoctoralUserToggle", "Show Table"),
+                                                 actionButton("proFTETopPerDoctoralToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("proFTEPerDoctoralUserSelectedTable"),
+                                                 htmlOutput("proFTETopPerDoctoralTable")),
                                    )),
                           tabPanel("Support Staff Counts",
                                    h3("Support Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
@@ -209,10 +369,44 @@ ui <- fluidPage(
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerFacultyUserSelected"), plotOutput("supFTETopPerFaculty")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("supPerPerFacultyUserToggle", "Show Table"),
+                                                 actionButton("supPerTopPerFacultyToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("supPerPerFacultyUserSelectedTable"),
+                                                 htmlOutput("supPerTopPerFacultyTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerStudentUserSelected"), plotOutput("supFTETopPerStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("supPerPerStudentUserToggle", "Show Table"),
+                                                 actionButton("supPerTopPerStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("supPerPerStudentUserSelectedTable"),
+                                                 htmlOutput("supPerTopPerStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("supPerPerGradStudentUserToggle", "Show Table"),
+                                                 actionButton("supPerTopPerGradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("supPerPerGradStudentUserSelectedTable"),
+                                                 htmlOutput("supPerTopPerGradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerUndergradStudentUserSelected"), plotOutput("supFTETopUndergradStudent")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("supPerPerUndergradStudentUserToggle", "Show Table"),
+                                                 actionButton("supPerTopPerUndergradStudentToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("supPerPerUndergradStudentUserSelectedTable"),
+                                                 htmlOutput("supPerTopPerUndergradStudentTable")),
+
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 actionButton("supPerPerDoctoralUserToggle", "Show Table"),
+                                                 actionButton("supPerTopPerDoctoralToggle", "Show Table")),
+                                     splitLayout(cellWidths = c("50%", "50%"),
+                                                 htmlOutput("supPerPerDoctoralUserSelectedTable"),
+                                                 htmlOutput("supPerTopPerDoctoralTable")),
                                    )),
                           tabPanel("Calculate Custom Ratio",
                                    h3("Calculate Custom Ratio For Selected Members", align = "center"),
@@ -226,11 +420,18 @@ ui <- fluidPage(
                                    splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
                                                radioButtons("numeratorChoice", label = h3("Select Numerator"), choices = "",  selected = 1),
                                                radioButtons("denominatorChoice", label = h3("Select Denominator"), choices = ""),  selected = 1),
+
                                    br(),
                                    br(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), plotOutput("customRatioUser"), plotOutput("customRatioTop"))),
-                                   ),
+                                   splitLayout(cellWidths = c("50%", "50%"),
+                                               actionButton("customRatioUserToggle", "Show Table"),
+                                               actionButton("customRatioTopToggle", "Show Table")),
+                                   splitLayout(cellWidths = c("50%", "50%"),
+                                               htmlOutput("customRatioUserTable"),
+                                               htmlOutput("customRatioTopTable")),
+                          ),
 
 
               )
@@ -269,10 +470,10 @@ server <- function(input, output, session) {
   observe({
     columns2 <- sort(setdiff(unique(csvInput()$`Institution Name`), 'MEDIAN'))
     updateCheckboxGroupInput(session = session,
-                       inputId = "instituteInput",
-                       label = NULL,
-                       choices = columns2, # remove median
-                       selected = columns2[2])
+                             inputId = "instituteInput",
+                             label = NULL,
+                             choices = columns2, # remove median
+                             selected = columns2[2])
   })
 
   # Update Create Own Ratio Choices for Numerator (top part)
@@ -289,21 +490,21 @@ server <- function(input, output, session) {
   observe({
     columns4 <- unique(colnames(csvInput())[12:80])
     updateRadioButtons(session = session,
-                             inputId = "denominatorChoice",
-                             label = NULL,
-                             choices = columns4, # remove median
-                             selected = columns4[43])
+                       inputId = "denominatorChoice",
+                       label = NULL,
+                       choices = columns4, # remove median
+                       selected = columns4[43])
   })
 
   # -- Total Library Expenditures
   expVisualization <- eventReactive(eventExpr = c(input$file1,
                                                   input$instituteInput,
                                                   input$yearsInput), {
-    visTotalLibraryExp(
-      dataARL = csvInput(),
-      members = as.character(input$instituteInput),
-      years = as.vector(input$yearsInput, mode = "numeric"))
-  })
+                                                    visTotalLibraryExp(
+                                                      dataARL = csvInput(),
+                                                      members = as.character(input$instituteInput),
+                                                      years = as.vector(input$yearsInput, mode = "numeric"))
+                                                  })
 
   # plot - tleTopPerFaculty
   output$tleTopPerFaculty <- renderPlot({
@@ -346,8 +547,8 @@ server <- function(input, output, session) {
   })
 
 
-  # plot - tlePerUndergradStudent
-  output$tlePerUndergradStudent <- renderPlot({
+  # plot - tlePerUndergradStudentUser
+  output$tlePerUndergradStudentUser <- renderPlot({
     expVisualization()[[9]]
   })
 
@@ -358,16 +559,168 @@ server <- function(input, output, session) {
   })
 
 
+  # Initialize toggle states for tables
+  toggleStates <- reactiveValues(
+    tlePerFacultyUserT = FALSE,
+    tleTopPerFacultyT = FALSE,
+    tlePerStudentUserT = FALSE,
+    tleTopPerStudentT = FALSE,
+    tlePerGradStudentUserT = FALSE,
+    tleTopPerGradStudentT = FALSE,
+    tlePerUndergradStudentUserT = FALSE,
+    tleTopPerUndergradStudentT = FALSE,
+    tlePerDoctoralUserT = FALSE,
+    tleTopPerDoctoralT = FALSE
+  )
 
+  # Observe events for toggle buttons
+  observeEvent(input$tlePerFacultyUserToggle, {
+    toggleStates$tlePerFacultyUserT <- !toggleStates$tlePerFacultyUserT
+  })
+  observeEvent(input$tleTopPerFacultyToggle, {
+    toggleStates$tleTopPerFacultyT <- !toggleStates$tleTopPerFacultyT
+  })
+  observeEvent(input$tlePerStudentUserToggle, {
+    toggleStates$tlePerStudentUserT <- !toggleStates$tlePerStudentUserT
+  })
+  observeEvent(input$tleTopPerStudentToggle, {
+    toggleStates$tleTopPerStudentT <- !toggleStates$tleTopPerStudentT
+  })
+  observeEvent(input$tlePerGradStudentUserToggle, {
+    toggleStates$tlePerGradStudentUserT <- !toggleStates$tlePerGradStudentUserT
+  })
+  observeEvent(input$tleTopPerGradStudentToggle, {
+    toggleStates$tleTopPerGradStudentT <- !toggleStates$tleTopPerGradStudentT
+  })
+  observeEvent(input$tlePerUndergradStudentUserToggle, {
+    toggleStates$tlePerUndergradStudentUserT <- !toggleStates$tlePerUndergradStudentUserT
+  })
+  observeEvent(input$tleTopPerUndergradStudentToggle, {
+    toggleStates$tleTopPerUndergradStudentT <- !toggleStates$tleTopPerUndergradStudentT
+  })
+  observeEvent(input$tlePerDoctoralUserToggle, {
+    toggleStates$tlePerDoctoralUserT <- !toggleStates$tlePerDoctoralUserT
+  })
+  observeEvent(input$tleTopPerDoctoralToggle, {
+    toggleStates$tleTopPerDoctoralT <- !toggleStates$tleTopPerDoctoralT
+  })
+
+
+  # Render tables conditionally
+  output$tlePerFacultyUserSelectedTable <- renderUI({
+    if (toggleStates$tlePerFacultyUserT) {
+      # table - tlePerFacultyUserSelectedTable
+      output$tlePerFacultyUserSelectedTable <- renderTable({
+        expVisualization()[[16]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlePerFacultyUserSelectedTable")
+    }
+  })
+
+  output$tleTopPerFacultyTable <- renderUI({
+    if (toggleStates$tleTopPerFacultyT) {
+      # table - tleTopPerFacultyTable
+      output$tleTopPerFacultyTable <- renderTable({
+        expVisualization()[[11]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tleTopPerFacultyTable")
+    }
+  })
+
+  output$tlePerStudentUserSelectedTable <- renderUI({
+    if (toggleStates$tlePerStudentUserT) {
+      # table - tlePerStudentUserSelectedTable
+      output$tlePerStudentUserSelectedTable <- renderTable({
+        expVisualization()[[17]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlePerStudentUserSelectedTable")
+    }
+  })
+
+  output$tleTopPerStudentTable <- renderUI({
+    if (toggleStates$tleTopPerStudentT) {
+      # table - tleTopPerStudentTable
+      output$tleTopPerStudentTable <- renderTable({
+        expVisualization()[[12]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tleTopPerStudentTable")
+    }
+  })
+
+  output$tlePerGradStudentUserSelectedTable <- renderUI({
+    if (toggleStates$tlePerGradStudentUserT) {
+      # table - tlePerGradStudentUserSelectedTable
+      output$tlePerGradStudentUserSelectedTable <- renderTable({
+        expVisualization()[[18]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlePerGradStudentUserSelectedTable")
+    }
+  })
+
+  output$tleTopPerGradStudentTable <- renderUI({
+    if (toggleStates$tleTopPerGradStudentT) {
+      # table - tleTopPerGradStudentTable
+      output$tleTopPerGradStudentTable <- renderTable({
+        expVisualization()[[13]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tleTopPerGradStudentTable")
+    }
+  })
+
+
+  output$tlePerUndergradStudentUserSelectedTable <- renderUI({
+    if (toggleStates$tlePerUndergradStudentUserT) {
+      # table - tlePerUndergradStudentUserSelectedTable
+      output$tlePerUndergradStudentUserSelectedTable <- renderTable({
+        expVisualization()[[19]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlePerUndergradStudentUserSelectedTable")
+    }
+  })
+
+  output$tleTopPerUndergradStudentTable <- renderUI({
+    if (toggleStates$tleTopPerUndergradStudentT) {
+      # table - tleTopPerUndergradStudentTable
+      output$tleTopPerUndergradStudentTable <- renderTable({
+        expVisualization()[[14]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tleTopPerUndergradStudentTable")
+    }
+  })
+
+  output$tlePerDoctoralUserSelectedTable <- renderUI({
+    if (toggleStates$tlePerDoctoralUserT) {
+      # table - tlePerDoctoralUserSelectedTable
+      output$tlePerDoctoralUserSelectedTable <- renderTable({
+        expVisualization()[[20]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlePerDoctoralUserSelectedTable")
+    }
+  })
+
+  output$tleTopPerDoctoralTable <- renderUI({
+    if (toggleStates$tleTopPerDoctoralT) {
+      # table - tleTopPerDoctoralTable
+      output$tleTopPerDoctoralTable <- renderTable({
+        expVisualization()[[15]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tleTopPerDoctoralTable")
+    }
+  })
+
+
+  #
+  #
+  #
   # -- Total Library Materials Expenditures
   expMaterialsVis <- eventReactive(eventExpr = c(input$file1,
                                                  input$instituteInput,
                                                  input$yearsInput), {
-    visTotalLibMaterialsExp(
-      dataARL = csvInput(),
-      members = as.character(input$instituteInput),
-      years = as.vector(input$yearsInput, mode = "numeric"))
-  })
+                                                   visTotalLibMaterialsExp(
+                                                     dataARL = csvInput(),
+                                                     members = as.character(input$instituteInput),
+                                                     years = as.vector(input$yearsInput, mode = "numeric"))
+                                                 })
 
   # plot - tlmeTopPerFaculty
   output$tlmeTopPerFaculty <- renderPlot({
@@ -420,15 +773,168 @@ server <- function(input, output, session) {
   })
 
 
+  # Initialize toggle states for tables
+  toggleStates2 <- reactiveValues(
+    tlmePerFacultyUserT = FALSE,
+    tlmeTopPerFacultyT = FALSE,
+    tlmePerStudentUserT = FALSE,
+    tlmeTopPerStudentT = FALSE,
+    tlmePerGradStudentUserT = FALSE,
+    tlmeTopPerGradStudentT = FALSE,
+    tlmePerUndergradStudentUserT = FALSE,
+    tlmeTopPerUndergradStudentT = FALSE,
+    tlmePerDoctoralUserT = FALSE,
+    tlmeTopPerDoctoralT = FALSE
+  )
+
+  # Observe events for toggle buttons
+  observeEvent(input$tlmePerFacultyUserToggle, {
+    toggleStates2$tlmePerFacultyUserT <- !toggleStates2$tlmePerFacultyUserT
+  })
+  observeEvent(input$tlmeTopPerFacultyToggle, {
+    toggleStates2$tlmeTopPerFacultyT <- !toggleStates2$tlmeTopPerFacultyT
+  })
+  observeEvent(input$tlmePerStudentUserToggle, {
+    toggleStates2$tlmePerStudentUserT <- !toggleStates2$tlmePerStudentUserT
+  })
+  observeEvent(input$tlmeTopPerStudentToggle, {
+    toggleStates2$tlmeTopPerStudentT <- !toggleStates2$tlmeTopPerStudentT
+  })
+  observeEvent(input$tlmePerGradStudentUserToggle, {
+    toggleStates2$tlmePerGradStudentUserT <- !toggleStates2$tlmePerGradStudentUserT
+  })
+  observeEvent(input$tlmeTopPerGradStudentToggle, {
+    toggleStates2$tlmeTopPerGradStudentT <- !toggleStates2$tlmeTopPerGradStudentT
+  })
+  observeEvent(input$tlmePerUndergradStudentUserToggle, {
+    toggleStates2$tlmePerUndergradStudentUserT <- !toggleStates2$tlmePerUndergradStudentUserT
+  })
+  observeEvent(input$tlmeTopPerUndergradStudentToggle, {
+    toggleStates2$tlmeTopPerUndergradStudentT <- !toggleStates2$tlmeTopPerUndergradStudentT
+  })
+  observeEvent(input$tlmePerDoctoralUserToggle, {
+    toggleStates2$tlmePerDoctoralUserT <- !toggleStates2$tlmePerDoctoralUserT
+  })
+  observeEvent(input$tlmeTopPerDoctoralToggle, {
+    toggleStates2$tlmeTopPerDoctoralT <- !toggleStates2$tlmeTopPerDoctoralT
+  })
+
+
+  # Render tables conditionally
+  output$tlmePerFacultyUserSelectedTable <- renderUI({
+    if (toggleStates2$tlmePerFacultyUserT) {
+      # table - tlmePerFacultyUserSelectedTable
+      output$tlmePerFacultyUserSelectedTable <- renderTable({
+        expMaterialsVis()[[16]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmePerFacultyUserSelectedTable")
+    }
+  })
+
+  output$tlmeTopPerFacultyTable <- renderUI({
+    if (toggleStates2$tlmeTopPerFacultyT) {
+      # table - tlmeTopPerFacultyTable
+      output$tlmeTopPerFacultyTable <- renderTable({
+        expMaterialsVis()[[11]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmeTopPerFacultyTable")
+    }
+  })
+
+  output$tlmePerStudentUserSelectedTable <- renderUI({
+    if (toggleStates2$tlmePerStudentUserT) {
+      # table - tlmePerStudentUserSelectedTable
+      output$tlmePerStudentUserSelectedTable <- renderTable({
+        expMaterialsVis()[[17]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmePerStudentUserSelectedTable")
+    }
+  })
+
+  output$tlmeTopPerStudentTable <- renderUI({
+    if (toggleStates2$tlmeTopPerStudentT) {
+      # table - tlmeTopPerStudentTable
+      output$tlmeTopPerStudentTable <- renderTable({
+        expMaterialsVis()[[12]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmeTopPerStudentTable")
+    }
+  })
+
+  output$tlmePerGradStudentUserSelectedTable <- renderUI({
+    if (toggleStates2$tlmePerGradStudentUserT) {
+      # table - tlmePerGradStudentUserSelectedTable
+      output$tlmePerGradStudentUserSelectedTable <- renderTable({
+        expMaterialsVis()[[18]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmePerGradStudentUserSelectedTable")
+    }
+  })
+
+  output$tlmeTopPerGradStudentTable <- renderUI({
+    if (toggleStates2$tlmeTopPerGradStudentT) {
+      # table - tlmeTopPerGradStudentTable
+      output$tlmeTopPerGradStudentTable <- renderTable({
+        expMaterialsVis()[[13]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmeTopPerGradStudentTable")
+    }
+  })
+
+
+  output$tlmePerUndergradStudentUserSelectedTable <- renderUI({
+    if (toggleStates2$tlmePerUndergradStudentUserT) {
+      # table - tlmePerUndergradStudentUserSelectedTable
+      output$tlmePerUndergradStudentUserSelectedTable <- renderTable({
+        expMaterialsVis()[[19]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmePerUndergradStudentUserSelectedTable")
+    }
+  })
+
+  output$tlmeTopPerUndergradStudentTable <- renderUI({
+    if (toggleStates2$tlmeTopPerUndergradStudentT) {
+      # table - tleTopPerUndergradStudentTable
+      output$tlmeTopPerUndergradStudentTable <- renderTable({
+        expMaterialsVis()[[14]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmeTopPerUndergradStudentTable")
+    }
+  })
+
+  output$tlmePerDoctoralUserSelectedTable <- renderUI({
+    if (toggleStates2$tlmePerDoctoralUserT) {
+      # table - tlmePerDoctoralUserSelectedTable
+      output$tlmePerDoctoralUserSelectedTable <- renderTable({
+        expMaterialsVis()[[20]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmePerDoctoralUserSelectedTable")
+    }
+  })
+
+  output$tlmeTopPerDoctoralTable <- renderUI({
+    if (toggleStates2$tlmeTopPerDoctoralT) {
+      # table - tleTopPerDoctoralTable
+      output$tlmeTopPerDoctoralTable <- renderTable({
+        expMaterialsVis()[[15]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("tlmeTopPerDoctoralTable")
+    }
+  })
+
+
+  #
+  #
+  #
   # -- Professional Staff Salaries
   profStaffSalariesVis <- eventReactive(eventExpr = c(input$file1,
                                                       input$instituteInput,
                                                       input$yearsInput), {
-    visProfStaffSalaries(
-      dataARL = csvInput(),
-      members = as.character(input$instituteInput),
-      years = as.vector(input$yearsInput, mode = "numeric"))
-  })
+                                                        visProfStaffSalaries(
+                                                          dataARL = csvInput(),
+                                                          members = as.character(input$instituteInput),
+                                                          years = as.vector(input$yearsInput, mode = "numeric"))
+                                                      })
 
   # plot - proSalTopPerFaculty
   output$proSalTopPerFaculty <- renderPlot({
@@ -481,15 +987,169 @@ server <- function(input, output, session) {
   })
 
 
+  # Initialize toggle states for tables
+  toggleStates3 <- reactiveValues(
+    proSalPerFacultyUserT = FALSE,
+    proSalTopPerFacultyT = FALSE,
+    proSalPerStudentUserT = FALSE,
+    proSalTopPerStudentT = FALSE,
+    proSalPerGradStudentUserT = FALSE,
+    proSalTopPerGradStudentT = FALSE,
+    proSalPerUndergradStudentUserT = FALSE,
+    proSalTopPerUndergradStudentT = FALSE,
+    proSalPerDoctoralUserT = FALSE,
+    proSalTopPerDoctoralT = FALSE
+  )
+
+  # Observe events for toggle buttons
+  observeEvent(input$proSalPerFacultyUserToggle, {
+    toggleStates3$proSalPerFacultyUserT <- !toggleStates3$proSalPerFacultyUserT
+  })
+  observeEvent(input$proSalTopPerFacultyToggle, {
+    toggleStates3$proSalTopPerFacultyT <- !toggleStates3$proSalTopPerFacultyT
+  })
+  observeEvent(input$proSalPerStudentUserToggle, {
+    toggleStates3$proSalPerStudentUserT <- !toggleStates3$proSalPerStudentUserT
+  })
+  observeEvent(input$proSalTopPerStudentToggle, {
+    toggleStates3$proSalTopPerStudentT <- !toggleStates3$proSalTopPerStudentT
+  })
+  observeEvent(input$proSalPerGradStudentUserToggle, {
+    toggleStates3$proSalPerGradStudentUserT <- !toggleStates3$proSalPerGradStudentUserT
+  })
+  observeEvent(input$proSalTopPerGradStudentToggle, {
+    toggleStates3$proSalTopPerGradStudentT <- !toggleStates3$proSalTopPerGradStudentT
+  })
+  observeEvent(input$proSalPerUndergradStudentUserToggle, {
+    toggleStates3$proSalPerUndergradStudentUserT <- !toggleStates3$proSalPerUndergradStudentUserT
+  })
+  observeEvent(input$proSalTopPerUndergradStudentToggle, {
+    toggleStates3$proSalTopPerUndergradStudentT <- !toggleStates3$proSalTopPerUndergradStudentT
+  })
+  observeEvent(input$proSalPerDoctoralUserToggle, {
+    toggleStates3$proSalPerDoctoralUserT <- !toggleStates3$proSalPerDoctoralUserT
+  })
+  observeEvent(input$proSalTopPerDoctoralToggle, {
+    toggleStates3$proSalTopPerDoctoralT <- !toggleStates3$proSalTopPerDoctoralT
+  })
+
+
+  # Render tables conditionally
+  output$proSalPerFacultyUserSelectedTable <- renderUI({
+    if (toggleStates3$proSalPerFacultyUserT) {
+      # table - proSalPerFacultyUserSelectedTable
+      output$proSalPerFacultyUserSelectedTable <- renderTable({
+        profStaffSalariesVis()[[16]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalPerFacultyUserSelectedTable")
+    }
+  })
+
+  output$proSalTopPerFacultyTable <- renderUI({
+    if (toggleStates3$proSalTopPerFacultyT) {
+      # table - proSalTopPerFacultyTable
+      output$proSalTopPerFacultyTable <- renderTable({
+        profStaffSalariesVis()[[11]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalTopPerFacultyTable")
+    }
+  })
+
+  output$proSalPerStudentUserSelectedTable <- renderUI({
+    if (toggleStates3$proSalPerStudentUserT) {
+      # table - proSalPerStudentUserSelectedTable
+      output$proSalPerStudentUserSelectedTable <- renderTable({
+        profStaffSalariesVis()[[17]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalPerStudentUserSelectedTable")
+    }
+  })
+
+  output$proSalTopPerStudentTable <- renderUI({
+    if (toggleStates3$proSalTopPerStudentT) {
+      # table - proSalTopPerStudentTable
+      output$proSalTopPerStudentTable <- renderTable({
+        profStaffSalariesVis()[[12]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalTopPerStudentTable")
+    }
+  })
+
+  output$proSalPerGradStudentUserSelectedTable <- renderUI({
+    if (toggleStates3$proSalPerGradStudentUserT) {
+      # table - proSalPerGradStudentUserSelectedTable
+      output$proSalPerGradStudentUserSelectedTable <- renderTable({
+        profStaffSalariesVis()[[18]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalPerGradStudentUserSelectedTable")
+    }
+  })
+
+  output$proSalTopPerGradStudentTable <- renderUI({
+    if (toggleStates3$proSalTopPerGradStudentT) {
+      # table - proSalTopPerGradStudentTable
+      output$proSalTopPerGradStudentTable <- renderTable({
+        profStaffSalariesVis()[[13]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalTopPerGradStudentTable")
+    }
+  })
+
+
+  output$proSalPerUndergradStudentUserSelectedTable <- renderUI({
+    if (toggleStates3$proSalPerUndergradStudentUserT) {
+      # table - proSalPerUndergradStudentUserSelectedTable
+      output$proSalPerUndergradStudentUserSelectedTable <- renderTable({
+        profStaffSalariesVis()[[19]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalPerUndergradStudentUserSelectedTable")
+    }
+  })
+
+  output$proSalTopPerUndergradStudentTable <- renderUI({
+    if (toggleStates3$proSalTopPerUndergradStudentT) {
+      # table - tleTopPerUndergradStudentTable
+      output$proSalTopPerUndergradStudentTable <- renderTable({
+        profStaffSalariesVis()[[14]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalTopPerUndergradStudentTable")
+    }
+  })
+
+  output$proSalPerDoctoralUserSelectedTable <- renderUI({
+    if (toggleStates3$proSalPerDoctoralUserT) {
+      # table - proSalPerDoctoralUserSelectedTable
+      output$proSalPerDoctoralUserSelectedTable <- renderTable({
+        profStaffSalariesVis()[[20]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalPerDoctoralUserSelectedTable")
+    }
+  })
+
+  output$proSalTopPerDoctoralTable <- renderUI({
+    if (toggleStates3$proSalTopPerDoctoralT) {
+      # table - tleTopPerDoctoralTable
+      output$proSalTopPerDoctoralTable <- renderTable({
+        profStaffSalariesVis()[[15]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proSalTopPerDoctoralTable")
+    }
+  })
+
+
+
+  #
+  #
+  #
   # -- Professional Staff Counts
   profStaffCountsVis <- eventReactive(eventExpr = c(input$file1,
                                                     input$instituteInput,
                                                     input$yearsInput), {
-    visProfStaffCounts(
-      dataARL = csvInput(),
-      members = as.character(input$instituteInput),
-      years = as.vector(input$yearsInput, mode = "numeric"))
-  })
+                                                      visProfStaffCounts(
+                                                        dataARL = csvInput(),
+                                                        members = as.character(input$instituteInput),
+                                                        years = as.vector(input$yearsInput, mode = "numeric"))
+                                                    })
 
   # plot - proFTETopPerFaculty
   output$proFTETopPerFaculty <- renderPlot({
@@ -543,15 +1203,170 @@ server <- function(input, output, session) {
   })
 
 
+
+  # Initialize toggle states for tables
+  toggleStates4 <- reactiveValues(
+    proFTEPerFacultyUserT = FALSE,
+    proFTETopPerFacultyT = FALSE,
+    proFTEPerStudentUserT = FALSE,
+    proFTETopPerStudentT = FALSE,
+    proFTEPerGradStudentUserT = FALSE,
+    proFTETopPerGradStudentT = FALSE,
+    proFTEPerUndergradStudentUserT = FALSE,
+    proFTETopPerUndergradStudentT = FALSE,
+    proFTEPerDoctoralUserT = FALSE,
+    proFTETopPerDoctoralT = FALSE
+  )
+
+  # Observe events for toggle buttons
+  observeEvent(input$proFTEPerFacultyUserToggle, {
+    toggleStates4$proFTEPerFacultyUserT <- !toggleStates4$proFTEPerFacultyUserT
+  })
+  observeEvent(input$proFTETopPerFacultyToggle, {
+    toggleStates4$proFTETopPerFacultyT <- !toggleStates4$proFTETopPerFacultyT
+  })
+  observeEvent(input$proFTEPerStudentUserToggle, {
+    toggleStates4$proFTEPerStudentUserT <- !toggleStates4$proFTEPerStudentUserT
+  })
+  observeEvent(input$proFTETopPerStudentToggle, {
+    toggleStates4$proFTETopPerStudentT <- !toggleStates4$proFTETopPerStudentT
+  })
+  observeEvent(input$proFTEPerGradStudentUserToggle, {
+    toggleStates4$proFTEPerGradStudentUserT <- !toggleStates4$proFTEPerGradStudentUserT
+  })
+  observeEvent(input$proFTETopPerGradStudentToggle, {
+    toggleStates4$proFTETopPerGradStudentT <- !toggleStates4$proFTETopPerGradStudentT
+  })
+  observeEvent(input$proFTEPerUndergradStudentUserToggle, {
+    toggleStates4$proFTEPerUndergradStudentUserT <- !toggleStates4$proFTEPerUndergradStudentUserT
+  })
+  observeEvent(input$proFTETopPerUndergradStudentToggle, {
+    toggleStates4$proFTETopPerUndergradStudentT <- !toggleStates4$proFTETopPerUndergradStudentT
+  })
+  observeEvent(input$proFTEPerDoctoralUserToggle, {
+    toggleStates4$proFTEPerDoctoralUserT <- !toggleStates4$proFTEPerDoctoralUserT
+  })
+  observeEvent(input$proFTETopPerDoctoralToggle, {
+    toggleStates4$proFTETopPerDoctoralT <- !toggleStates4$proFTETopPerDoctoralT
+  })
+
+
+  # Render tables conditionally
+  output$proFTEPerFacultyUserSelectedTable <- renderUI({
+    if (toggleStates4$proFTEPerFacultyUserT) {
+      # table - proFTEPerFacultyUserSelectedTable
+      output$proFTEPerFacultyUserSelectedTable <- renderTable({
+        profStaffCountsVis()[[16]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTEPerFacultyUserSelectedTable")
+    }
+  })
+
+  output$proFTETopPerFacultyTable <- renderUI({
+    if (toggleStates4$proFTETopPerFacultyT) {
+      # table - proFTETopPerFacultyTable
+      output$proFTETopPerFacultyTable <- renderTable({
+        profStaffCountsVis()[[11]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTETopPerFacultyTable")
+    }
+  })
+
+  output$proFTEPerStudentUserSelectedTable <- renderUI({
+    if (toggleStates4$proFTEPerStudentUserT) {
+      # table - proFTEPerStudentUserSelectedTable
+      output$proFTEPerStudentUserSelectedTable <- renderTable({
+        profStaffCountsVis()[[17]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTEPerStudentUserSelectedTable")
+    }
+  })
+
+  output$proFTETopPerStudentTable <- renderUI({
+    if (toggleStates4$proFTETopPerStudentT) {
+      # table - proFTETopPerStudentTable
+      output$proFTETopPerStudentTable <- renderTable({
+        profStaffCountsVis()[[12]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTETopPerStudentTable")
+    }
+  })
+
+  output$proFTEPerGradStudentUserSelectedTable <- renderUI({
+    if (toggleStates4$proFTEPerGradStudentUserT) {
+      # table - proFTEPerGradStudentUserSelectedTable
+      output$proFTEPerGradStudentUserSelectedTable <- renderTable({
+        profStaffCountsVis()[[18]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTEPerGradStudentUserSelectedTable")
+    }
+  })
+
+  output$proFTETopPerGradStudentTable <- renderUI({
+    if (toggleStates4$proFTETopPerGradStudentT) {
+      # table - proFTETopPerGradStudentTable
+      output$proFTETopPerGradStudentTable <- renderTable({
+        profStaffCountsVis()[[13]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTETopPerGradStudentTable")
+    }
+  })
+
+
+  output$proFTEPerUndergradStudentUserSelectedTable <- renderUI({
+    if (toggleStates4$proFTEPerUndergradStudentUserT) {
+      # table - proFTEPerUndergradStudentUserSelectedTable
+      output$proFTEPerUndergradStudentUserSelectedTable <- renderTable({
+        profStaffCountsVis()[[19]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTEPerUndergradStudentUserSelectedTable")
+    }
+  })
+
+  output$proFTETopPerUndergradStudentTable <- renderUI({
+    if (toggleStates4$proFTETopPerUndergradStudentT) {
+      # table - tleTopPerUndergradStudentTable
+      output$proFTETopPerUndergradStudentTable <- renderTable({
+        profStaffCountsVis()[[14]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTETopPerUndergradStudentTable")
+    }
+  })
+
+  output$proFTEPerDoctoralUserSelectedTable <- renderUI({
+    if (toggleStates4$proFTEPerDoctoralUserT) {
+      # table - proFTEPerDoctoralUserSelectedTable
+      output$proFTEPerDoctoralUserSelectedTable <- renderTable({
+        profStaffCountsVis()[[20]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTEPerDoctoralUserSelectedTable")
+    }
+  })
+
+  output$proFTETopPerDoctoralTable <- renderUI({
+    if (toggleStates4$proFTETopPerDoctoralT) {
+      # table - tleTopPerDoctoralTable
+      output$proFTETopPerDoctoralTable <- renderTable({
+        profStaffCountsVis()[[15]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("proFTETopPerDoctoralTable")
+    }
+  })
+
+
+
+  #
+  #
+  #
   # -- Support Staff Counts
   supStaffCountsVis <- eventReactive(eventExpr = c(input$file1,
                                                    input$instituteInput,
                                                    input$yearsInput), {
-    visSupStaffCounts(
-      dataARL = csvInput(),
-      members = as.character(input$instituteInput),
-      years = as.vector(input$yearsInput, mode = "numeric"))
-  })
+                                                     visSupStaffCounts(
+                                                       dataARL = csvInput(),
+                                                       members = as.character(input$instituteInput),
+                                                       years = as.vector(input$yearsInput, mode = "numeric"))
+                                                   })
 
   # plot - supFTETopPerFaculty
   output$supFTETopPerFaculty <- renderPlot({
@@ -604,19 +1419,175 @@ server <- function(input, output, session) {
   })
 
 
+
+  # Initialize toggle states for tables
+  toggleStates5 <- reactiveValues(
+    supPerPerFacultyUserT = FALSE,
+    supPerTopPerFacultyT = FALSE,
+    supPerPerStudentUserT = FALSE,
+    supPerTopPerStudentT = FALSE,
+    supPerPerGradStudentUserT = FALSE,
+    supPerTopPerGradStudentT = FALSE,
+    supPerPerUndergradStudentUserT = FALSE,
+    supPerTopPerUndergradStudentT = FALSE,
+    supPerPerDoctoralUserT = FALSE,
+    supPerTopPerDoctoralT = FALSE
+  )
+
+  # Observe events for toggle buttons
+  observeEvent(input$supPerPerFacultyUserToggle, {
+    toggleStates5$supPerPerFacultyUserT <- !toggleStates5$supPerPerFacultyUserT
+  })
+  observeEvent(input$supPerTopPerFacultyToggle, {
+    toggleStates5$supPerTopPerFacultyT <- !toggleStates5$supPerTopPerFacultyT
+  })
+  observeEvent(input$supPerPerStudentUserToggle, {
+    toggleStates5$supPerPerStudentUserT <- !toggleStates5$supPerPerStudentUserT
+  })
+  observeEvent(input$supPerTopPerStudentToggle, {
+    toggleStates5$supPerTopPerStudentT <- !toggleStates5$supPerTopPerStudentT
+  })
+  observeEvent(input$supPerPerGradStudentUserToggle, {
+    toggleStates5$supPerPerGradStudentUserT <- !toggleStates5$supPerPerGradStudentUserT
+  })
+  observeEvent(input$supPerTopPerGradStudentToggle, {
+    toggleStates5$supPerTopPerGradStudentT <- !toggleStates5$supPerTopPerGradStudentT
+  })
+  observeEvent(input$supPerPerUndergradStudentUserToggle, {
+    toggleStates5$supPerPerUndergradStudentUserT <- !toggleStates5$supPerPerUndergradStudentUserT
+  })
+  observeEvent(input$supPerTopPerUndergradStudentToggle, {
+    toggleStates5$supPerTopPerUndergradStudentT <- !toggleStates5$supPerTopPerUndergradStudentT
+  })
+  observeEvent(input$supPerPerDoctoralUserToggle, {
+    toggleStates5$supPerPerDoctoralUserT <- !toggleStates5$supPerPerDoctoralUserT
+  })
+  observeEvent(input$supPerTopPerDoctoralToggle, {
+    toggleStates5$supPerTopPerDoctoralT <- !toggleStates5$supPerTopPerDoctoralT
+  })
+
+
+  # Render tables conditionally
+  output$supPerPerFacultyUserSelectedTable <- renderUI({
+    if (toggleStates5$supPerPerFacultyUserT) {
+      # table - supPerPerFacultyUserSelectedTable
+      output$supPerPerFacultyUserSelectedTable <- renderTable({
+        supStaffCountsVis()[[16]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerPerFacultyUserSelectedTable")
+    }
+  })
+
+  output$supPerTopPerFacultyTable <- renderUI({
+    if (toggleStates5$supPerTopPerFacultyT) {
+      # table - supPerTopPerFacultyTable
+      output$supPerTopPerFacultyTable <- renderTable({
+        supStaffCountsVis()[[11]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerTopPerFacultyTable")
+    }
+  })
+
+  output$supPerPerStudentUserSelectedTable <- renderUI({
+    if (toggleStates5$supPerPerStudentUserT) {
+      # table - supPerPerStudentUserSelectedTable
+      output$supPerPerStudentUserSelectedTable <- renderTable({
+        supStaffCountsVis()[[17]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerPerStudentUserSelectedTable")
+    }
+  })
+
+  output$supPerTopPerStudentTable <- renderUI({
+    if (toggleStates5$supPerTopPerStudentT) {
+      # table - supPerTopPerStudentTable
+      output$supPerTopPerStudentTable <- renderTable({
+        supStaffCountsVis()[[12]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerTopPerStudentTable")
+    }
+  })
+
+  output$supPerPerGradStudentUserSelectedTable <- renderUI({
+    if (toggleStates5$supPerPerGradStudentUserT) {
+      # table - supPerPerGradStudentUserSelectedTable
+      output$supPerPerGradStudentUserSelectedTable <- renderTable({
+        supStaffCountsVis()[[18]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerPerGradStudentUserSelectedTable")
+    }
+  })
+
+  output$supPerTopPerGradStudentTable <- renderUI({
+    if (toggleStates5$supPerTopPerGradStudentT) {
+      # table - supPerTopPerGradStudentTable
+      output$supPerTopPerGradStudentTable <- renderTable({
+        supStaffCountsVis()[[13]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerTopPerGradStudentTable")
+    }
+  })
+
+
+  output$supPerPerUndergradStudentUserSelectedTable <- renderUI({
+    if (toggleStates5$supPerPerUndergradStudentUserT) {
+      # table - supPerPerUndergradStudentUserSelectedTable
+      output$supPerPerUndergradStudentUserSelectedTable <- renderTable({
+        supStaffCountsVis()[[19]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerPerUndergradStudentUserSelectedTable")
+    }
+  })
+
+  output$supPerTopPerUndergradStudentTable <- renderUI({
+    if (toggleStates5$supPerTopPerUndergradStudentT) {
+      # table - tleTopPerUndergradStudentTable
+      output$supPerTopPerUndergradStudentTable <- renderTable({
+        supStaffCountsVis()[[14]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerTopPerUndergradStudentTable")
+    }
+  })
+
+  output$supPerPerDoctoralUserSelectedTable <- renderUI({
+    if (toggleStates5$supPerPerDoctoralUserT) {
+      # table - supPerPerDoctoralUserSelectedTable
+      output$supPerPerDoctoralUserSelectedTable <- renderTable({
+        supStaffCountsVis()[[20]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerPerDoctoralUserSelectedTable")
+    }
+  })
+
+  output$supPerTopPerDoctoralTable <- renderUI({
+    if (toggleStates5$supPerTopPerDoctoralT) {
+      # table - tleTopPerDoctoralTable
+      output$supPerTopPerDoctoralTable <- renderTable({
+        supStaffCountsVis()[[15]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("supPerTopPerDoctoralTable")
+    }
+  })
+
+
+
+
+
+  #
+  #
   # -- Custom Ratio
   customRatioShiny <- eventReactive(eventExpr = c(input$file1,
                                                   input$instituteInput,
                                                   input$yearsInput,
                                                   input$numeratorChoice,
                                                   input$denominatorChoice), {
-    customRatioBuilder(
-      dataARL = csvInput(),
-      numerator = as.character(input$numeratorChoice),
-      denominator = as.character(input$denominatorChoice),
-      members = as.character(input$instituteInput),
-      years = as.vector(input$yearsInput, mode = "numeric"))
-  })
+                                                    customRatioBuilder(
+                                                      dataARL = csvInput(),
+                                                      numerator = as.character(input$numeratorChoice),
+                                                      denominator = as.character(input$denominatorChoice),
+                                                      members = as.character(input$instituteInput),
+                                                      years = as.vector(input$yearsInput, mode = "numeric"))
+                                                  })
 
   # plot - customRatioTop
   output$customRatioTop <- renderPlot({
@@ -629,16 +1600,55 @@ server <- function(input, output, session) {
   })
 
 
+  # Initialize toggle states for tables
+  toggleStates6 <- reactiveValues(
+    customRatioUserT = FALSE,
+    customRatioTopT = FALSE
+  )
 
+  # Observe events for toggle buttons
+  observeEvent(input$customRatioUserToggle, {
+    toggleStates6$customRatioUserT <- !toggleStates6$customRatioUserT
+  })
+  observeEvent(input$customRatioTopToggle, {
+    toggleStates6$customRatioTopT <- !toggleStates6$customRatioTopT
+  })
+
+
+  # Render tables conditionally
+  output$customRatioUserTable <- renderUI({
+    if (toggleStates6$customRatioUserT) {
+      # table - customRatioUserTable
+      output$customRatioUserTable <- renderTable({
+        customRatioShiny()[[4]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("customRatioUserTable")
+    }
+  })
+
+  output$customRatioTopTable <- renderUI({
+    if (toggleStates6$customRatioTopT) {
+      # table - customRatioTopTable
+      output$customRatioTopTable <- renderTable({
+        customRatioShiny()[[3]]
+      }, sanitize.text.function = function(x) x, rownames = FALSE, colnames = FALSE)
+      tableOutput("customRatioTopTable")
+    }
+  })
+
+
+
+  #
+  #
   # -- Index Table Generator
   indexTableGenVis <- eventReactive(eventExpr = c(input$file1,
-                                                    input$instituteInput,
-                                                    input$yearsInput), {
+                                                  input$instituteInput,
+                                                  input$yearsInput), {
                                                     indexTableGenerator(
-                                                        dataARL = csvInput(),
-                                                        members = as.character(input$instituteInput),
-                                                        years = as.vector(input$yearsInput, mode = "numeric"))
-                                                    })
+                                                      dataARL = csvInput(),
+                                                      members = as.character(input$instituteInput),
+                                                      years = as.vector(input$yearsInput, mode = "numeric"))
+                                                  })
   # plot - indexTableGenVis
   output$indexTableGen <- renderText({
     indexTableGenVis()
