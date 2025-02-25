@@ -144,13 +144,17 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
    dplyr::filter(`Year` %in% yearsToDisplay) %>%
     # Remove median value as it is not a true entry
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
+    # filter denominator with zero value to avoid Inf results
+    dplyr::filter(`Total teaching faculty` != 0) %>%
+    # if the resulting number of rows is zero, end and tell user
+    { if (nrow(.) == 0) stop("No data available for selected years.") else . } %>%
     dplyr::mutate(expPerFaculty = `Total materials expenditures`/`Total teaching faculty`) %>%
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
+    # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerFaculty) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerFaculty`,
                         fill = factor(`Institution Name`),
@@ -191,9 +195,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total materials expenditures`/`Total teaching faculty`)) %>%
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerFaculty) %>%
     # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
     kableExtra::kbl() %>%
@@ -215,9 +219,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
+    # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerStudent) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
                         fill = factor(`Institution Name`),
@@ -258,9 +262,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerStudent = MASS::fractions(`Total materials expenditures`/ allStudents)) %>%
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerStudent) %>%
     # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
     kableExtra::kbl() %>%
@@ -281,9 +285,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerGradStudent) %>%
+    # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerGradStudent`,
                         fill = factor(`Institution Name`),
@@ -325,9 +329,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total materials expenditures`/ allGradStudents)) %>%
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
     # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
     kableExtra::kbl() %>%
@@ -348,9 +352,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerUndergradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerUndergradStudent) %>%
+    # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerUndergradStudent`,
                         fill = factor(`Institution Name`),
@@ -392,9 +396,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total materials expenditures`/ totalUndergradStudents)) %>%
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
     # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
     kableExtra::kbl() %>%
@@ -412,9 +416,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerDoctoral) %>%
+    # dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::filter(! `Institution Name` %in% "MEDIAN") %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerDoctoral`,
@@ -456,9 +460,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total materials expenditures`/ `Doctor's degrees awarded`)) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
     # dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
     kableExtra::kbl() %>%
@@ -479,9 +483,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerFaculty = na_if(expPerFaculty, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerFaculty) %>%
-    dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerFaculty) %>%
+    # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerFaculty`,
                         fill = factor(`Institution Name`),
@@ -522,9 +526,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerFaculty = MASS::fractions(`Total materials expenditures`/`Total teaching faculty`)) %>%
     dplyr::select('Year', 'expPerFaculty', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerFaculty) %>%
     # dplyr::arrange(`Year`, desc(expPerFaculty)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerFaculty = as.character(expPerFaculty)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerFaculty') %>%
     kableExtra::kbl() %>%
@@ -545,9 +549,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerStudent = na_if(expPerStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerStudent) %>%
+    # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerStudent`,
                         fill = factor(`Institution Name`),
@@ -590,9 +594,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerStudent = MASS::fractions(`Total materials expenditures`/ allStudents)) %>%
     dplyr::select('Year', 'expPerStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerStudent) %>%
     # dplyr::arrange(`Year`, desc(expPerStudent)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerStudent = as.character(expPerStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerStudent') %>%
     kableExtra::kbl() %>%
@@ -616,9 +620,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerGradStudent = na_if(expPerGradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerGradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerGradStudent) %>%
+    # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerGradStudent`,
                         fill = factor(`Institution Name`),
@@ -661,9 +665,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerGradStudent = MASS::fractions(`Total materials expenditures`/ allgradStudents)) %>%
     dplyr::select('Year', 'expPerGradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerGradStudent) %>%
     # dplyr::arrange(`Year`, desc(expPerGradStudent)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerGradStudent = as.character(expPerGradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerGradStudent') %>%
     kableExtra::kbl() %>%
@@ -688,9 +692,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     # Replace INF values with NA
     dplyr::mutate(expPerUndergradStudent = na_if(expPerUndergradStudent, Inf)) %>%
     dplyr::group_by(`Year`) %>%
-    dplyr::top_n(5, expPerUndergradStudent) %>%
-    dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    dplyr::top_n(5, expPerUndergradStudent) %>%
+    # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerUndergradStudent`,
                         fill = factor(`Institution Name`),
@@ -734,9 +738,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerUndergradStudent = MASS::fractions(`Total materials expenditures`/ totalUndergradStudents)) %>%
     dplyr::select('Year', 'expPerUndergradStudent', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerUndergradStudent) %>%
     # dplyr::arrange(`Year`, desc(expPerUndergradStudent)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerUndergradStudent = as.character(expPerUndergradStudent)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerUndergradStudent') %>%
     kableExtra::kbl() %>%
@@ -759,8 +763,8 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerDoctoral = na_if(expPerDoctoral, Inf)) %>%
     dplyr::group_by(`Year`) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
-    dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
+    # dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
     ggplot2::ggplot(aes(x = factor(`Year`),
                         y = `expPerDoctoral`,
                         fill = factor(`Institution Name`),
@@ -801,9 +805,9 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
     dplyr::mutate(expPerDoctoral = MASS::fractions(`Total materials expenditures`/ `Doctor's degrees awarded`)) %>%
     dplyr::select('Year', 'expPerDoctoral', `Institution Name`) %>%
     dplyr::group_by(`Year`) %>%
+    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::top_n(5, expPerDoctoral) %>%
     #dplyr::arrange(`Year`, desc(expPerDoctoral)) %>%
-    dplyr::mutate(`Institution Name` = factor(`Institution Name`)) %>%
     dplyr::mutate(expPerDoctoral = as.character(expPerDoctoral)) %>%  # Convert to character
     tidyr::pivot_wider(names_from = `Year`, values_from = 'expPerDoctoral') %>%
     kableExtra::kbl() %>%
@@ -812,26 +816,26 @@ visTotalLibMaterialsExp <- function(dataARL, members = NA, years = NA) {
 
 
 
-  return(list(tlmeTopPerFaculty = tlmeTopPerFaculty,
-              tlmeTopPerStudent = tlmeTopPerStudent,
-              tlmeTopPerGradStudent = tlmeTopPerGradStudent,
-              tlmeTopPerUndergradStudent = tlmeTopPerUndergradStudent,
-              tlmeTopPerDoctoral = tlmeTopPerDoctoral,
-              tlmePerFacultyUserSelected = tlmePerFacultyUserSelected,
-              tlmePerStudentUserSelected = tlmePerStudentUserSelected,
-              tlmePerGradStudentUserSelected = tlmePerGradStudentUserSelected,
-              tlmePerUndergradStudentUserSelected = tlmePerUndergradStudentUserSelected,
-              tlmePerDoctoralUserSelected = tlmePerDoctoralUserSelected,
-              tlmeTopPerFacultyTable = tlmeTopPerFacultyTable,
-              tlmeTopPerStudentTable = tlmeTopPerStudentTable,
-              tlmeTopPerGradStudentTable = tlmeTopPerGradStudentTable,
-              tlmeTopPerUndergradStudentTable = tlmeTopPerUndergradStudentTable,
-              tlmeTopPerDoctoralTable = tlmeTopPerDoctoralTable,
-              tlmePerFacultyUserSelectedTable = tlmePerFacultyUserSelectedTable,
-              tlmePerStudentUserSelectedTable = tlmePerStudentUserSelectedTable,
-              tlmePerGradStudentUserSelectedTable = tlmePerGradStudentUserSelectedTable,
-              tlmePerUndergradStudentUserSelectedTable = tlmePerUndergradStudentUserSelectedTable,
-              tlmePerDoctoralUserSelectedTable = tlmePerDoctoralUserSelectedTable))
+  return(list(tlmeTopPerFaculty = tlmeTopPerFaculty, # 1
+              tlmeTopPerStudent = tlmeTopPerStudent, # 2
+              tlmeTopPerGradStudent = tlmeTopPerGradStudent, # 3
+              tlmeTopPerUndergradStudent = tlmeTopPerUndergradStudent, # 4
+              tlmeTopPerDoctoral = tlmeTopPerDoctoral, # 5
+              tlmePerFacultyUserSelected = tlmePerFacultyUserSelected, # 6
+              tlmePerStudentUserSelected = tlmePerStudentUserSelected, # 7
+              tlmePerGradStudentUserSelected = tlmePerGradStudentUserSelected, # 8
+              tlmePerUndergradStudentUserSelected = tlmePerUndergradStudentUserSelected, # 9
+              tlmePerDoctoralUserSelected = tlmePerDoctoralUserSelected, # 10
+              tlmeTopPerFacultyTable = tlmeTopPerFacultyTable, # 11
+              tlmeTopPerStudentTable = tlmeTopPerStudentTable, # 12
+              tlmeTopPerGradStudentTable = tlmeTopPerGradStudentTable, # 13
+              tlmeTopPerUndergradStudentTable = tlmeTopPerUndergradStudentTable, # 14
+              tlmeTopPerDoctoralTable = tlmeTopPerDoctoralTable, # 15
+              tlmePerFacultyUserSelectedTable = tlmePerFacultyUserSelectedTable, # 16
+              tlmePerStudentUserSelectedTable = tlmePerStudentUserSelectedTable, # 17
+              tlmePerGradStudentUserSelectedTable = tlmePerGradStudentUserSelectedTable, # 18
+              tlmePerUndergradStudentUserSelectedTable = tlmePerUndergradStudentUserSelectedTable, # 19
+              tlmePerDoctoralUserSelectedTable = tlmePerDoctoralUserSelectedTable)) # 20
 }
 
 # [END]
