@@ -2,7 +2,7 @@ library(shiny)
 library(shinydashboard)
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Basic dashboard"),
+  dashboardHeader(title = "libraryStatistics dashboard"),
   dashboardSidebar(
     menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
     menuItem("Widgets", tabName = "widgets", icon = icon("th"))
@@ -111,11 +111,14 @@ ui <- dashboardPage(
                                        br(),
                                        h4("How to use the libraryStatistics Shiny app?"),
                                        h5("1. Data: Decide whether to use demonstration toy dataset available
-                                       within the app or upload a dataset downloaded directly from ARL Data Portal.
-                                       If demonstration dataset is to be used, click the button 'Click to use demonstration data'
-                                       and proceed to #4.
-
-                                       Otherwise, begin by downloading the dataset from the ARL Data
+                                       within the app or upload a dataset downloaded directly from ARL Data Portal.",
+                                       tags$br(),
+                                       tags$br(),
+                                       "If demonstration dataset is to be used, click the button 'Click to use demonstration data'
+                                       and proceed to step #4.",
+                                       tags$br(),
+                                       tags$br(),
+                                       "Otherwise, begin by downloading the dataset from the ARL Data
                                        Portal (www.arlstatistics.org/data/main). Ensure that all variables are selected,
                                        with columns set to 'Variables' and the data sorted by 'Institution Name'
                                        (default options). Data should be downloaded in comma-separated value (.csv) format.
@@ -127,23 +130,26 @@ ui <- dashboardPage(
                                        'Institution type', etc., as downloaded directly from the ARL Data Portal."),
                                        h5("3. Uploading Data and Parameter Selection: Upload the dataset (.csv format)
                                        to the Shiny application."),
-                                       h5("4. A list of choices for
-                                      'ARL Member Libraries' and 'Years' based on the uploaded dataset will appear. You may
-                                      select up to 5 ARL member libraries and up to 5 years for analysis."),
-                                       h5("5. Exploring Results: Navigate the tabs on the right side at the top of the
-                                      application to explore the results. The left panel will remain static, allowing
-                                      user to modify the selections for ARL member libraries or years, as needed. Changes
-                                      to selections will automatically update the results displayed in the various
-                                      tabs on the right."),
+                                       h5("4. A list of choices for 'ARL Member Libraries' and 'Years' based
+                                       on demo dataset or the uploaded dataset will appear. If the uploaded dataset contain
+                                       over 5 ARL member libraries, user may select upto 5 ARL member libraries. Similarly,
+                                       user may select upto 5 years for analysis. If more than 5 ARL member libraries are
+                                       selected, only the last 5 will be retained. If more than 5 years are selected,
+                                       the most recent 5 years will be retained."),
+                                       h5("5. Exploring Results: Navigate the tabs at the top of the application to
+                                       explore the results. The left panel will remain static, allowing user to modify
+                                       the selections for ARL member libraries or years, as needed. Changes to
+                                       selections will automatically update the results displayed in the various
+                                       tabs on the right."),
                                        shiny::img(src = 'pipelineLS.png', align = "centre", height = "85%", width = "85%"),
                                        br(),
                                        br(),
                                        h4("How to cite this work?"),
                                        h5("Silva, A. and K. Maidenberg (2024). libraryStatistics: An R Package with a Shiny Dashboard for Visualizing
-                                   and Comparing Library Statistics Data from Association of Research Libraries. Unpublished."),
+                                       and Comparing Library Statistics Data from Association of Research Libraries. Unpublished."),
                                        h5("A BibTeX entry for LaTeX users is: "),
                                        h5("
-                                     @misc{,
+                                       @misc{,
                                        title = {libraryStatistics: An R Package with a Shiny Dashboard for Visualizing and Comparing Library Statistics Data from Association of Research Libraries},
                                        author = {A. Silva and K. Maidenberg},
                                        year = {2024},
