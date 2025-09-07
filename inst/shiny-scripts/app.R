@@ -1,79 +1,103 @@
 library(shiny)
-library(shinyalert)
+library(shinydashboard)
 
-# Define UI for random distribution app ----
-ui <- fluidPage(
+ui <- dashboardPage(
+  dashboardHeader(title = "libraryStatistics dashboard"),
+  dashboardSidebar(disable = TRUE
+                   #  menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+                   #  menuItem("Widgets", tabName = "widgets", icon = icon("th"))
+  ),
+  dashboardBody(
 
-  # App title ----
-  titlePanel(tags$h1(tags$b("libraryStatistics:"),"Visualize Statistics by Association of Research Libraries Survey")),
 
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
 
-    # Sidebar panel for inputs ----
-    sidebarPanel(width = 3,
+    # Adding a white background
+    tags$style(HTML("
+      .content-wrapper, .right-side {
+        background-color: white !important;
+      }
+    ")),
 
-                 tags$p("Refer to the 'Instructions' tab located on the right side for detailed guidance."),
+    # Boxes need to be put in a row (or column)
+    fluidRow(
 
-                 # br() element to introduce extra vertical spacing ----
-                 br(),
-                 br(),
-                 # input
-                 shinyalert::useShinyalert(),  # Set up shinyalert
-                 uiOutput("tab2"),
-                 fileInput(inputId = "file1",
-                           label = "1. Dataset: upload a dataset for analysis. The file should be
-                           in comma-separated value (.csv) format, with rows corresponding to
-                           years and columns representing ARL indicators (variables). The first
-                           column must be labeled 'Year', followed by other indicators in any
-                           order, such as 'Institution Name', 'Institution type', etc., as
-                           directly downloaded from the ARL Data Portal.",
-                           accept = c(".csv")),
-                 checkboxGroupInput(inputId = "instituteInput",
-                                    label = "2. ARL Member Libraries: select up to five members. If
+
+      # App title ----
+      titlePanel(tags$h1(tags$b("libraryStatistics:"),"Visualize Statistics by Association of Research Libraries Survey")),
+
+      # Sidebar layout with input and output definitions ----
+      sidebarLayout(
+
+        # Sidebar panel for inputs ----
+        sidebarPanel(width = 3,
+
+                     tags$p("Refer to the 'Instructions' tab located on the right side for detailed guidance."),
+
+                     # br() element to introduce extra vertical spacing ----
+                     br(),
+                     br(),
+                     # input
+                     #shinyalert::useShinyalert(),  # Set up shinyalert
+                     uiOutput("tab2"),
+                     div(
+                       tags$b("1. Dataset: Use built-in demo dataset OR upload a dataset for analysis.")),
+                     br(),
+                     actionButton("demo", "Click to use demonstration data"),
+                     br(),
+                     br(),
+                     fileInput(inputId = "file1",
+                               label = "Upload a dataset: The file should be in comma-separated value
+                               (.csv) format, with rows corresponding to
+                               years and columns representing ARL indicators (variables). The first
+                               column must be labeled 'Year', followed by other indicators in any
+                               order, such as 'Institution Name', 'Institution type', etc., as
+                               present when directly downloaded from the ARL Data Portal.",
+                               accept = c(".csv")),
+                     checkboxGroupInput(inputId = "instituteInput",
+                                        label = "2. ARL Member Libraries: select up to five members. If
                                     more than five members are selected, only the last five
                                     will be retained. Subsequently, make the selections for
                                     the desired years from the option below."),
-                 br(),
-                 checkboxGroupInput(inputId = "yearsInput",
-                                    label = "3. Years: select up to five years. If more than five
+                     br(),
+                     checkboxGroupInput(inputId = "yearsInput",
+                                        label = "3. Years: select up to five years. If more than five
                                     years are selected, the most recent five years will be
                                     retained. Subsequently, navigate through the tabs to the right."),
 
-                 # br() element to introduce extra vertical spacing ----
-                 br(),
+                     # br() element to introduce extra vertical spacing ----
+                     br(),
 
-                 # actionButton
-                 # actionButton(inputId = "button2",
-                 #             label = "Analyze"),
+                     # actionButton
+                     # actionButton(inputId = "button2",
+                     #             label = "Analyze"),
 
-                 # br() element to introduce extra vertical spacing -
-                 br(),
+                     # br() element to introduce extra vertical spacing -
+                     br(),
 
-    ), # End of side pannel
+        ), # End of side pannel
 
 
-    # Main panel for displaying outputs
-    mainPanel(width = 9,
+        # Main panel for displaying outputs
+        mainPanel(width = 9,
 
-              # Output: Tabset
-              tabsetPanel(type = "tabs",
-                          # Adding space between columns of tables created
-                          tags$head(
-                            tags$style(HTML("
+                  # Output: Tabset
+                  tabsetPanel(type = "tabs",
+                              # Adding space between columns of tables created
+                              tags$head(
+                                tags$style(HTML("
                                           .lightable-paper th, .lightable-paper td {
                                             padding-left: 20px;
                                             padding-right: 20px;
                                           }
                                    "))),
-                          tabPanel("Instructions",
-                                   h2("Instructions", align = "center"),
-                                   br(),
-                                   h3("Welcome to libraryStatistics Shiny application.", align = "center"),
-                                   h3("This app is part of the libraryStatistics R package.", align = "center"),
-                                   br(),
-                                   h4("What is the libraryStatistics Shiny app?"),
-                                   h5("The libraryStatistics Shiny application is a tool developed as part of the
+                              tabPanel("Instructions",
+                                       h2("Instructions", align = "center"),
+                                       br(),
+                                       h3("Welcome to libraryStatistics Shiny application.", align = "center"),
+                                       h3("This app is part of the libraryStatistics R package.", align = "center"),
+                                       br(),
+                                       h4("What is the libraryStatistics Shiny app?"),
+                                       h5("The libraryStatistics Shiny application is a tool developed as part of the
                                       libraryStatistics R package. This R package is designed for the analysis and
                                       visualization of library statistics published from the annual survey conducted
                                       by the Association of Research Libraries (ARL). The Shiny application enables the
@@ -86,356 +110,369 @@ ui <- fluidPage(
                                       Portal for any number of years and across any number of ARL member libraries. However,
                                       at one time, both the R package and Shiny application would only enable to perform analysis on
                                       5 ARL member libraries and 5 years."),
-                                   br(),
-                                   h4("How to use the libraryStatistics Shiny app?"),
-                                   h5("1. Data Preparation: Begin by downloading the dataset from the ARL Data
-                                      Portal (www.arlstatistics.org/data/main). Ensure that all variables are selected, with columns set to 'Variables'
-                                      and the data sorted by 'Institution Name' (default options). Data should be
-                                      downloaded in comma-separated value (.csv) format. Data may be downloaded for
-                                      any number of years and across all member institutions available."),
-                                   h5("2. Check Data: The downloaded dataset should have rows corresponding to years
-                                      and columns to ARL indicators (variables). The first column must be 'Year',
-                                      followed by other indicators in any order, such as 'Institution Name',
-                                      'Institution type', etc., as downloaded directly from the ARL Data Portal."),
-                                   h5("3. Uploading Data and Parameter Selection: Upload the dataset (.csv format)
-                                      to the Shiny application. After uploading the dataset, a list of choices for
-                                      'ARL Member Libraries' and 'Years' based on the uploaded dataset will appear. You may
-                                      select up to 5 ARL member libraries and up to 5 years for analysis."),
-                                   h5("4. Exploring Results: Navigate the tabs on the right side at the top of the
-                                      application to explore the results. The left panel will remain static, allowing
-                                      user to modify the selections for ARL member libraries or years, as needed. Changes
-                                      to selections will automatically update the results displayed in the various
-                                      tabs on the right."),
-                                   shiny::img(src = 'pipelineLS.png', align = "centre", height = "85%", width = "85%"),
-                                   br(),
-                                   h4("Uncertain about what type of data to upload?"),
-                                   h5("Data should be sourced directly from the ARL Data Portal without any preprocessing.
-                                      The file must be in a comma-separated value (.csv) format, where rows represent
-                                      years and columns correspond to ARL indicators (variables). The first column
-                                      should be labeled 'Year', followed by other indicators in any order, such as
-                                      'Institution Name', 'Institution type', etc., as provided by the ARL Data
-                                      Portal. The following file can be used as a demonstration dataset to
-                                      understand the required format."),
-                                   actionButton(inputId = "data1",
-                                                label = "Demonstration Dataset for Testing"),
-                                   br(),
-                                   br(),
-                                   h4("How to cite this work?"),
-                                   h5("Silva, A. and K. Maidenberg (2024). libraryStatistics: An R Package with a Shiny Dashboard for Visualizing
-                                   and Comparing Library Statistics Data from Association of Research Libraries. Unpublished."),
-                                   h5("A BibTeX entry for LaTeX users is: "),
-                                   h5("
-                                     @misc{,
+                                       br(),
+                                       h4("How to use the libraryStatistics Shiny app?"),
+                                       h5("1. Data: Decide whether to use demonstration toy dataset available
+                                       within the app or upload a dataset downloaded directly from ARL Data Portal.",
+                                          tags$br(),
+                                          tags$br(),
+                                          "If demonstration dataset is to be used, click the button 'Click to use demonstration data'
+                                       and proceed to step #4.",
+                                          tags$br(),
+                                          tags$br(),
+                                          "Otherwise, begin by downloading the dataset from the ARL Data
+                                       Portal (www.arlstatistics.org/data/main). Ensure that all variables are selected,
+                                       with columns set to 'Variables' and the data sorted by 'Institution Name'
+                                       (default options). Data should be downloaded in comma-separated value (.csv) format.
+                                       Data may be downloaded for any number of years and across all member institutions
+                                       available."),
+                                       h5("2. Check Data: The downloaded dataset should have rows corresponding to years
+                                       and columns to ARL indicators (variables). The first column must be 'Year',
+                                       followed by other indicators in any order, such as 'Institution Name',
+                                       'Institution type', etc., as downloaded directly from the ARL Data Portal."),
+                                       h5("3. Uploading Data and Parameter Selection: Upload the dataset (.csv format)
+                                       to the Shiny application."),
+                                       h5("4. A list of choices for 'ARL Member Libraries' and 'Years' based
+                                       on demo dataset or the uploaded dataset will appear. If the uploaded dataset contain
+                                       over 5 ARL member libraries, user may select upto 5 ARL member libraries. Similarly,
+                                       user may select upto 5 years for analysis. If more than 5 ARL member libraries are
+                                       selected, only the last 5 will be retained. If more than 5 years are selected,
+                                       the most recent 5 years will be retained."),
+                                       h5("5. Exploring Results: Navigate the tabs at the top of the application to
+                                       explore the results. The left panel will remain static, allowing user to modify
+                                       the selections for ARL member libraries or years, as needed. Changes to
+                                       selections will automatically update the results displayed in the various
+                                       tabs on the right."),
+                                       shiny::img(src = 'pipelineLS.png', align = "centre", height = "85%", width = "85%"),
+                                       br(),
+                                       br(),
+                                       h4("How to cite this work?"),
+                                       h5("Silva, A. and K. Maidenberg (2024). libraryStatistics: An R Package with a Shiny Dashboard for Visualizing
+                                       and Comparing Library Statistics Data from Association of Research Libraries. Unpublished."),
+                                       h5("A BibTeX entry for LaTeX users is: "),
+                                       h5("
+                                       @misc{,
                                        title = {libraryStatistics: An R Package with a Shiny Dashboard for Visualizing and Comparing Library Statistics Data from Association of Research Libraries},
                                        author = {A. Silva and K. Maidenberg},
                                        year = {2024},
                                        url = {https://github.com/anjalisilva/libraryStatistics},}"),
-                                   br(),
-                                   br(),
-                          ),
-                          tabPanel("Investment Index",
-                                   h3("Investment Index Historical Table", align = "center"),
-                                   br(),
-                                   htmlOutput("indexTableGen")),
-                          tabPanel("Total Library Expenditures",
-                                   h3("Total Library Expenditures (USD) Ratios", align = "center"),
-                                   br(),
-                                   h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
+                                       br(),
+                                       br(),
+                              ),
+                              tabPanel("Investment Index",
+                                       h3("Investment Index Historical Table", align = "center"),
+                                       br(),
+                                       htmlOutput("indexTableGen")),
+                              tabPanel("Total Library Expenditures",
+                                       h3("Total Library Expenditures (USD) Ratios", align = "center"),
+                                       br(),
+                                       h4("Total library expenditures in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
                                        with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
-                                       a data point for the given year."),
-                                   br(),
-                                   br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerFacultyUser"), plotOutput("tleTopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerFacultyUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerFacultyToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerFacultyUserSelectedTable"),
-                                                 htmlOutput("tleTopPerFacultyTable")),
+                                       a data point for the given year. The 'Show Table' button below each plot may be used to view the underlying
+                                       data in a table format."),
+                                       br(),
+                                       br(),
+                                       fluidRow(
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerFacultyUser"), plotOutput("tleTopPerFaculty")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlePerFacultyUserToggle", "Show Table"),
+                                                     actionButton("tleTopPerFacultyToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlePerFacultyUserSelectedTable"),
+                                                     htmlOutput("tleTopPerFacultyTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerStudentUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerStudentUserSelectedTable"),
-                                                 htmlOutput("tleTopPerStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlePerStudentUserToggle", "Show Table"),
+                                                     actionButton("tleTopPerStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlePerStudentUserSelectedTable"),
+                                                     htmlOutput("tleTopPerStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerGradStudentUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerGradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerGradStudentUserSelectedTable"),
-                                                 htmlOutput("tleTopPerGradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlePerGradStudentUserToggle", "Show Table"),
+                                                     actionButton("tleTopPerGradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlePerGradStudentUserSelectedTable"),
+                                                     htmlOutput("tleTopPerGradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudentUser"), plotOutput("tleTopPerUndergradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerUndergradStudentUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerUndergradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerUndergradStudentUserSelectedTable"),
-                                                 htmlOutput("tleTopPerUndergradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudentUser"), plotOutput("tleTopPerUndergradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlePerUndergradStudentUserToggle", "Show Table"),
+                                                     actionButton("tleTopPerUndergradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlePerUndergradStudentUserSelectedTable"),
+                                                     htmlOutput("tleTopPerUndergradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlePerDoctoralUserToggle", "Show Table"),
-                                                 actionButton("tleTopPerDoctoralToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlePerDoctoralUserSelectedTable"),
-                                                 htmlOutput("tleTopPerDoctoralTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlePerDoctoralUserToggle", "Show Table"),
+                                                     actionButton("tleTopPerDoctoralToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlePerDoctoralUserSelectedTable"),
+                                                     htmlOutput("tleTopPerDoctoralTable")),
 
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerFacultyUser"), plotOutput("tleTopPerFaculty")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudent"), plotOutput("tleTopPerUndergradStudent")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerFacultyUser"), plotOutput("tleTopPerFaculty")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerStudentUser"), plotOutput("tleTopPerStudent")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerGradStudentUser"), plotOutput("tleTopPerGradStudent")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerUndergradStudent"), plotOutput("tleTopPerUndergradStudent")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlePerDoctoralUser"), plotOutput("tleTopPerDoctoral")),
 
 
-                                   )),
-                          tabPanel("Total Library Materials Expenditures",
-                                   h3("Total Library Materials Expenditures (USD) Ratios", align = "center"),
-                                   br(),
-                                   h4("Total library materials expenditures in United States Dollars (USD) as ratios in comparison to various statistics
+                                       )),
+                              tabPanel("Total Library Materials Expenditures",
+                                       h3("Total Library Materials Expenditures (USD) Ratios", align = "center"),
+                                       br(),
+                                       h4("Total library materials expenditures in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
                                        with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
-                                       a data point for the given year."),
-                                   br(),
-                                   br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlmePerFacultyUserToggle", "Show Table"),
-                                                 actionButton("tlmeTopPerFacultyToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlmePerFacultyUserSelectedTable"),
-                                                 htmlOutput("tlmeTopPerFacultyTable")),
+                                       a data point for the given year. The 'Show Table' button below each plot may be used to view the underlying
+                                       data in a table format."),
+                                       br(),
+                                       br(),
+                                       fluidRow(
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlmePerFacultyUserToggle", "Show Table"),
+                                                     actionButton("tlmeTopPerFacultyToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlmePerFacultyUserSelectedTable"),
+                                                     htmlOutput("tlmeTopPerFacultyTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlmePerStudentUserToggle", "Show Table"),
-                                                 actionButton("tlmeTopPerStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlmePerStudentUserSelectedTable"),
-                                                 htmlOutput("tlmeTopPerStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlmePerStudentUserToggle", "Show Table"),
+                                                     actionButton("tlmeTopPerStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlmePerStudentUserSelectedTable"),
+                                                     htmlOutput("tlmeTopPerStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlmePerGradStudentUserToggle", "Show Table"),
-                                                 actionButton("tlmeTopPerGradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlmePerGradStudentUserSelectedTable"),
-                                                 htmlOutput("tlmeTopPerGradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlmePerGradStudentUserToggle", "Show Table"),
+                                                     actionButton("tlmeTopPerGradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlmePerGradStudentUserSelectedTable"),
+                                                     htmlOutput("tlmeTopPerGradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerUndergradStudentUserSelected"), plotOutput("tlmeTopPerUndergradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlmePerUndergradStudentUserToggle", "Show Table"),
-                                                 actionButton("tlmeTopPerUndergradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlmePerUndergradStudentUserSelectedTable"),
-                                                 htmlOutput("tlmeTopPerUndergradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerUndergradStudentUserSelected"), plotOutput("tlmeTopPerUndergradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlmePerUndergradStudentUserToggle", "Show Table"),
+                                                     actionButton("tlmeTopPerUndergradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlmePerUndergradStudentUserSelectedTable"),
+                                                     htmlOutput("tlmeTopPerUndergradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("tlmePerDoctoralUserToggle", "Show Table"),
-                                                 actionButton("tlmeTopPerDoctoralToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("tlmePerDoctoralUserSelectedTable"),
-                                                 htmlOutput("tlmeTopPerDoctoralTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("tlmePerDoctoralUserToggle", "Show Table"),
+                                                     actionButton("tlmeTopPerDoctoralToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("tlmePerDoctoralUserSelectedTable"),
+                                                     htmlOutput("tlmeTopPerDoctoralTable")),
 
 
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerUndergradStudentUserSelected"), plotOutput("tlmeTopPerUndergradStudent")),
-                                     # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
-                                   )),
-                          tabPanel("Professional Staff Salaries",
-                                   h3("Professional Staff Salaries (USD) Ratios", align = "center"),
-                                   br(),
-                                   h4("Professional staff salaries in United States Dollars (USD) as ratios in comparison to various statistics
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerFacultyUserSelected"), plotOutput("tlmeTopPerFaculty")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerStudentUserSelected"), plotOutput("tlmeTopPerStudent")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerGradStudentUserSelected"), plotOutput("tlmeTopPerGradStudent")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmePerUndergradStudentUserSelected"), plotOutput("tlmeTopPerUndergradStudent")),
+                                         # splitLayout(cellWidths = c("50%", "50%"), plotOutput("tlmeTopPerDoctoralUserSelected"), plotOutput("tlmeTopPerDoctoral")),
+                                       )),
+                              tabPanel("Professional Staff Salaries",
+                                       h3("Professional Staff Salaries (USD) Ratios", align = "center"),
+                                       br(),
+                                       h4("Professional staff salaries in United States Dollars (USD) as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
                                        with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
-                                       a data point for the given year."),
-                                   br(),
-                                   br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalFacultyUserSelected"), plotOutput("proSalTopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proSalPerFacultyUserToggle", "Show Table"),
-                                                 actionButton("proSalTopPerFacultyToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proSalPerFacultyUserSelectedTable"),
-                                                 htmlOutput("proSalTopPerFacultyTable")),
+                                       a data point for the given year. The 'Show Table' button below each plot may be used to view the underlying
+                                       data in a table format."),
+                                       br(),
+                                       br(),
+                                       fluidRow(
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalFacultyUserSelected"), plotOutput("proSalTopPerFaculty")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proSalPerFacultyUserToggle", "Show Table"),
+                                                     actionButton("proSalTopPerFacultyToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proSalPerFacultyUserSelectedTable"),
+                                                     htmlOutput("proSalTopPerFacultyTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerStudentUserSelected"), plotOutput("proSalTopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proSalPerStudentUserToggle", "Show Table"),
-                                                 actionButton("proSalTopPerStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proSalPerStudentUserSelectedTable"),
-                                                 htmlOutput("proSalTopPerStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerStudentUserSelected"), plotOutput("proSalTopPerStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proSalPerStudentUserToggle", "Show Table"),
+                                                     actionButton("proSalTopPerStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proSalPerStudentUserSelectedTable"),
+                                                     htmlOutput("proSalTopPerStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerGradStudentUserSelected"), plotOutput("proSalTopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proSalPerGradStudentUserToggle", "Show Table"),
-                                                 actionButton("proSalTopPerGradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proSalPerGradStudentUserSelectedTable"),
-                                                 htmlOutput("proSalTopPerGradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerGradStudentUserSelected"), plotOutput("proSalTopPerGradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proSalPerGradStudentUserToggle", "Show Table"),
+                                                     actionButton("proSalTopPerGradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proSalPerGradStudentUserSelectedTable"),
+                                                     htmlOutput("proSalTopPerGradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerUndergradStudentUserSelected"), plotOutput("proSalTopPerUndergradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proSalPerUndergradStudentUserToggle", "Show Table"),
-                                                 actionButton("proSalTopPerUndergradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proSalPerUndergradStudentUserSelectedTable"),
-                                                 htmlOutput("proSalTopPerUndergradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerUndergradStudentUserSelected"), plotOutput("proSalTopPerUndergradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proSalPerUndergradStudentUserToggle", "Show Table"),
+                                                     actionButton("proSalTopPerUndergradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proSalPerUndergradStudentUserSelectedTable"),
+                                                     htmlOutput("proSalTopPerUndergradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerDoctoralUserSelected"), plotOutput("proSalTopPerDoctoral")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proSalPerDoctoralUserToggle", "Show Table"),
-                                                 actionButton("proSalTopPerDoctoralToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proSalPerDoctoralUserSelectedTable"),
-                                                 htmlOutput("proSalTopPerDoctoralTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proSalPerDoctoralUserSelected"), plotOutput("proSalTopPerDoctoral")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proSalPerDoctoralUserToggle", "Show Table"),
+                                                     actionButton("proSalTopPerDoctoralToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proSalPerDoctoralUserSelectedTable"),
+                                                     htmlOutput("proSalTopPerDoctoralTable")),
 
-                                   )),
-                          tabPanel("Professional Staff Counts",
-                                   h3("Professional Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
-                                   br(),
-                                   h4("Professional Library Staff Counts FTE as ratios in comparison to various statistics
+                                       )),
+                              tabPanel("Professional Staff Counts",
+                                       h3("Professional Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
+                                       br(),
+                                       h4("Professional Library Staff Counts FTE as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
                                        with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
-                                       a data point for the given year."),
-                                   br(),
-                                   br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerFacultyUserSelected"), plotOutput("proFTETopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proFTEPerFacultyUserToggle", "Show Table"),
-                                                 actionButton("proFTETopPerFacultyToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proFTEPerFacultyUserSelectedTable"),
-                                                 htmlOutput("proFTETopPerFacultyTable")),
+                                       a data point for the given year. The 'Show Table' button below each plot may be used to view the underlying
+                                       data in a table format."),
+                                       br(),
+                                       br(),
+                                       fluidRow(
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerFacultyUserSelected"), plotOutput("proFTETopPerFaculty")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proFTEPerFacultyUserToggle", "Show Table"),
+                                                     actionButton("proFTETopPerFacultyToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proFTEPerFacultyUserSelectedTable"),
+                                                     htmlOutput("proFTETopPerFacultyTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerStudentUserSelected"), plotOutput("proFTETopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proFTEPerStudentUserToggle", "Show Table"),
-                                                 actionButton("proFTETopPerStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proFTEPerStudentUserSelectedTable"),
-                                                 htmlOutput("proFTETopPerStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerStudentUserSelected"), plotOutput("proFTETopPerStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proFTEPerStudentUserToggle", "Show Table"),
+                                                     actionButton("proFTETopPerStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proFTEPerStudentUserSelectedTable"),
+                                                     htmlOutput("proFTETopPerStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerGradStudentUserSelected"), plotOutput("proFTETopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proFTEPerGradStudentUserToggle", "Show Table"),
-                                                 actionButton("proFTETopPerGradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proFTEPerGradStudentUserSelectedTable"),
-                                                 htmlOutput("proFTETopPerGradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerGradStudentUserSelected"), plotOutput("proFTETopPerGradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proFTEPerGradStudentUserToggle", "Show Table"),
+                                                     actionButton("proFTETopPerGradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proFTEPerGradStudentUserSelectedTable"),
+                                                     htmlOutput("proFTETopPerGradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerUndergradStudentUserSelected"), plotOutput("proFTETopPerUndergradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proFTEPerUndergradStudentUserToggle", "Show Table"),
-                                                 actionButton("proFTETopPerUndergradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proFTEPerUndergradStudentUserSelectedTable"),
-                                                 htmlOutput("proFTETopPerUndergradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerUndergradStudentUserSelected"), plotOutput("proFTETopPerUndergradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proFTEPerUndergradStudentUserToggle", "Show Table"),
+                                                     actionButton("proFTETopPerUndergradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proFTEPerUndergradStudentUserSelectedTable"),
+                                                     htmlOutput("proFTETopPerUndergradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerDoctoralUserSelected"), plotOutput("proFTETopPerDoctoral")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("proFTEPerDoctoralUserToggle", "Show Table"),
-                                                 actionButton("proFTETopPerDoctoralToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("proFTEPerDoctoralUserSelectedTable"),
-                                                 htmlOutput("proFTETopPerDoctoralTable")),
-                                   )),
-                          tabPanel("Support Staff Counts",
-                                   h3("Support Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
-                                   br(),
-                                   h4("Support Library Staff Counts FTE as ratios in comparison to various statistics
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("proFTEPerDoctoralUserSelected"), plotOutput("proFTETopPerDoctoral")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("proFTEPerDoctoralUserToggle", "Show Table"),
+                                                     actionButton("proFTETopPerDoctoralToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("proFTEPerDoctoralUserSelectedTable"),
+                                                     htmlOutput("proFTETopPerDoctoralTable")),
+                                       )),
+                              tabPanel("Support Staff Counts",
+                                       h3("Support Library Staff Counts Full-time Equivalent (FTE) Ratios", align = "center"),
+                                       br(),
+                                       h4("Support Library Staff Counts FTE as ratios in comparison to various statistics
                                        reported in the annual survey of ARL. The chart title identifies the ratio being shown. Ratios for ARL member
                                        libraries selected by the user are shown on left. Plot on the right shows top 5 ARL member libraries
                                        with the highest ratio. If no plot is produced or missing bars, the selected library/libraries may not have submitted
-                                       a data point for the given year."),
-                                   br(),
-                                   br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerFacultyUserSelected"), plotOutput("supFTETopPerFaculty")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("supPerPerFacultyUserToggle", "Show Table"),
-                                                 actionButton("supPerTopPerFacultyToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("supPerPerFacultyUserSelectedTable"),
-                                                 htmlOutput("supPerTopPerFacultyTable")),
+                                       a data point for the given year. The 'Show Table' button below each plot may be used to view the underlying
+                                       data in a table format."),
+                                       br(),
+                                       br(),
+                                       fluidRow(
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerFacultyUserSelected"), plotOutput("supFTETopPerFaculty")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("supPerPerFacultyUserToggle", "Show Table"),
+                                                     actionButton("supPerTopPerFacultyToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("supPerPerFacultyUserSelectedTable"),
+                                                     htmlOutput("supPerTopPerFacultyTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerStudentUserSelected"), plotOutput("supFTETopPerStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("supPerPerStudentUserToggle", "Show Table"),
-                                                 actionButton("supPerTopPerStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("supPerPerStudentUserSelectedTable"),
-                                                 htmlOutput("supPerTopPerStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerStudentUserSelected"), plotOutput("supFTETopPerStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("supPerPerStudentUserToggle", "Show Table"),
+                                                     actionButton("supPerTopPerStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("supPerPerStudentUserSelectedTable"),
+                                                     htmlOutput("supPerTopPerStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("supPerPerGradStudentUserToggle", "Show Table"),
-                                                 actionButton("supPerTopPerGradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("supPerPerGradStudentUserSelectedTable"),
-                                                 htmlOutput("supPerTopPerGradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerGradStudentUserSelected"), plotOutput("supFTETopPerGradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("supPerPerGradStudentUserToggle", "Show Table"),
+                                                     actionButton("supPerTopPerGradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("supPerPerGradStudentUserSelectedTable"),
+                                                     htmlOutput("supPerTopPerGradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerUndergradStudentUserSelected"), plotOutput("supFTETopUndergradStudent")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("supPerPerUndergradStudentUserToggle", "Show Table"),
-                                                 actionButton("supPerTopPerUndergradStudentToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("supPerPerUndergradStudentUserSelectedTable"),
-                                                 htmlOutput("supPerTopPerUndergradStudentTable")),
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerUndergradStudentUserSelected"), plotOutput("supFTETopUndergradStudent")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("supPerPerUndergradStudentUserToggle", "Show Table"),
+                                                     actionButton("supPerTopPerUndergradStudentToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("supPerPerUndergradStudentUserSelectedTable"),
+                                                     htmlOutput("supPerTopPerUndergradStudentTable")),
 
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 actionButton("supPerPerDoctoralUserToggle", "Show Table"),
-                                                 actionButton("supPerTopPerDoctoralToggle", "Show Table")),
-                                     splitLayout(cellWidths = c("50%", "50%"),
-                                                 htmlOutput("supPerPerDoctoralUserSelectedTable"),
-                                                 htmlOutput("supPerTopPerDoctoralTable")),
-                                   )),
-                          tabPanel("Calculate Custom Ratio",
-                                   h3("Calculate Custom Ratio For Selected Members", align = "center"),
-                                   br(),
-                                   h4("Select two distinct statistics from the annual survey of ARL to be computed into
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("supPerDoctoralUserSelected"), plotOutput("supFTETopPerDoctoral")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     actionButton("supPerPerDoctoralUserToggle", "Show Table"),
+                                                     actionButton("supPerTopPerDoctoralToggle", "Show Table")),
+                                         splitLayout(cellWidths = c("50%", "50%"),
+                                                     htmlOutput("supPerPerDoctoralUserSelectedTable"),
+                                                     htmlOutput("supPerTopPerDoctoralTable")),
+                                       )),
+                              tabPanel("Calculate Custom Ratio",
+                                       h3("Calculate Custom Ratio For Selected Members", align = "center"),
+                                       br(),
+                                       h4("Select two distinct statistics from the annual survey of ARL to be computed into
                                        a ratio, across your selected ARL member libraries and years. The plot will be
                                        produced at the bottom. If no plot is produced, data may not be avilable
-                                      for selected statistics."),
-                                   br(),
-                                   br(),
-                                   splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
-                                               radioButtons("numeratorChoice", label = h3("Select Numerator"), choices = "",  selected = 1),
-                                               radioButtons("denominatorChoice", label = h3("Select Denominator"), choices = ""),  selected = 1),
+                                      for selected statistics. The 'Show Table' button below each plot may be used to view the underlying
+                                       data in a table format."),
+                                       br(),
+                                       br(),
+                                       splitLayout(cellWidths = c("50%", "50%"),   # Copy the line below to make a select box
+                                                   radioButtons("numeratorChoice", label = h3("Select Numerator"), choices = "",  selected = 1),
+                                                   radioButtons("denominatorChoice", label = h3("Select Denominator"), choices = ""),  selected = 1),
 
-                                   br(),
-                                   br(),
-                                   fluidRow(
-                                     splitLayout(cellWidths = c("50%", "50%"), plotOutput("customRatioUser"), plotOutput("customRatioTop"))),
-                                   splitLayout(cellWidths = c("50%", "50%"),
-                                               actionButton("customRatioUserToggle", "Show Table"),
-                                               actionButton("customRatioTopToggle", "Show Table")),
-                                   splitLayout(cellWidths = c("50%", "50%"),
-                                               htmlOutput("customRatioUserTable"),
-                                               htmlOutput("customRatioTopTable")),
-                          ),
+                                       br(),
+                                       br(),
+                                       fluidRow(
+                                         splitLayout(cellWidths = c("50%", "50%"), plotOutput("customRatioUser"), plotOutput("customRatioTop"))),
+                                       splitLayout(cellWidths = c("50%", "50%"),
+                                                   actionButton("customRatioUserToggle", "Show Table"),
+                                                   actionButton("customRatioTopToggle", "Show Table")),
+                                       splitLayout(cellWidths = c("50%", "50%"),
+                                                   htmlOutput("customRatioUserTable"),
+                                                   htmlOutput("customRatioTopTable")),
+                              ),
 
 
-              )
-    )
+                  )
+        )
+      )
+
+
+
+    ) # end of fluidRow
   )
 )
 
@@ -447,18 +484,35 @@ server <- function(input, output, session) {
   # defined below then use the value computed from this expression
 
 
-  # Step I: Save Input csv As a Reactive
-  csvInput <- reactive({
-    if (is.null(input$file1)) {
-      return(NULL)
-    } else {
-      readr::read_csv(file = input$file1$datapath)
-    }
+  # --- single reactive container for the currently active dataset ---
+  dataset <- reactiveVal(NULL)
+
+  # ---- Case 1: File upload ----
+  observeEvent(input$file1, {
+    req(input$file1)
+    df <- tryCatch(
+      readr::read_csv(file = input$file1$datapath),
+      error = function(e) {
+        showNotification("Error reading file. Please check format.", type = "error")
+        NULL
+      }
+    )
+    dataset(df)
   })
+
+  # ---- Case 2: Demo button ----
+  observeEvent(input$demo, {
+    dataset(ARLDataDownload)   # replace with your built-in dataset name
+  })
+
+  # ---- Now use dataset() everywhere ----
+
+
+
 
   # Update Choices for Year for User
   observe({
-    columns <- sort(unique(csvInput()$Year), decreasing = TRUE)
+    columns <- sort(unique(dataset()$Year), decreasing = TRUE)
     updateCheckboxGroupInput(session = session,
                              inputId = "yearsInput",
                              label = NULL,
@@ -468,7 +522,7 @@ server <- function(input, output, session) {
 
   # Update Choices for Institution Name for User
   observe({
-    columns2 <- sort(setdiff(unique(csvInput()$`Institution Name`), 'MEDIAN'))
+    columns2 <- sort(setdiff(unique(dataset()$`Institution Name`), 'MEDIAN'))
     updateCheckboxGroupInput(session = session,
                              inputId = "instituteInput",
                              label = NULL,
@@ -478,7 +532,7 @@ server <- function(input, output, session) {
 
   # Update Create Own Ratio Choices for Numerator (top part)
   observe({
-    columns3 <- unique(colnames(csvInput())[12:80])
+    columns3 <- unique(colnames(dataset())[12:80])
     updateRadioButtons(session = session,
                        inputId = "numeratorChoice",
                        label = NULL,
@@ -488,7 +542,7 @@ server <- function(input, output, session) {
 
   # Update Create Own Ratio Choices for Denominator (bottom part)
   observe({
-    columns4 <- unique(colnames(csvInput())[12:80])
+    columns4 <- unique(colnames(dataset())[12:80])
     updateRadioButtons(session = session,
                        inputId = "denominatorChoice",
                        label = NULL,
@@ -501,7 +555,7 @@ server <- function(input, output, session) {
                                                   input$instituteInput,
                                                   input$yearsInput), {
                                                     visTotalLibraryExp(
-                                                      dataARL = csvInput(),
+                                                      dataARL = dataset(),
                                                       members = as.character(input$instituteInput),
                                                       years = as.vector(input$yearsInput, mode = "numeric"))
                                                   })
@@ -717,7 +771,7 @@ server <- function(input, output, session) {
                                                  input$instituteInput,
                                                  input$yearsInput), {
                                                    visTotalLibMaterialsExp(
-                                                     dataARL = csvInput(),
+                                                     dataARL = dataset(),
                                                      members = as.character(input$instituteInput),
                                                      years = as.vector(input$yearsInput, mode = "numeric"))
                                                  })
@@ -931,7 +985,7 @@ server <- function(input, output, session) {
                                                       input$instituteInput,
                                                       input$yearsInput), {
                                                         visProfStaffSalaries(
-                                                          dataARL = csvInput(),
+                                                          dataARL = dataset(),
                                                           members = as.character(input$instituteInput),
                                                           years = as.vector(input$yearsInput, mode = "numeric"))
                                                       })
@@ -1146,7 +1200,7 @@ server <- function(input, output, session) {
                                                     input$instituteInput,
                                                     input$yearsInput), {
                                                       visProfStaffCounts(
-                                                        dataARL = csvInput(),
+                                                        dataARL = dataset(),
                                                         members = as.character(input$instituteInput),
                                                         years = as.vector(input$yearsInput, mode = "numeric"))
                                                     })
@@ -1363,7 +1417,7 @@ server <- function(input, output, session) {
                                                    input$instituteInput,
                                                    input$yearsInput), {
                                                      visSupStaffCounts(
-                                                       dataARL = csvInput(),
+                                                       dataARL = dataset(),
                                                        members = as.character(input$instituteInput),
                                                        years = as.vector(input$yearsInput, mode = "numeric"))
                                                    })
@@ -1582,7 +1636,7 @@ server <- function(input, output, session) {
                                                   input$numeratorChoice,
                                                   input$denominatorChoice), {
                                                     customRatioBuilder(
-                                                      dataARL = csvInput(),
+                                                      dataARL = dataset(),
                                                       numerator = as.character(input$numeratorChoice),
                                                       denominator = as.character(input$denominatorChoice),
                                                       members = as.character(input$instituteInput),
@@ -1645,7 +1699,7 @@ server <- function(input, output, session) {
                                                   input$instituteInput,
                                                   input$yearsInput), {
                                                     indexTableGenerator(
-                                                      dataARL = csvInput(),
+                                                      dataARL = dataset(),
                                                       members = as.character(input$instituteInput),
                                                       years = as.vector(input$yearsInput, mode = "numeric"))
                                                   })
@@ -1671,7 +1725,10 @@ server <- function(input, output, session) {
   })
 
 
+
+
+
 }
 
-# Create Shiny app ----
+
 shinyApp(ui, server)
