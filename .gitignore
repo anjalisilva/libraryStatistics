@@ -7,3 +7,4 @@ inst/extdata/info/
 inst/extdata/.DS_Store
 inst/doc
 R/toDo.R
+data/
